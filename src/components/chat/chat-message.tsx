@@ -20,6 +20,7 @@ function RobotAvatar() {
       viewBox="0 0 40 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="group-hover/avatar:scale-110 group-hover/avatar:-rotate-12 transition-transform duration-300 ease-in-out"
     >
       <circle cx="20" cy="20" r="20" fill="#E0F7FA" />
       <path
@@ -59,7 +60,7 @@ function MessageAvatar({ sender }: { sender: Sender }) {
   const avatarSize = sender === 'ai' ? 'h-10 w-10' : 'h-8 w-8';
   const border = sender === 'ai' ? 'border-2 border-primary/50' : 'border-2 border-primary/80';
   return (
-    <Avatar className={cn(avatarSize, border, "shadow-md")}>
+    <Avatar className={cn(avatarSize, border, "shadow-md group/avatar")}>
       <AvatarFallback className={cn(
         sender === 'ai' ? 'bg-card' : 'bg-background text-primary'
       )}>
