@@ -27,7 +27,7 @@ export const initialMessages: Message[] = [
     sender: 'ai',
     type: 'text',
     content: "Hello! I'm Sahayak, your smart assistant. How can I help you today?",
-    timestamp: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
+    timestamp: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
   },
   {
     id: '2',
@@ -35,10 +35,17 @@ export const initialMessages: Message[] = [
     type: 'text',
     content: 'You can ask me questions, or interact with text and images. For example, you can select any part of this text to ask a follow-up question.',
     originalContent: 'You can ask me questions, or interact with text and images. For example, you can select any part of this text to ask a follow-up question.',
+    timestamp: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
+  },
+    {
+    id: '3',
+    sender: 'user',
+    type: 'text',
+    content: 'Generate image explaining photosynthesis',
     timestamp: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
   },
   {
-    id: '3',
+    id: '4',
     sender: 'ai',
     type: 'image',
     content: 'https://placehold.co/600x400.png',

@@ -11,6 +11,8 @@ import SelectionBar from './selection-bar';
 import { askPredefinedQuestion } from '@/ai/flows/predefined-questions-on-selection';
 import { useToast } from '@/hooks/use-toast';
 import { predefinedActions, PredefinedAction } from '@/lib/actions';
+import { askFollowUpQuestion } from '@/ai/flows/follow-up-questions-on-text';
+import { generateImage } from '@/ai/flows/generate-image';
 
 export default function ChatLayout() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -28,25 +30,81 @@ export default function ChatLayout() {
     return newMessage;
   };
 
-  const handleSendMessage = (content: string) => {
+  const handleSendMessage = async (content: string) => {
+    if (isReplying) return;
+
+    setIsReplying(true);
+
     if (selection) {
-      // Handle as a follow-up question
-      addMessage({
+      const currentSelection = selection;
+      setSelection(null);
+
+      const userMessage = addMessage({
         sender: 'user',
         type: 'text',
-        content: `Follow-up on "${selection.type === 'text' ? selection.content : 'image'}": ${content}`,
+        content: `Follow-up on "${
+          currentSelection.type === 'text' ? currentSelection.content : 'image'
+        }": ${content}`,
       });
-      // Here you would call your follow-up AI flow
-      setSelection(null);
+
+      try {
+        const result = await askFollowUpQuestion({
+          originalText:
+            currentSelection.type === 'text' ? currentSelection.context || '' : '',
+          selectedText:
+            currentSelection.type === 'text' ? currentSelection.content : '',
+          followUpQuestion: content,
+        });
+        addMessage({
+          sender: 'ai',
+          type: 'text',
+          content: result.answer,
+          originalContent: result.answer,
+        });
+      } catch (error) {
+        console.error('Error during follow-up question:', error);
+        addMessage({
+          sender: 'ai',
+          type: 'text',
+          content: "I'm sorry, I couldn't process that follow-up.",
+        });
+      }
     } else {
-      // Handle as a regular message
       addMessage({
         sender: 'user',
         type: 'text',
         content: content,
       });
+
+      // Simple keyword detection to trigger image generation
+      if (content.toLowerCase().includes('generate image')) {
+        try {
+          const result = await generateImage({ prompt: content });
+          addMessage({
+            sender: 'ai',
+            type: 'image',
+            content: result.imageDataUri,
+          });
+        } catch (error) {
+          console.error('Error generating image:', error);
+          addMessage({
+            sender: 'ai',
+            type: 'text',
+            content: "I'm sorry, I couldn't generate an image for that.",
+          });
+        }
+      } else {
+        // Generic response for other queries
+        addMessage({
+          sender: 'ai',
+          type: 'text',
+          content: "I can help with that. What would you like to know?",
+          originalContent: "I can help with that. What would you like to know?",
+        });
+      }
     }
-    // Here you would typically call your main AI flow
+
+    setIsReplying(false);
   };
 
   const handleAction = async (action: PredefinedAction) => {
