@@ -44,7 +44,7 @@ function UserAvatar() {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="text-primary"
+      className="text-primary group-hover/avatar:scale-110 transition-transform duration-300 ease-in-out"
     >
       <circle cx="12" cy="8" r="4" fill="currentColor" />
       <path
