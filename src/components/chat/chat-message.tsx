@@ -57,9 +57,9 @@ function UserAvatar() {
 
 function MessageAvatar({ sender }: { sender: Sender }) {
   const avatarSize = sender === 'ai' ? 'h-10 w-10' : 'h-8 w-8';
-  const border = sender === 'ai' ? 'border-2 border-primary' : 'border-2 border-primary';
+  const border = sender === 'ai' ? 'border-2 border-primary/50' : 'border-2 border-primary/80';
   return (
-    <Avatar className={cn(avatarSize, border, "shadow-sm")}>
+    <Avatar className={cn(avatarSize, border, "shadow-md")}>
       <AvatarFallback className={cn(
         sender === 'ai' ? 'bg-card' : 'bg-background text-primary'
       )}>
@@ -93,9 +93,9 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
       {isAi && <MessageAvatar sender="ai" />}
       <div
         className={cn(
-          'max-w-[75%] rounded-2xl p-3 shadow-md',
+          'max-w-[75%] rounded-2xl p-3 shadow-lg border transition-transform duration-200 hover:-translate-y-1',
           isAi
-            ? 'bg-card text-card-foreground border'
+            ? 'bg-card text-card-foreground'
             : 'bg-primary text-primary-foreground'
         )}
       >

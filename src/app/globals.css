@@ -8,9 +8,9 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 20% 98%;
     --foreground: 210 10% 23%;
-    --card: 185 53% 92%;
+    --card: 210 20% 94%;
     --card-foreground: 210 10% 23%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
@@ -20,13 +20,13 @@ body {
     --secondary-foreground: 240 5.9% 10%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 240 3.8% 46.1%;
-    --accent: 120 73% 75%;
+    --accent: 217 80% 70%;
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221 44% 45%;
+    --ring: 217 91% 65%;
     --radius: 0.75rem;
   }
 
@@ -37,7 +37,7 @@ body {
     --card-foreground: 210 40% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 221 44% 55%;
+    --primary: 217 91% 60%;
     --primary-foreground: 210 40% 98%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 210 40% 98%;
@@ -59,6 +59,9 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    background-image: radial-gradient(circle at 1px 1px, hsl(210 20% 94%) 1px, transparent 0);
+    background-size: 2rem 2rem;
   }
 }
 

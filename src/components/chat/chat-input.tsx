@@ -47,7 +47,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             e.preventDefault();
             handleSend();
           }}
-          className="relative flex items-end gap-2 p-1 bg-card border rounded-full shadow-sm"
+          className="relative flex items-end gap-2 p-1 bg-background border rounded-full shadow-inner shadow-slate-300"
         >
           <TooltipProvider>
             <Tooltip>
@@ -76,12 +76,12 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 resize-none max-h-48 min-h-[40px] px-4 py-2 border-none focus-visible:ring-0 bg-transparent shadow-none placeholder:text-muted-foreground"
+            className="flex-1 resize-none max-h-48 min-h-[40px] px-4 py-2 border-none focus-visible:ring-0 bg-transparent shadow-none placeholder:text-muted-foreground/80"
             rows={1}
             disabled={disabled}
           />
 
-          <Button type="submit" size="icon" className="shrink-0 rounded-full bg-primary hover:bg-primary/90" disabled={!inputValue.trim() || disabled}>
+          <Button type="submit" size="icon" className="shrink-0 rounded-full bg-primary hover:bg-primary/90 shadow-md hover:-translate-y-0.5 transition-transform" disabled={!inputValue.trim() || disabled}>
             <Send />
             <span className="sr-only">Send message</span>
           </Button>
