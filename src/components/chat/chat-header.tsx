@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Sparkles, ChevronDown } from 'lucide-react';
+import { GraduationCap, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -26,7 +26,7 @@ export default function ChatHeader() {
   return (
     <header className="flex items-center justify-between p-3 border-b bg-background shadow-sm">
       <div className="flex items-center gap-2">
-        <Sparkles className="h-8 w-8 text-primary" />
+        <GraduationCap className="h-8 w-8 text-primary" />
         <h1 className="text-2xl font-bold font-headline text-foreground">Sahayak</h1>
       </div>
       <DropdownMenu>
