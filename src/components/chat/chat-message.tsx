@@ -59,7 +59,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
     if (isAi && message.type === 'image') {
       return <InteractiveImage message={message} setSelection={setSelection} />;
     }
-    const textClass = !isAi ? "font-semibold" : "font-medium";
+    const textClass = "font-semibold";
     return <p className={cn("leading-relaxed", textClass)}>{message.content}</p>;
   };
 
