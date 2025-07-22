@@ -1,6 +1,6 @@
 import { Message, Sender, Selection } from '@/lib/chat-data';
 import { cn } from '@/lib/utils';
-import { Bot, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import InteractiveText from './interactive-text';
 import InteractiveImage from './interactive-image';
@@ -12,13 +12,36 @@ interface ChatMessageProps {
   setSelection: (selection: Selection | null) => void;
 }
 
+function RobotAvatar() {
+  return (
+    <svg
+      width="100%"
+      height="100%"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="20" cy="20" r="20" fill="#E0F7FA" />
+      <path
+        d="M29.5 20C29.5 23.59 26.59 26.5 23 26.5H17C13.41 26.5 10.5 23.59 10.5 20V16C10.5 12.41 13.41 9.5 17 9.5H23C26.59 9.5 29.5 12.41 29.5 16V20Z"
+        fill="#00BCD4"
+      />
+      <rect x="16" y="26" width="8" height="2" rx="1" fill="#00BCD4" />
+      <path d="M19 8.5L19 7.5C19 7.22386 19.2239 7 19.5 7L20.5 7C20.7761 7 21 7.22386 21 7.5L21 8.5" stroke="#00BCD4" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="16.5" cy="18.5" r="1.5" fill="white" />
+      <circle cx="23.5" cy="18.5" r="1.5" fill="white" />
+      <path d="M17 22C17 22 18 24 20 24C22 24 23 22 23 22" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function MessageAvatar({ sender }: { sender: Sender }) {
   return (
     <Avatar className="h-8 w-8 shadow-sm">
       <AvatarFallback className={cn(
         sender === 'ai' ? 'bg-card' : 'bg-primary text-primary-foreground'
       )}>
-        {sender === 'ai' ? <Bot className="h-5 w-5 text-primary" /> : <User className="h-5 w-5" />}
+        {sender === 'ai' ? <RobotAvatar /> : <User className="h-5 w-5" />}
       </AvatarFallback>
     </Avatar>
   );
@@ -34,8 +57,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
     if (isAi && message.type === 'image') {
       return <InteractiveImage message={message} setSelection={setSelection} />;
     }
-    // Apply bold font only for user messages
-    const textClass = !isAi ? "font-semibold" : "";
+    const textClass = !isAi ? "font-semibold" : "font-medium";
     return <p className={cn("leading-relaxed", textClass)}>{message.content}</p>;
   };
 
@@ -49,7 +71,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
       {isAi && <MessageAvatar sender="ai" />}
       <div
         className={cn(
-          'max-w-[75%] rounded-lg p-3 shadow-md',
+          'max-w-[75%] rounded-2xl p-3 shadow-md',
           isAi
             ? 'bg-card text-card-foreground border'
             : 'bg-primary text-primary-foreground'
