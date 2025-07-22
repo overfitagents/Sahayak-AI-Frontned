@@ -1,6 +1,7 @@
 "use client";
 
 import { Message, Selection } from '@/lib/chat-data';
+import { cn } from '@/lib/utils';
 
 interface InteractiveTextProps {
   message: Message;
@@ -20,7 +21,7 @@ export default function InteractiveText({ message, setSelection }: InteractiveTe
   };
   
   return (
-    <p onMouseUp={handleMouseUp} className="leading-relaxed cursor-text">
+    <p onMouseUp={handleMouseUp} className={cn("leading-relaxed cursor-text", "font-semibold")}>
       {message.content}
     </p>
   );
