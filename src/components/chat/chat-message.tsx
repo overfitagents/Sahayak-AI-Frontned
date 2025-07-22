@@ -100,9 +100,6 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         )}
       >
         {renderContent()}
-         <p className={cn("text-xs mt-2 opacity-70", isAi ? "text-right" : "text-left")}>
-          {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </p>
       </div>
       {!isAi && <MessageAvatar sender="user" />}
     </div>
