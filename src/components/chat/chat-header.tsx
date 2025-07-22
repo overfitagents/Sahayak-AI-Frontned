@@ -24,7 +24,7 @@ export default function ChatHeader() {
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
 
   return (
-    <header className="flex items-center justify-between p-3 border-b bg-card shadow-sm">
+    <header className="flex items-center justify-between p-3 border-b bg-background shadow-sm">
       <div className="flex items-center gap-2">
         <Sparkles className="h-8 w-8 text-primary" />
         <h1 className="text-2xl font-bold font-headline text-foreground">Sahayak</h1>

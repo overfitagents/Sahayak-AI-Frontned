@@ -52,7 +52,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button type="button" variant="ghost" size="icon" className="shrink-0 hover:bg-accent/50" disabled={disabled}>
+                <Button type="button" variant="ghost" size="icon" className="shrink-0" disabled={disabled}>
                   <Paperclip />
                   <span className="sr-only">Attach file</span>
                 </Button>
@@ -61,7 +61,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             </Tooltip>
              <Tooltip>
               <TooltipTrigger asChild>
-                <Button type="button" variant="ghost" size="icon" className="shrink-0 hover:bg-accent/50" disabled={disabled}>
+                <Button type="button" variant="ghost" size="icon" className="shrink-0" disabled={disabled}>
                   <Mic />
                   <span className="sr-only">Use voice</span>
                 </Button>
@@ -76,12 +76,12 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 resize-none max-h-48 min-h-[40px] rounded-full px-4 py-2 border-input focus-visible:ring-primary"
+            className="flex-1 resize-none max-h-48 min-h-[40px] rounded-full px-4 py-2 border-input focus-visible:ring-primary bg-background"
             rows={1}
             disabled={disabled}
           />
 
-          <Button type="submit" size="icon" className="shrink-0 bg-primary hover:bg-primary/90" disabled={!inputValue.trim() || disabled}>
+          <Button type="submit" size="icon" className="shrink-0 rounded-full" disabled={!inputValue.trim() || disabled}>
             <Send />
             <span className="sr-only">Send message</span>
           </Button>

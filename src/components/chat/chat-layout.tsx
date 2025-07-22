@@ -102,7 +102,7 @@ export default function ChatLayout() {
     <div className="flex flex-col h-screen bg-background">
       <ChatHeader />
       <ChatMessages messages={messages} isReplying={isReplying} addMessage={addMessage} setIsReplying={setIsReplying} setSelection={setSelection} />
-      <div className="border-t bg-card">
+      <div className="border-t bg-background">
         {selection && (
           <SelectionBar 
             selection={selection} 

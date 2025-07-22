@@ -8,25 +8,25 @@ body {
 
 @layer base {
   :root {
-    --background: 204 10% 96%;
-    --foreground: 224 71% 4%;
-    --card: 210 40% 100%;
-    --card-foreground: 224 71% 4%;
-    --popover: 210 40% 100%;
-    --popover-foreground: 224 71% 4%;
-    --primary: 197 71% 50%;
+    --background: 30 100% 92%;
+    --foreground: 24 9.8% 10%;
+    --card: 30 100% 98%;
+    --card-foreground: 24 9.8% 10%;
+    --popover: 30 100% 98%;
+    --popover-foreground: 24 9.8% 10%;
+    --primary: 25 95% 53%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 224 71% 4%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 210 40% 45.1%;
-    --accent: 120 60% 60%;
-    --accent-foreground: 224 71% 4%;
+    --secondary: 30 96% 90%;
+    --secondary-foreground: 24 9.8% 10%;
+    --muted: 30 96% 90%;
+    --muted-foreground: 24 9.8% 40%;
+    --accent: 30 96% 85%;
+    --accent-foreground: 24 9.8% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 210 40% 90%;
-    --input: 210 40% 90%;
-    --ring: 197 71% 50%;
+    --border: 30 90% 88%;
+    --input: 30 90% 88%;
+    --ring: 25 95% 53%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -43,25 +43,25 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 210 40% 98%;
-    --card: 224 71% 4%;
-    --card-foreground: 210 40% 98%;
-    --popover: 224 71% 4%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 197 71% 60%;
-    --primary-foreground: 224 71% 4%;
-    --secondary: 210 40% 14.9%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 210 40% 14.9%;
-    --muted-foreground: 210 40% 63.9%;
-    --accent: 120 60% 50%;
-    --accent-foreground: 210 40% 98%;
+    --background: 24 9.8% 10%;
+    --foreground: 30 100% 98%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 30 100% 98%;
+    --popover: 24 9.8% 10%;
+    --popover-foreground: 30 100% 98%;
+    --primary: 25 95% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 30 96% 15%;
+    --secondary-foreground: 30 100% 98%;
+    --muted: 30 96% 15%;
+    --muted-foreground: 30 100% 60%;
+    --accent: 30 96% 20%;
+    --accent-foreground: 30 100% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 210 40% 14.9%;
-    --input: 210 40% 14.9%;
-    --ring: 197 71% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 96% 15%;
+    --input: 30 96% 15%;
+    --ring: 25 95% 53%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -88,11 +88,7 @@ body {
   
   .bg-background {
     background-color: hsl(var(--background));
-    background-image: url("data:image/svg+xml,%3Csvg width='100%' height='100%' viewBox='0 0 1920 1080' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25' fx='50%25' fy='50%25'%3E%3Cstop offset='0%25' style='stop-color:%23E9F1FA'/%3E%3Cstop offset='100%25' style='stop-color:%23FFFFFF'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='1920' height='1080' fill='url(%23g)'/%3E%3Cg fill='%23D9E4F1' fill-opacity='0.2'%3E%3C!-- Graduation Cap --%3E%3Cpath transform='translate(150 150) scale(4)' d='M2 6.47V11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6.47l-10-4.44L2 6.47zM22 4.07v2.4l-10 4.44L2 6.47V4.07l10-4.44L22 4.07zM12 18.27l-5.12-2.28a2 2 0 0 1-1.2-1.8V11H12v7.27z'/%3E%3C!-- Book --%3E%3Cpath transform='translate(1600 700) scale(4)' d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20v2H6.5A2.5 2.5 0 0 1 4 16.5v-13A2.5 2.5 0 0 1 6.5 1H20v2H6.5A2.5 2.5 0 0 1 4 5.5v13zM22 2v14H6.5a4.5 4.5 0 0 0 0 9H22V2z'/%3E%3C!-- Lightbulb --%3E%3Cpath transform='translate(900 100) scale(4)' d='M9 22.46a3.5 3.5 0 0 1-3.5-3.5V17h7v1.96a3.5 3.5 0 0 1-3.5 3.5zM12 15H4a2 2 0 0 1-2-2V9a8 8 0 1 1 16 0v4a2 2 0 0 1-2 2h-4zM8 6a4 4 0 1 0 8 0H8z'/%3E%3C!-- Atom --%3E%3Cpath transform='translate(300 800) scale(3.5)' d='M12 2a9.96 9.96 0 0 0-7.07 2.93A9.96 9.96 0 0 0 2 12a9.96 9.96 0 0 0 2.93 7.07A9.96 9.96 0 0 0 12 22a9.96 9.96 0 0 0 7.07-2.93A9.96 9.96 0 0 0 22 12a9.96 9.96 0 0 0-2.93-7.07A9.96 9.96 0 0 0 12 2zm0 2a7.95 7.95 0 0 1 5.66 2.34L6.34 17.66A7.95 7.95 0 0 1 4 12a7.95 7.95 0 0 1 2.34-5.66A7.95 7.95 0 0 1 12 4zm0 16a7.95 7.95 0 0 1-5.66-2.34L17.66 6.34A7.95 7.95 0 0 1 20 12a7.95 7.95 0 0 1-2.34 5.66A7.95 7.95 0 0 1 12 20z'/%3E%3C!-- Test Tube --%3E%3Cpath transform='translate(1700 200) scale(3)' d='M15 2H9a2 2 0 0 0-2 2v13.59a4 4 0 0 0 2.33 3.73l.3.15a1 1 0 0 0 1.34-.82V10h2v10.66a1 1 0 0 0 1.34.82l.3-.15A4 4 0 0 0 17 17.59V4a2 2 0 0 0-2-2z'/%3E%3C/g%3E%3Cpath d='M 0,800 C 200,900 400,850 600,950 S 1000,1000 1200,900 S 1600,950 1920,800 V 1080 H 0 Z' fill='%23D9E4F1' fill-opacity='0.4'/%3E%3C/svg%3E");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-image: none;
   }
 }
 

@@ -15,8 +15,10 @@ interface ChatMessageProps {
 function MessageAvatar({ sender }: { sender: Sender }) {
   return (
     <Avatar className="h-8 w-8">
-      <AvatarFallback>
-        {sender === 'ai' ? <Bot className="h-5 w-5" /> : <User className="h-5 w-5" />}
+      <AvatarFallback className={cn(
+        sender === 'ai' ? 'bg-card' : 'bg-primary'
+      )}>
+        {sender === 'ai' ? <Bot className="h-5 w-5 text-primary" /> : <User className="h-5 w-5 text-primary-foreground" />}
       </AvatarFallback>
     </Avatar>
   );
@@ -47,8 +49,8 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         className={cn(
           'max-w-[75%] rounded-lg p-3 shadow-sm',
           isAi
-            ? 'bg-card text-card-foreground rounded-tl-none'
-            : 'bg-primary text-primary-foreground rounded-tr-none'
+            ? 'bg-card text-card-foreground'
+            : 'bg-primary text-primary-foreground'
         )}
       >
         {renderContent()}
