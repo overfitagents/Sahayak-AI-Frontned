@@ -35,6 +35,26 @@ function RobotAvatar() {
   );
 }
 
+function UserAvatar() {
+  return (
+    <svg
+      width="100%"
+      height="100%"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="text-primary"
+    >
+      <circle cx="12" cy="8" r="4" fill="currentColor" />
+      <path
+        d="M12 14C8.68629 14 6 16.6863 6 20H18C18 16.6863 15.3137 14 12 14Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+
 function MessageAvatar({ sender }: { sender: Sender }) {
   const avatarSize = sender === 'ai' ? 'h-10 w-10' : 'h-8 w-8';
   const border = sender === 'ai' ? 'border-2 border-primary' : 'border-2 border-primary';
@@ -43,7 +63,7 @@ function MessageAvatar({ sender }: { sender: Sender }) {
       <AvatarFallback className={cn(
         sender === 'ai' ? 'bg-card' : 'bg-background text-primary'
       )}>
-        {sender === 'ai' ? <RobotAvatar /> : <User className="h-5 w-5" />}
+        {sender === 'ai' ? <RobotAvatar /> : <UserAvatar />}
       </AvatarFallback>
     </Avatar>
   );
