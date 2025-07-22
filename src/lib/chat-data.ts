@@ -11,6 +11,16 @@ export interface Message {
   timestamp: string;
 }
 
+export type Selection = {
+  type: 'text';
+  content: string;
+  context?: string;
+} | {
+  type: 'image';
+  content: string; // data URI
+};
+
+
 export const initialMessages: Message[] = [
   {
     id: '1',

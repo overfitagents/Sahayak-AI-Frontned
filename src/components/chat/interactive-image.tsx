@@ -1,38 +1,26 @@
 "use client";
 
-import { questionsAboutImageAreas } from '@/ai/flows/questions-about-image-areas';
-import { Message } from '@/lib/chat-data';
+import { Message, Selection } from '@/lib/chat-data';
 import React, { useState, useRef, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '../ui/dialog';
-import { Textarea } from '../ui/textarea';
-import { Loader2, Eraser, ZoomIn, ZoomOut, Maximize } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Eraser, ZoomIn, ZoomOut, Maximize } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 interface InteractiveImageProps {
   message: Message;
-  addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
-  setIsReplying: (isReplying: boolean) => void;
+  setSelection: (selection: Selection | null) => void;
 }
 
-export default function InteractiveImage({ message, addMessage, setIsReplying }: InteractiveImageProps) {
+export default function InteractiveImage({ message, setSelection }: InteractiveImageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasDrawing, setHasDrawing] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [question, setQuestion] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [scale, setScale] = useState(1);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
   
-  const { toast } = useToast();
-
   const getCanvasContext = () => canvasRef.current?.getContext('2d');
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -78,77 +66,26 @@ export default function InteractiveImage({ message, addMessage, setIsReplying }:
     if (canvas && ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       setHasDrawing(false);
+      setSelection(null);
     }
   };
 
-  const handleAskQuestion = async () => {
-    if (!question.trim()) return;
+  const handleSelectArea = () => {
+    const canvas = canvasRef.current;
+    const image = imageRef.current;
+    if (!canvas || !image) return;
+    
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = image.naturalWidth;
+    tempCanvas.height = image.naturalHeight;
+    const tempCtx = tempCanvas.getContext('2d');
+    if (!tempCtx) return;
+    
+    tempCtx.drawImage(image, 0, 0);
+    tempCtx.drawImage(canvas, 0, 0, image.naturalWidth, image.naturalHeight);
 
-    setIsSubmitting(true);
-    setDialogOpen(false);
-    addMessage({
-      sender: 'user',
-      type: 'text',
-      content: `Question about image area: ${question}`,
-    });
-    setIsReplying(true);
-
-    try {
-      const canvas = canvasRef.current;
-      const image = imageRef.current;
-      if (!canvas || !image) throw new Error('Elements not found');
-      
-      const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = image.naturalWidth;
-      tempCanvas.height = image.naturalHeight;
-      const tempCtx = tempCanvas.getContext('2d');
-      if (!tempCtx) throw new Error('Could not create temp canvas context');
-      
-      tempCtx.drawImage(image, 0, 0);
-      
-      const ratioX = image.naturalWidth / canvas.width;
-      const ratioY = image.naturalHeight / canvas.height;
-      const scaledCanvas = document.createElement('canvas');
-      scaledCanvas.width = image.naturalWidth;
-      scaledCanvas.height = image.naturalHeight;
-      const scaledCtx = scaledCanvas.getContext('2d');
-      if (!scaledCtx) throw new Error('Could not create scaled canvas context');
-      
-      scaledCtx.drawImage(canvas, 0, 0, image.naturalWidth, image.naturalHeight);
-      
-      tempCtx.drawImage(scaledCanvas, 0, 0);
-
-      const photoDataUri = tempCanvas.toDataURL('image/png');
-
-      const result = await questionsAboutImageAreas({
-        photoDataUri,
-        question,
-      });
-
-      addMessage({
-        sender: 'ai',
-        type: 'text',
-        content: result.answer,
-        originalContent: result.answer,
-      });
-    } catch (error) {
-      console.error('Error asking question about image:', error);
-      toast({
-        title: 'Error',
-        description: 'Could not process the image. Please try again.',
-        variant: 'destructive',
-      });
-      addMessage({
-        sender: 'ai',
-        type: 'text',
-        content: "I'm sorry, I couldn't process that request.",
-      });
-    } finally {
-      setIsSubmitting(false);
-      setIsReplying(false);
-      setQuestion('');
-      clearDrawing();
-    }
+    const dataUri = tempCanvas.toDataURL('image/png');
+    setSelection({ type: 'image', content: dataUri });
   };
   
   useEffect(() => {
@@ -220,7 +157,7 @@ export default function InteractiveImage({ message, addMessage, setIsReplying }:
                         <TooltipContent><p>Zoom Out</p></TooltipContent>
                     </Tooltip>
                     <Tooltip>
-                        <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => { setScale(1); setOffset({x:0, y:0})}}><Maximize/></Button></TooltipTrigger>
+                        <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => { setScale(1); }}><Maximize/></Button></TooltipTrigger>
                         <TooltipContent><p>Reset Zoom</p></TooltipContent>
                     </Tooltip>
                     <Tooltip>
@@ -230,32 +167,10 @@ export default function InteractiveImage({ message, addMessage, setIsReplying }:
                 </div>
             </TooltipProvider>
 
-            <Button onClick={() => setDialogOpen(true)} disabled={!hasDrawing}>
-                Ask about marked area
+            <Button onClick={handleSelectArea} disabled={!hasDrawing}>
+                Select area
             </Button>
         </div>
-
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogContent>
-            <DialogHeader>
-                <DialogTitle>Ask about the marked area</DialogTitle>
-            </DialogHeader>
-            <Textarea
-                placeholder="Type your question here..."
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-            />
-            <DialogFooter>
-                <DialogClose asChild>
-                    <Button type="button" variant="ghost">Cancel</Button>
-                </DialogClose>
-                <Button onClick={handleAskQuestion} disabled={isSubmitting || !question.trim()}>
-                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Ask
-                </Button>
-            </DialogFooter>
-            </DialogContent>
-        </Dialog>
     </div>
   );
 }

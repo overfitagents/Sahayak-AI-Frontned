@@ -1,7 +1,7 @@
-import { Message, Sender } from '@/lib/chat-data';
+import { Message, Sender, Selection } from '@/lib/chat-data';
 import { cn } from '@/lib/utils';
 import { Bot, User } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Avatar, AvatarFallback } from '../ui/avatar';
 import InteractiveText from './interactive-text';
 import InteractiveImage from './interactive-image';
 
@@ -9,6 +9,7 @@ interface ChatMessageProps {
   message: Message;
   addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
   setIsReplying: (isReplying: boolean) => void;
+  setSelection: (selection: Selection | null) => void;
 }
 
 function MessageAvatar({ sender }: { sender: Sender }) {
@@ -21,17 +22,16 @@ function MessageAvatar({ sender }: { sender: Sender }) {
   );
 }
 
-export default function ChatMessage({ message, addMessage, setIsReplying }: ChatMessageProps) {
+export default function ChatMessage({ message, addMessage, setIsReplying, setSelection }: ChatMessageProps) {
   const isAi = message.sender === 'ai';
 
   const renderContent = () => {
     if (isAi && message.type === 'text' && message.originalContent) {
-      return <InteractiveText message={message} addMessage={addMessage} setIsReplying={setIsReplying} />;
+      return <InteractiveText message={message} setSelection={setSelection} />;
     }
     if (isAi && message.type === 'image') {
-      return <InteractiveImage message={message} addMessage={addMessage} setIsReplying={setIsReplying} />;
+      return <InteractiveImage message={message} setSelection={setSelection} />;
     }
-    // Simple text for user messages or non-interactive AI messages
     return <p className="leading-relaxed">{message.content}</p>;
   };
 

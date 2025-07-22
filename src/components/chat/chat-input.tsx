@@ -40,7 +40,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
 
 
   return (
-    <footer className="p-3 border-t bg-card">
+    <div className="p-3">
       <div className="max-w-4xl mx-auto">
         <form
           onSubmit={(e) => {
@@ -87,6 +87,6 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
           </Button>
         </form>
       </div>
-    </footer>
+    </div>
   );
 }

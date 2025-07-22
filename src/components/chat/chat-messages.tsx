@@ -1,6 +1,6 @@
 "use client";
 
-import type { Message } from '@/lib/chat-data';
+import type { Message, Selection } from '@/lib/chat-data';
 import React, { useEffect, useRef } from 'react';
 import ChatMessage from './chat-message';
 import TypingIndicator from './typing-indicator';
@@ -10,9 +10,10 @@ interface ChatMessagesProps {
   isReplying: boolean;
   addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
   setIsReplying: (isReplying: boolean) => void;
+  setSelection: (selection: Selection | null) => void;
 }
 
-export default function ChatMessages({ messages, isReplying, addMessage, setIsReplying }: ChatMessagesProps) {
+export default function ChatMessages({ messages, isReplying, addMessage, setIsReplying, setSelection }: ChatMessagesProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
@@ -24,7 +25,7 @@ export default function ChatMessages({ messages, isReplying, addMessage, setIsRe
     <main ref={scrollAreaRef} className="flex-1 overflow-y-auto p-4 md:p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         {messages.map((message) => (
-          <ChatMessage key={message.id} message={message} addMessage={addMessage} setIsReplying={setIsReplying} />
+          <ChatMessage key={message.id} message={message} addMessage={addMessage} setIsReplying={setIsReplying} setSelection={setSelection} />
         ))}
         {isReplying && <TypingIndicator />}
         <div ref={endOfMessagesRef} />
