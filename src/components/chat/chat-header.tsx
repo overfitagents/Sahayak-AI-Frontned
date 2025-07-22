@@ -26,7 +26,7 @@ export default function ChatHeader() {
   return (
     <header className="flex items-center justify-between p-3 border-b bg-background shadow-sm">
       <div className="flex items-center gap-2">
-        <GraduationCap className="h-8 w-8 text-primary" />
+        <GraduationCap className="h-8 w-8 text-primary transition-transform duration-300 ease-in-out hover:scale-110 hover:rotate-[-12deg]" />
         <h1 className="text-2xl font-bold font-headline text-foreground">Sahayak</h1>
       </div>
       <DropdownMenu>
