@@ -81,7 +81,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             disabled={disabled}
           />
 
-          <Button type="submit" size="icon" className="shrink-0 rounded-full bg-accent hover:bg-accent/90" disabled={!inputValue.trim() || disabled}>
+          <Button type="submit" size="icon" className="shrink-0 rounded-full bg-primary hover:bg-primary/90" disabled={!inputValue.trim() || disabled}>
             <Send />
             <span className="sr-only">Send message</span>
           </Button>
