@@ -39,7 +39,7 @@ export default function InteractiveImage({ message, setSelection }: InteractiveI
     if (!ctx) return;
     const pos = getMousePos(e);
     ctx.lineTo(pos.x, pos.y);
-    ctx.strokeStyle = '#87CEEB';
+    ctx.strokeStyle = '#FF0000';
     ctx.lineWidth = 3 / scale;
     ctx.setLineDash([6 / scale, 3 / scale]);
     ctx.stroke();
@@ -122,7 +122,7 @@ export default function InteractiveImage({ message, setSelection }: InteractiveI
 
   return (
     <div className="space-y-2">
-        <p className="text-sm font-semibold text-muted-foreground">You can draw on the image to ask a question about a specific area.</p>
+        <p className="text-sm font-bold text-muted-foreground">You can draw on the image to ask a question about a specific area.</p>
         <div ref={containerRef} className="relative w-full overflow-hidden border rounded-lg bg-black/10">
             <Image
             ref={imageRef}
