@@ -5,7 +5,7 @@ import { Selection } from "@/lib/chat-data";
 import { Button } from "../ui/button";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { PredefinedAction } from "@/lib/actions";
-import { Quote, Image as ImageIcon, X } from "lucide-react";
+import { Quote, Image as ImageIcon, Eraser } from "lucide-react";
 import Image from "next/image";
 
 interface SelectionBarProps {
@@ -44,7 +44,7 @@ export default function SelectionBar({ selection, onClear, onAction, actions }: 
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm font-semibold text-primary">Replying to</p>
             <Button variant="ghost" size="icon" className="h-6 w-6" onClick={onClear}>
-              <X className="h-4 w-4"/>
+              <Eraser className="h-4 w-4"/>
               <span className="sr-only">Clear selection</span>
             </Button>
           </div>
