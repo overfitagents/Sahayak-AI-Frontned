@@ -76,7 +76,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 resize-none max-h-48 min-h-[40px] px-4 py-2 border-none focus-visible:ring-0 bg-transparent shadow-none"
+            className="flex-1 resize-none max-h-48 min-h-[40px] px-4 py-2 border-none focus-visible:ring-0 bg-transparent shadow-none placeholder:text-muted-foreground"
             rows={1}
             disabled={disabled}
           />
