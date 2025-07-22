@@ -36,8 +36,10 @@ function RobotAvatar() {
 }
 
 function MessageAvatar({ sender }: { sender: Sender }) {
+  const avatarSize = sender === 'ai' ? 'h-10 w-10' : 'h-8 w-8';
+  const border = sender === 'ai' ? 'border-2 border-primary' : '';
   return (
-    <Avatar className="h-8 w-8 shadow-sm">
+    <Avatar className={cn(avatarSize, border, "shadow-sm")}>
       <AvatarFallback className={cn(
         sender === 'ai' ? 'bg-card' : 'bg-primary text-primary-foreground'
       )}>
