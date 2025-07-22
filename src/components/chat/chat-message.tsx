@@ -34,7 +34,9 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
     if (isAi && message.type === 'image') {
       return <InteractiveImage message={message} setSelection={setSelection} />;
     }
-    return <p className="leading-relaxed">{message.content}</p>;
+    // Apply bold font only for user messages
+    const textClass = !isAi ? "font-semibold" : "";
+    return <p className={cn("leading-relaxed", textClass)}>{message.content}</p>;
   };
 
   return (
