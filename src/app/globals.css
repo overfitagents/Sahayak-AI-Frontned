@@ -59,16 +59,13 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-    background-color: hsl(var(--background));
-    background-image: radial-gradient(circle at 1px 1px, hsl(210 20% 94%) 1px, transparent 0);
-    background-size: 2rem 2rem;
   }
 }
 
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
