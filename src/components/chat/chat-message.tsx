@@ -92,7 +92,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         className={cn(
           'max-w-[75%] rounded-2xl p-3 shadow-lg transition-transform duration-200 hover:-translate-y-1',
           isAi
-            ? 'bg-white/95 backdrop-blur-md text-card-foreground rounded-bl-none'
+            ? 'bg-gray-100 text-gray-800 rounded-bl-none'
             : 'bg-gradient-to-br from-blue-400 to-cyan-400 text-white rounded-br-none'
         )}
       >
