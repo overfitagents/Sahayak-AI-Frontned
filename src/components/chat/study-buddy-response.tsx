@@ -5,7 +5,7 @@ import type { Message } from '@/lib/chat-data';
 import type { StudentProfile } from '@/lib/study-buddy-data';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Users, Lightbulb, Book } from 'lucide-react';
+import { Users, Lightbulb, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -72,7 +72,7 @@ export default function StudyBuddyResponse({ message }: StudyBuddyResponseProps)
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 relative">
                     <StudentCard student={pair.student1} />
                     <div className="flex items-center justify-center text-purple-300 my-2 sm:my-0">
-                        <Book className="h-10 w-10" />
+                        <BookOpen className="h-10 w-10" />
                     </div>
                     <StudentCard student={pair.student2} />
                 </div>
