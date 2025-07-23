@@ -128,7 +128,15 @@ export default function ChatLayout() {
             content: "I'm sorry, I couldn't generate an image for that.",
           });
         }
-      } else {
+      } else if (content.toLowerCase().includes('lesson plan')) {
+        addMessage({
+          sender: 'ai',
+          type: 'lesson-plan',
+          content: "Here is the generated lesson plan.",
+          lessonPlan: dummyLessonPlan,
+        });
+      }
+      else {
         // Generic response for other queries
          addMessage({
           sender: 'ai',
