@@ -1,6 +1,8 @@
+import type { StudyBuddyPair } from "./study-buddy-data";
+
 export type Sender = 'user' | 'ai';
 
-export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file';
+export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file' | 'study-buddy';
 
 export interface Message {
   id: string;
@@ -15,6 +17,7 @@ export interface Message {
     url: string;
     type: string;
   }
+  studyBuddyPairs?: StudyBuddyPair[];
 }
 
 export type Selection = {
@@ -68,4 +71,23 @@ export const initialMessages: Message[] = [
     originalContent: 'Here is the presentation file you requested.',
     timestamp: new Date().toISOString(),
   },
+  {
+    id: '6',
+    sender: 'ai',
+    type: 'study-buddy',
+    content: 'Here are the study buddy pairings based on the latest assessment.',
+    studyBuddyPairs: [
+      {
+        student1: { name: 'Alice', strengths: ['Math'], weaknesses: ['History'] },
+        student2: { name: 'Bob', strengths: ['History'], weaknesses: ['Math'] },
+        reason: 'Alice can help Bob with Math, and Bob can help Alice with History, creating a mutually beneficial partnership.',
+      },
+      {
+        student1: { name: 'Charlie', strengths: ['Science'], weaknesses: ['Art'] },
+        student2: { name: 'Diana', strengths: ['Art'], weaknesses: ['Science'] },
+        reason: 'Charlie excels in scientific concepts, while Diana has a creative flair. They can learn a lot from each other.',
+      },
+    ],
+    timestamp: new Date().toISOString(),
+  }
 ];

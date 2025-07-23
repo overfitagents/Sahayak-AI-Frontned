@@ -5,6 +5,7 @@ import InteractiveImage from './interactive-image';
 import ImageTextResponse from './image-text-response';
 import PptViewer from './ppt-viewer';
 import FileMessage from './file-message';
+import StudyBuddyResponse from './study-buddy-response';
 
 interface ChatMessageProps {
   message: Message;
@@ -84,6 +85,8 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         return <PptViewer fileUrl={message.content} />;
       case 'file':
         return <FileMessage message={message} />;
+      case 'study-buddy':
+        return <StudyBuddyResponse message={message} />;
       default:
         return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
     }
