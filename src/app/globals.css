@@ -8,48 +8,38 @@ body {
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 210 10% 23%;
-    --card: 210 20% 94%;
-    --card-foreground: 210 10% 23%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 217 80% 70%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 217 91% 65%;
-    --radius: 0.75rem;
-  }
+    --background-start-rgb: 63, 81, 181; /* A deep indigo */
+    --background-end-rgb: 103, 58, 183; /* A rich purple */
 
-  .dark {
-    --background: 240 10% 3.9%;
+    --background: 232 39% 48%; /* Fallback */
     --foreground: 210 40% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 210 40% 98%;
+
+    --card: 255 100% 100%; /* Glassmorphism light color */
+    --card-foreground: 226 50% 15%;
+
     --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 60%;
+
+    --primary: 196 100% 50%; /* Bright cyan for user elements */
     --primary-foreground: 210 40% 98%;
+
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 210 40% 98%;
+
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
+
     --accent: 120 73% 75%;
     --accent-foreground: 240 5.9% 10%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
+
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 221 44% 55%;
+
+    --radius: 0.75rem;
   }
 }
 
@@ -59,20 +49,77 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    background: linear-gradient(135deg, rgb(var(--background-start-rgb)), rgb(var(--background-end-rgb)));
+    background-attachment: fixed;
   }
 }
 
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(20px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out forwards;
+  animation: fade-in-up 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+
+/* Floating particles animation */
+@keyframes float {
+	0% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-20px);
+	}
+	100% {
+		transform: translateY(0px);
+	}
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: float 6s ease-in-out infinite;
+}
+
+.particle-1 {
+  width: 80px;
+  height: 80px;
+  left: 5%;
+  top: 10%;
+  animation-duration: 7s;
+}
+
+.particle-2 {
+  width: 100px;
+  height: 100px;
+  left: 90%;
+  top: 20%;
+  animation-duration: 8s;
+  animation-delay: -2s;
+}
+
+.particle-3 {
+  width: 50px;
+  height: 50px;
+  left: 20%;
+  top: 80%;
+  animation-duration: 6s;
+  animation-delay: -4s;
+}
+
+.particle-4 {
+  width: 120px;
+  height: 120px;
+  left: 70%;
+  top: 60%;
+  animation-duration: 9s;
 }

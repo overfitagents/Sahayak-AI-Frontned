@@ -39,12 +39,10 @@ export default function ChatLayout() {
       const currentSelection = selection;
       setSelection(null);
 
-      const userMessage = addMessage({
+      addMessage({
         sender: 'user',
         type: 'text',
-        content: `Follow-up on "${
-          currentSelection.type === 'text' ? currentSelection.content : 'image'
-        }": ${content}`,
+        content: content,
       });
 
       try {
@@ -77,9 +75,14 @@ export default function ChatLayout() {
       });
 
       // Simple keyword detection to trigger image generation
-      if (content.toLowerCase().includes('generate image')) {
+      if (content.toLowerCase().includes('generate image') || content.toLowerCase().includes('what is photosynthesis')) {
+        addMessage({
+          sender: 'ai',
+          type: 'text',
+          content: "Here's an image explaining photosynthesis.",
+        });
         try {
-          const result = await generateImage({ prompt: content });
+          const result = await generateImage({ prompt: 'A simple diagram explaining photosynthesis with labels for sunlight, water, carbon dioxide, oxygen, and glucose.' });
           addMessage({
             sender: 'ai',
             type: 'image',
@@ -95,7 +98,7 @@ export default function ChatLayout() {
         }
       } else {
         // Generic response for other queries
-        addMessage({
+         addMessage({
           sender: 'ai',
           type: 'text',
           content: "I can help with that. What would you like to know?",
@@ -107,11 +110,16 @@ export default function ChatLayout() {
     setIsReplying(false);
   };
 
-  const handleAction = async (action: PredefinedAction) => {
-    if (!selection) return;
+  const handleAction = async (action: PredefinedAction, context?: Selection) => {
+    const currentSelection = context || selection;
+    if (!currentSelection) {
+      // Handle case where suggestion chip is clicked without a selection
+       addMessage({ sender: 'user', type: 'text', content: action });
+       addMessage({ sender: 'ai', type: 'text', content: `You clicked on "${action}". How can I help you with that?` });
+      return;
+    }
 
     setIsReplying(true);
-    const currentSelection = selection;
     setSelection(null);
 
     addMessage({
@@ -157,19 +165,24 @@ export default function ChatLayout() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className="flex flex-col h-screen bg-transparent">
       <ChatHeader />
       <ChatMessages messages={messages} isReplying={isReplying} addMessage={addMessage} setIsReplying={setIsReplying} setSelection={setSelection} />
-      <div className="border-t bg-background">
+      <div className="bg-transparent">
         {selection && (
           <SelectionBar 
             selection={selection} 
             onClear={clearSelection} 
-            onAction={handleAction} 
+            onAction={(action) => handleAction(action, selection)} 
             actions={predefinedActions}
           />
         )}
-        <ChatInput onSend={handleSendMessage} disabled={isReplying} />
+        <ChatInput 
+          onSend={handleSendMessage} 
+          onAction={(action) => handleAction(action)}
+          disabled={isReplying} 
+          suggestionActions={predefinedActions}
+        />
       </div>
     </div>
   );
