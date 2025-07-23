@@ -20,7 +20,7 @@ body {
     --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 196 100% 50%; /* Bright cyan for user elements */
+    --primary: 206 90% 56%; /* Bright cyan for user elements */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 240 3.7% 15.9%;

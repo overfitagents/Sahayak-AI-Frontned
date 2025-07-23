@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import ChatHeader from './chat-header';
 import ChatMessages from './chat-messages';
 import ChatInput from './chat-input';
+import { Button } from '@/components/ui/button';
 import { v4 as uuidv4 } from 'uuid';
 import SelectionBar from './selection-bar';
 import { askPredefinedQuestion } from '@/ai/flows/predefined-questions-on-selection';
@@ -177,11 +178,25 @@ export default function ChatLayout() {
             actions={predefinedActions}
           />
         )}
+         <div className="max-w-4xl mx-auto pb-3">
+            <div className="flex justify-center gap-2 flex-wrap">
+            {predefinedActions.map((action) => (
+                <Button
+                key={action}
+                variant="outline"
+                size="sm"
+                onClick={() => handleAction(action)}
+                className="h-8 bg-white/10 border-white/20 text-white backdrop-blur-md hover:bg-white/20 hover:text-white transition-all duration-200"
+                disabled={isReplying}
+                >
+                {action}
+                </Button>
+            ))}
+            </div>
+        </div>
         <ChatInput 
           onSend={handleSendMessage} 
-          onAction={(action) => handleAction(action)}
           disabled={isReplying} 
-          suggestionActions={predefinedActions}
         />
       </div>
     </div>
