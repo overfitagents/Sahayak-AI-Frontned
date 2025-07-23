@@ -1,3 +1,4 @@
+
 "use client";
 
 import type { Message, Selection } from '@/lib/chat-data';
@@ -14,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { predefinedActions, PredefinedAction } from '@/lib/actions';
 import { askFollowUpQuestion } from '@/ai/flows/follow-up-questions-on-text';
 import { generateImage } from '@/ai/flows/generate-image';
+import { dummyLessonPlan } from '@/lib/lesson-plan-data';
 
 export default function ChatLayout() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -49,12 +51,14 @@ export default function ChatLayout() {
       });
       // Dummy AI response for file upload
       setIsReplying(true);
+
+      // Simulate processing and show lesson plan
       setTimeout(() => {
         addMessage({
           sender: 'ai',
-          type: 'text',
-          content: `I've received your file "${file.name}". I'll analyze it and get back to you.`,
-          originalContent: `I've received your file "${file.name}". I'll analyze it and get back to you.`,
+          type: 'lesson-plan',
+          content: "Here is the generated lesson plan based on your file.",
+          lessonPlan: dummyLessonPlan,
         });
         setIsReplying(false);
       }, 1500);

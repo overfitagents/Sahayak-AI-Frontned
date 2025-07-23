@@ -31,7 +31,7 @@ function StudentCard({ student }: { student: StudentProfile }) {
                 {student.strengths.length > 0 && (
                      <div>
                         <h4 className="font-semibold text-sm text-green-600 mb-1.5">💪 Strengths</h4>
-                        <div className="flex flex-wrap gap-2 justify-center">
+                        <div className="flex flex-wrap gap-2 justify-center cursor-default">
                             {student.strengths.map(skill => <Badge key={skill} variant="secondary" className='text-base border-2 shadow-sm bg-green-100 text-green-800 border-green-300/50 hover:bg-green-200/80 transform hover:scale-105 transition-all duration-200'>{skill}</Badge>)}
                         </div>
                     </div>
@@ -39,7 +39,7 @@ function StudentCard({ student }: { student: StudentProfile }) {
                 {student.weaknesses.length > 0 && (
                     <div className='mt-4'>
                         <h4 className="font-semibold text-sm text-red-600 mb-1.5">🆘 Needs Help</h4>
-                        <div className="flex flex-wrap gap-2 justify-center">
+                        <div className="flex flex-wrap gap-2 justify-center cursor-default">
                             {student.weaknesses.map(skill => <Badge key={skill} variant="secondary" className='text-base border-2 shadow-sm bg-red-100 text-red-800 border-red-300/50 hover:bg-red-200/80 transform hover:scale-105 transition-all duration-200'>{skill}</Badge>)}
                         </div>
                     </div>

@@ -1,3 +1,4 @@
+
 import { Message, Sender, Selection } from '@/lib/chat-data';
 import { cn } from '@/lib/utils';
 import InteractiveText from './interactive-text';
@@ -6,6 +7,8 @@ import ImageTextResponse from './image-text-response';
 import PptViewer from './ppt-viewer';
 import FileMessage from './file-message';
 import StudyBuddyResponse from './study-buddy-response';
+import LessonPlannerResponse from './lesson-planner-response';
+import { dummyLessonPlan } from '@/lib/lesson-plan-data';
 
 interface ChatMessageProps {
   message: Message;
@@ -87,6 +90,8 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         return <FileMessage message={message} />;
       case 'study-buddy':
         return <StudyBuddyResponse message={message} />;
+      case 'lesson-plan':
+        return <LessonPlannerResponse plan={message.lessonPlan || dummyLessonPlan} />;
       default:
         return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
     }

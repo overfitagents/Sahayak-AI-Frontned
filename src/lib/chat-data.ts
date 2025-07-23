@@ -1,8 +1,10 @@
+
 import type { StudyBuddyPair } from "./study-buddy-data";
+import type { LessonPlan } from "./lesson-plan-data";
 
 export type Sender = 'user' | 'ai';
 
-export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file' | 'study-buddy';
+export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file' | 'study-buddy' | 'lesson-plan';
 
 export interface Message {
   id: string;
@@ -18,6 +20,7 @@ export interface Message {
     type: string;
   }
   studyBuddyPairs?: StudyBuddyPair[];
+  lessonPlan?: LessonPlan;
 }
 
 export type Selection = {
