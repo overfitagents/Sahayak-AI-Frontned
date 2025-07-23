@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Mic, Paperclip, Send } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -12,6 +13,7 @@ interface ChatInputProps {
 
 export default function ChatInput({ onSend, disabled }: ChatInputProps) {
   const [inputValue, setInputValue] = useState('');
+  const [isListening, setIsListening] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSend = () => {
@@ -19,6 +21,11 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
       onSend(inputValue.trim());
       setInputValue('');
     }
+  };
+
+  const handleMicClick = () => {
+    setIsListening(prev => !prev);
+    // NOTE: Here you would add the actual logic for voice recognition
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -52,10 +59,6 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
                 <Paperclip />
                 <span className="sr-only">Attach file</span>
               </Button>
-              <Button type="button" variant="ghost" size="icon" className="shrink-0 rounded-full text-gray-500 hover:bg-gray-200/50" disabled={disabled}>
-                <Mic />
-                <span className="sr-only">Use voice</span>
-              </Button>
             <Textarea
               ref={textareaRef}
               value={inputValue}
@@ -66,6 +69,20 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
               rows={1}
               disabled={disabled}
             />
+            <Button 
+                type="button" 
+                variant="ghost" 
+                size="icon"
+                onClick={handleMicClick} 
+                className={cn(
+                    "shrink-0 rounded-full text-gray-500 hover:bg-gray-200/50 transition-colors",
+                    isListening && "bg-red-500 text-white hover:bg-red-600 animate-pulse"
+                )} 
+                disabled={disabled}
+            >
+                <Mic />
+                <span className="sr-only">Use voice</span>
+            </Button>
           </div>
 
           <Button type="submit" size="icon" className="shrink-0 h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 text-white shadow-lg hover:-translate-y-0.5 transition-transform" disabled={!inputValue.trim() || disabled}>
