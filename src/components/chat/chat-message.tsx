@@ -35,7 +35,7 @@ function RobotAvatar() {
 
 function UserAvatar() {
   return (
-    <div className='w-full h-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white'>
+    <div className='w-full h-full bg-gradient-to-br from-pink-400 to-orange-400 flex items-center justify-center text-white'>
       <svg
         width="24"
         height="24"
