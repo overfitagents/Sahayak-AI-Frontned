@@ -1,6 +1,6 @@
 export type Sender = 'user' | 'ai';
 
-export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt';
+export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file';
 
 export interface Message {
   id: string;
@@ -10,6 +10,11 @@ export interface Message {
   imageUrl?: string; // For image-text messages
   originalContent?: string;
   timestamp: string;
+  fileInfo?: {
+    name: string;
+    url: string;
+    type: string;
+  }
 }
 
 export type Selection = {

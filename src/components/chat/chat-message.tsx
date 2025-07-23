@@ -4,6 +4,7 @@ import InteractiveText from './interactive-text';
 import InteractiveImage from './interactive-image';
 import ImageTextResponse from './image-text-response';
 import PptViewer from './ppt-viewer';
+import FileMessage from './file-message';
 
 interface ChatMessageProps {
   message: Message;
@@ -69,19 +70,23 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
   const isAi = message.sender === 'ai';
 
   const renderContent = () => {
-    if (isAi && message.type === 'text' && message.originalContent) {
-      return <InteractiveText message={message} setSelection={setSelection} />;
+    switch (message.type) {
+      case 'text':
+        if (isAi && message.originalContent) {
+          return <InteractiveText message={message} setSelection={setSelection} />;
+        }
+        return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
+      case 'image':
+        return <InteractiveImage imageUrl={message.content} setSelection={setSelection} />;
+      case 'image-text':
+        return <ImageTextResponse message={message} setSelection={setSelection} />;
+      case 'ppt':
+        return <PptViewer fileUrl={message.content} />;
+      case 'file':
+        return <FileMessage message={message} />;
+      default:
+        return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
     }
-    if (isAi && message.type === 'image') {
-      return <InteractiveImage imageUrl={message.content} setSelection={setSelection} />;
-    }
-    if (isAi && message.type === 'image-text' && message.imageUrl) {
-      return <ImageTextResponse message={message} setSelection={setSelection} />;
-    }
-    if (isAi && message.type === 'ppt') {
-      return <PptViewer fileUrl={message.content} />;
-    }
-    return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
   };
 
   return (

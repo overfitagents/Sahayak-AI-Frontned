@@ -31,8 +31,35 @@ export default function ChatLayout() {
     return newMessage;
   };
 
-  const handleSendMessage = async (content: string) => {
-    if (isReplying) return;
+  const handleSendMessage = async (content: string, file?: File) => {
+    if (isReplying && !file) return;
+
+    if (file) {
+      // Handle file message
+      const fileUrl = URL.createObjectURL(file); // Create a temporary URL for preview
+      addMessage({
+        sender: 'user',
+        type: 'file',
+        content: content,
+        fileInfo: {
+          name: file.name,
+          url: fileUrl,
+          type: file.type,
+        }
+      });
+      // Dummy AI response for file upload
+      setIsReplying(true);
+      setTimeout(() => {
+        addMessage({
+          sender: 'ai',
+          type: 'text',
+          content: `I've received your file "${file.name}". I'll analyze it and get back to you.`,
+          originalContent: `I've received your file "${file.name}". I'll analyze it and get back to you.`,
+        });
+        setIsReplying(false);
+      }, 1500);
+      return;
+    }
 
     setIsReplying(true);
 
