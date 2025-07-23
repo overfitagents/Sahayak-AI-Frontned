@@ -1,4 +1,3 @@
-
 "use client";
 
 import type { Message } from '@/lib/chat-data';
@@ -71,8 +70,8 @@ export default function StudyBuddyResponse({ message }: StudyBuddyResponseProps)
             <CardContent className="p-4 md:p-6">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 relative">
                     <StudentCard student={pair.student1} />
-                    <div className="flex items-center justify-center my-2 sm:my-0 text-4xl">
-                        📙
+                    <div className="flex items-center justify-center my-2 sm:my-0 text-4xl transition-transform duration-300 hover:scale-125">
+                    🤝
                     </div>
                     <StudentCard student={pair.student2} />
                 </div>
