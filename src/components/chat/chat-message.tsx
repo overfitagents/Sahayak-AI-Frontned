@@ -57,8 +57,7 @@ function MessageAvatar({ sender }: { sender: Sender }) {
   return (
     <div className={cn(
         avatarSize, 
-        "rounded-full shadow-lg group/avatar overflow-hidden shrink-0",
-        sender === 'ai' ? 'animate-pulse' : ''
+        "rounded-full shadow-lg group/avatar overflow-hidden shrink-0"
     )}>
         {sender === 'ai' ? <RobotAvatar /> : <UserAvatar />}
     </div>
