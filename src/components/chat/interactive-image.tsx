@@ -1,6 +1,6 @@
 "use client";
 
-import { Message, Selection } from '@/lib/chat-data';
+import { Selection } from '@/lib/chat-data';
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
@@ -8,11 +8,11 @@ import { Eraser, ZoomIn, ZoomOut, Maximize } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 interface InteractiveImageProps {
-  message: Message;
+  imageUrl: string;
   setSelection: (selection: Selection | null) => void;
 }
 
-export default function InteractiveImage({ message, setSelection }: InteractiveImageProps) {
+export default function InteractiveImage({ imageUrl, setSelection }: InteractiveImageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -96,11 +96,12 @@ export default function InteractiveImage({ message, setSelection }: InteractiveI
         const container = containerRef.current;
         if(container){
             const { width } = container.getBoundingClientRect();
+            if (width === 0) return; // Skip if container has no width yet
             const aspectRatio = image.naturalWidth / image.naturalHeight;
+            const height = width / aspectRatio;
+
             canvas.width = width;
-            canvas.height = width / aspectRatio;
-            image.style.width = `${width}px`;
-            image.style.height = `${width / aspectRatio}px`;
+            canvas.height = height;
         }
       };
       if (image.complete) {
@@ -108,10 +109,18 @@ export default function InteractiveImage({ message, setSelection }: InteractiveI
       } else {
         image.onload = setCanvasSize;
       }
-      window.addEventListener('resize', setCanvasSize);
-      return () => window.removeEventListener('resize', setCanvasSize);
+      const resizeObserver = new ResizeObserver(setCanvasSize);
+      if(containerRef.current) {
+        resizeObserver.observe(containerRef.current);
+      }
+      
+      return () => {
+        if (containerRef.current) {
+            resizeObserver.unobserve(containerRef.current);
+        }
+      }
     }
-  }, []);
+  }, [imageUrl]);
   
   const handleZoom = (direction: 'in' | 'out') => {
     setScale(prev => {
@@ -126,14 +135,14 @@ export default function InteractiveImage({ message, setSelection }: InteractiveI
         <div ref={containerRef} className="relative w-full overflow-hidden border rounded-lg bg-black/10">
             <Image
             ref={imageRef}
-            src={message.content}
+            src={imageUrl}
             alt="Interactive content"
             width={600}
             height={400}
             className="transition-transform duration-300"
-            style={{ transform: `scale(${scale})`, cursor: isDrawing ? 'crosshair' : 'default' }}
+            style={{ transform: `scale(${scale})`, cursor: isDrawing ? 'crosshair' : 'default', width: '100%', height: 'auto' }}
             crossOrigin="anonymous"
-            data-ai-hint="cityscape skyline"
+            data-ai-hint="diagram chart"
             />
             <canvas
             ref={canvasRef}

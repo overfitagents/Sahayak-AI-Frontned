@@ -2,6 +2,7 @@ import { Message, Sender, Selection } from '@/lib/chat-data';
 import { cn } from '@/lib/utils';
 import InteractiveText from './interactive-text';
 import InteractiveImage from './interactive-image';
+import ImageTextResponse from './image-text-response';
 
 interface ChatMessageProps {
   message: Message;
@@ -12,7 +13,7 @@ interface ChatMessageProps {
 
 function RobotAvatar() {
   return (
-    <div className='w-full h-full bg-gradient-to-br from-blue-400 to-cyan-300 flex items-center justify-center text-white'>
+    <div className='w-full h-full bg-gradient-to-br from-orange-400 to-amber-400 flex items-center justify-center text-white border border-white/50'>
       <svg
         width="24"
         height="24"
@@ -34,7 +35,7 @@ function RobotAvatar() {
 
 function UserAvatar() {
   return (
-    <div className='w-full h-full bg-gradient-to-br from-orange-400 to-pink-400 flex items-center justify-center text-white'>
+    <div className='w-full h-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white'>
       <svg
         width="24"
         height="24"
@@ -72,7 +73,10 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
       return <InteractiveText message={message} setSelection={setSelection} />;
     }
     if (isAi && message.type === 'image') {
-      return <InteractiveImage message={message} setSelection={setSelection} />;
+      return <InteractiveImage imageUrl={message.content} setSelection={setSelection} />;
+    }
+    if (isAi && message.type === 'image-text' && message.imageUrl) {
+      return <ImageTextResponse message={message} setSelection={setSelection} />;
     }
     return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
   };
@@ -90,7 +94,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
           'max-w-[75%] rounded-2xl p-3 shadow-lg transition-transform duration-200 hover:-translate-y-1',
           isAi
             ? 'bg-white/95 backdrop-blur-md text-card-foreground rounded-bl-none'
-            : 'bg-gradient-to-br from-blue-400 to-cyan-400 text-white rounded-br-none'
+            : 'bg-gradient-to-br from-orange-400 to-amber-500 text-white rounded-br-none'
         )}
       >
         {renderContent()}
