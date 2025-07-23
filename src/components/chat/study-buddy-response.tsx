@@ -72,7 +72,7 @@ export default function StudyBuddyResponse({ message }: StudyBuddyResponseProps)
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 relative">
                     <StudentCard student={pair.student1} />
                     <div className="flex items-center justify-center my-2 sm:my-0 text-4xl">
-                        📘
+                        📙
                     </div>
                     <StudentCard student={pair.student2} />
                 </div>
