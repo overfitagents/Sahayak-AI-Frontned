@@ -8,7 +8,7 @@ body {
 
 @layer base {
   :root {
-    --background-start-rgb: 63, 81, 181; /* A deep indigo */
+    --background-start-rgb: 118, 75, 162; /* New primary background color */
     --background-end-rgb: 103, 58, 183; /* A rich purple */
 
     --background: 232 39% 48%; /* Fallback */
