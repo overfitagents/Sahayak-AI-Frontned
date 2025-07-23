@@ -1,12 +1,12 @@
 export type Sender = 'user' | 'ai';
 
-export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text';
+export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt';
 
 export interface Message {
   id: string;
   sender: Sender;
   type: MessageType;
-  content: string; // For text, image URL, or text content in image-text
+  content: string; // For text, image URL, file URL, or text content in image-text
   imageUrl?: string; // For image-text messages
   originalContent?: string;
   timestamp: string;
@@ -54,5 +54,13 @@ export const initialMessages: Message[] = [
     imageUrl: 'https://placehold.co/600x400.png',
     originalContent: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
     timestamp: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
+  },
+  {
+    id: '5',
+    sender: 'ai',
+    type: 'ppt',
+    content: 'https://sample-videos.com/ppt/Sample-PPT-File-5-slides.pptx', // Dummy PPTX file
+    originalContent: 'Here is the presentation file you requested.',
+    timestamp: new Date().toISOString(),
   },
 ];

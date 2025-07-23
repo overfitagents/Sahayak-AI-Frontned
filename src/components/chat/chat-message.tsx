@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import InteractiveText from './interactive-text';
 import InteractiveImage from './interactive-image';
 import ImageTextResponse from './image-text-response';
+import PptViewer from './ppt-viewer';
 
 interface ChatMessageProps {
   message: Message;
@@ -76,6 +77,9 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
     }
     if (isAi && message.type === 'image-text' && message.imageUrl) {
       return <ImageTextResponse message={message} setSelection={setSelection} />;
+    }
+    if (isAi && message.type === 'ppt') {
+      return <PptViewer fileUrl={message.content} />;
     }
     return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
   };
