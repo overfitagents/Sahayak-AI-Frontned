@@ -20,18 +20,18 @@ function StudentCard({ student }: { student: StudentProfile }) {
     }
 
     return (
-        <Card className="flex-1 rounded-2xl bg-white/10 backdrop-blur-sm shadow-lg border border-white/20 transform transition-transform hover:scale-105 duration-300">
+        <Card className="flex-1 rounded-2xl bg-gray-100 shadow-lg transform transition-transform hover:scale-105 duration-300">
             <CardHeader className='items-center text-center p-4'>
-                <Avatar className="w-20 h-20 mb-2 border-4 border-white/50 shadow-md">
+                <Avatar className="w-20 h-20 mb-2 border-4 border-gray-200/80 shadow-md">
                     <AvatarImage src={student.avatar} alt={student.name} data-ai-hint="person student" />
                     <AvatarFallback className="text-xl font-bold bg-gray-200 text-gray-600">{getInitials(student.name)}</AvatarFallback>
                 </Avatar>
-                <CardTitle className='text-xl text-white/90'>{student.name}</CardTitle>
+                <CardTitle className='text-xl text-gray-800'>{student.name}</CardTitle>
             </CardHeader>
             <CardContent className="p-4 pt-0 text-center">
                 {student.strengths.length > 0 && (
                      <div>
-                        <h4 className="font-semibold text-sm text-green-300 mb-1.5">💪 Strengths</h4>
+                        <h4 className="font-semibold text-sm text-green-600 mb-1.5">💪 Strengths</h4>
                         <div className="flex flex-wrap gap-2 justify-center">
                             {student.strengths.map(skill => <Badge key={skill} variant="secondary" className='text-base border-2 shadow-sm bg-green-100 text-green-800 border-green-300/50'>{skill}</Badge>)}
                         </div>
@@ -39,7 +39,7 @@ function StudentCard({ student }: { student: StudentProfile }) {
                 )}
                 {student.weaknesses.length > 0 && (
                     <div className='mt-4'>
-                        <h4 className="font-semibold text-sm text-red-300 mb-1.5">🆘 Needs Help</h4>
+                        <h4 className="font-semibold text-sm text-red-600 mb-1.5">🆘 Needs Help</h4>
                         <div className="flex flex-wrap gap-2 justify-center">
                             {student.weaknesses.map(skill => <Badge key={skill} variant="secondary" className='text-base border-2 shadow-sm bg-red-100 text-red-800 border-red-300/50'>{skill}</Badge>)}
                         </div>
