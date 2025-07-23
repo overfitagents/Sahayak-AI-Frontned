@@ -5,7 +5,7 @@ import type { Message } from '@/lib/chat-data';
 import type { StudentProfile } from '@/lib/study-buddy-data';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Lightbulb, BookOpenCheck, Users } from 'lucide-react';
+import { Lightbulb, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -71,8 +71,8 @@ export default function StudyBuddyResponse({ message }: StudyBuddyResponseProps)
             <CardContent className="p-4 md:p-6">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 relative">
                     <StudentCard student={pair.student1} />
-                    <div className="flex items-center justify-center text-purple-300 my-2 sm:my-0">
-                        <BookOpenCheck className="h-10 w-10" />
+                    <div className="flex items-center justify-center my-2 sm:my-0 text-4xl">
+                        📚
                     </div>
                     <StudentCard student={pair.student2} />
                 </div>
