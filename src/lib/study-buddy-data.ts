@@ -1,5 +1,6 @@
 export interface StudentProfile {
     name: string;
+    avatar: string; // URL to an avatar image
     strengths: string[];
     weaknesses: string[];
   }
