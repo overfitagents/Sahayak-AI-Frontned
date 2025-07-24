@@ -7,15 +7,18 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from '../ui/badge';
-import { BookOpen, Target, Lightbulb, Activity, CheckSquare, Clock, Users, Brain, Rocket, ListChecks, ArrowRight, BookCopy, Zap, GitBranch, Milestone, Book } from 'lucide-react';
+import { BookOpen, Target, Lightbulb, Activity, CheckSquare, Clock, Users, Brain, Rocket, ListChecks, ArrowRight, BookCopy, Zap, GitBranch, Milestone, Book, Tag, Goal } from 'lucide-react';
 
 interface ChapterPlannerResponseProps {
     chapter: Chapter;
 }
 
-const InfoCard = ({ label, value }: { label: string, value: React.ReactNode }) => (
+const InfoCard = ({ label, value, icon }: { label: string, value: React.ReactNode, icon?: React.ReactNode }) => (
     <div>
-        <p className="text-sm font-semibold text-gray-500 mb-1">{label}</p>
+        <p className="text-sm font-semibold text-gray-500 mb-1 flex items-center gap-2">
+            {icon}
+            <span>{label}</span>
+        </p>
         <div className="p-3 rounded-lg bg-gray-50 border border-gray-200 text-gray-800 text-base">
             {value}
         </div>
@@ -100,13 +103,13 @@ export default function ChapterPlannerResponse({ chapter }: ChapterPlannerRespon
                                     <CardTitle className="flex items-center gap-3 text-xl text-gray-800"><Milestone/> Chapter Overview</CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
-                                    <InfoCard label="Chapter Title" value={chapter.overview.chapter} />
+                                    <InfoCard label="Chapter Title" value={chapter.overview.chapter} icon={<Tag size={16} className="text-gray-500" />} />
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <InfoCard label="Class" value={chapter.overview.class} />
-                                        <InfoCard label="Subject" value={chapter.overview.subject} />
-                                        <InfoCard label="Time Allotment" value={chapter.overview.timeAllotment} />
+                                        <InfoCard label="Class" value={chapter.overview.class} icon={<Users size={16} className="text-gray-500" />} />
+                                        <InfoCard label="Subject" value={chapter.overview.subject} icon={<Book size={16} className="text-gray-500" />} />
+                                        <InfoCard label="Time Allotment" value={chapter.overview.timeAllotment} icon={<Clock size={16} className="text-gray-500" />} />
                                     </div>
-                                    <InfoCard label="Learning Goals" value={chapter.overview.learningGoals} />
+                                    <InfoCard label="Learning Goals" value={chapter.overview.learningGoals} icon={<Goal size={16} className="text-gray-500" />} />
                                 </CardContent>
                             </Card>
                         </TabsContent>
