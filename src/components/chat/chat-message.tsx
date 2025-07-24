@@ -86,7 +86,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
       case 'image-text':
         return <ImageTextResponse message={message} setSelection={setSelection} />;
       case 'ppt':
-        return <PptViewer fileUrl={message.content} />;
+        return <PptViewer slides={message.slides || []} fileUrl={message.fileInfo?.url} fileName={message.fileInfo?.name}/>;
       case 'file':
         return <FileMessage message={message} />;
       case 'study-buddy':
@@ -104,7 +104,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
     'bg-gray-100 text-gray-800 rounded-bl-none' : 
     'bg-gradient-to-br from-blue-400 to-cyan-400 text-white rounded-br-none';
   
-  const isPlanner = message.type === 'lesson-plan' || message.type === 'chapter-plan';
+  const isPlanner = message.type === 'lesson-plan' || message.type === 'chapter-plan' || message.type === 'ppt';
 
   return (
     <div

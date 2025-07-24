@@ -6,6 +6,12 @@ export type Sender = 'user' | 'ai';
 
 export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file' | 'study-buddy' | 'lesson-plan' | 'chapter-plan';
 
+export interface Slide {
+    title: string;
+    image: string;
+    points: string[];
+}
+
 export interface Message {
   id: string;
   sender: Sender;
@@ -22,6 +28,7 @@ export interface Message {
   studyBuddyPairs?: StudyBuddyPair[];
   lessonPlan?: LessonPlan;
   chapterPlan?: Chapter;
+  slides?: Slide[];
   addMessage?: (message: Omit<Message, 'id' | 'timestamp'> & { chapter?: Chapter }) => Message;
   setIsReplying?: (isReplying: boolean) => void;
 }
@@ -73,8 +80,7 @@ export const initialMessages: Message[] = [
     id: '5',
     sender: 'ai',
     type: 'ppt',
-    content: 'https://sample-videos.com/ppt/Sample-PPT-File-5-slides.pptx', // Dummy PPTX file
-    originalContent: 'Here is the presentation file you requested.',
+    content: 'Here is the presentation file you requested.',
     timestamp: new Date().toISOString(),
   },
   {
