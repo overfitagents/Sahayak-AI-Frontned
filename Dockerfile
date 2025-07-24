@@ -23,7 +23,7 @@ COPY --chown=node:node . .
 RUN sh -c "envsubst  < ./env.template > ./.env.local"
 RUN cat ./.env.local
 
-RUN npm build
+RUN npm run build
 
 EXPOSE 3000
 
