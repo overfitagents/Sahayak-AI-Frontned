@@ -100,7 +100,7 @@ export default function ChapterPlannerResponse({ chapter }: ChapterPlannerRespon
                         <TabsContent value="overview">
                              <Card className="bg-white border-gray-200">
                                 <CardHeader>
-                                    <CardTitle className="flex items-center gap-3 text-xl text-gray-800"><Milestone/> Chapter Overview</CardTitle>
+                                    <CardTitle className="flex items-center gap-3 text-xl text-purple-700"><Milestone/> Chapter Overview</CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <InfoCard label="Chapter Title" value={chapter.overview.chapter} icon={<Tag size={16} className="text-purple-700" />} />
