@@ -11,7 +11,7 @@ import type { Message, Sender } from '@/lib/chat-data';
 
 interface LessonPlannerResponseProps {
     plan: LessonPlan;
-    addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
+    addMessage: (message: Omit<Message, 'id' | 'timestamp'> & { chapter?: Chapter }) => Message;
     setIsReplying: (isReplying: boolean) => void;
 }
 
@@ -27,24 +27,23 @@ const getChapterIcon = (index: number) => {
 export default function LessonPlannerResponse({ plan, addMessage, setIsReplying }: LessonPlannerResponseProps) {
     const [selectedTermIndex, setSelectedTermIndex] = useState(0);
 
-    const handleChapterClick = (chapter: Chapter, term: Term, month: string) => {
-        const messageContent = `lesson plan for ${chapter.name}, ${term.term_name}, ${month}`;
+    const handleChapterClick = (chapter: Chapter) => {
         addMessage({
             sender: 'user',
             type: 'text',
-            content: messageContent,
+            content: `Tell me about ${chapter.name}`,
         });
         setIsReplying(true);
         // Simulate AI response
         setTimeout(() => {
             addMessage({
                 sender: 'ai',
-                type: 'text',
+                type: 'chapter-plan',
                 content: `Here is a detailed lesson plan for ${chapter.name}.`,
-                originalContent: `Here is a detailed lesson plan for ${chapter.name}.`
+                chapterPlan: chapter
             });
             setIsReplying(false);
-        }, 1500);
+        }, 500);
     };
 
     const selectedTerm = plan.terms[selectedTermIndex];
@@ -103,7 +102,7 @@ export default function LessonPlannerResponse({ plan, addMessage, setIsReplying 
                                         {month.chapters.map((chapter, chapterIndex) => (
                                             <button
                                                 key={chapterIndex}
-                                                onClick={() => handleChapterClick(chapter, selectedTerm, month.month)}
+                                                onClick={() => handleChapterClick(chapter)}
                                                 className="flex items-center gap-4 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg shadow-sm transition-all duration-200 text-left w-full hover:shadow-lg hover:scale-[1.02]"
                                             >
                                                 <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center text-green-600 shrink-0">

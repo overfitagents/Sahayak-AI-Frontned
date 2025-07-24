@@ -22,7 +22,7 @@ export interface Message {
   studyBuddyPairs?: StudyBuddyPair[];
   lessonPlan?: LessonPlan;
   chapterPlan?: Chapter;
-  addMessage?: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
+  addMessage?: (message: Omit<Message, 'id' | 'timestamp'> & { chapter?: Chapter }) => Message;
   setIsReplying?: (isReplying: boolean) => void;
 }
 

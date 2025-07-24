@@ -15,7 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { predefinedActions, PredefinedAction } from '@/lib/actions';
 import { askFollowUpQuestion } from '@/ai/flows/follow-up-questions-on-text';
 import { generateImage } from '@/ai/flows/generate-image';
-import { dummyLessonPlan } from '@/lib/lesson-plan-data';
+import { dummyLessonPlan, type Chapter } from '@/lib/lesson-plan-data';
 
 export default function ChatLayout() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -33,8 +33,18 @@ export default function ChatLayout() {
     return newMessage;
   };
 
-  const handleSendMessage = async (content: string, file?: File) => {
+  const handleSendMessage = async (content: string, file?: File, chapter?: Chapter) => {
     if (isReplying && !file) return;
+
+    if (chapter) {
+      addMessage({
+        sender: 'ai',
+        type: 'chapter-plan',
+        content: `Here is a detailed lesson plan for ${chapter.name}.`,
+        chapterPlan: chapter
+      });
+      return;
+    }
 
     if (file) {
       // Handle file message
@@ -59,6 +69,8 @@ export default function ChatLayout() {
           type: 'lesson-plan',
           content: "Here is the generated lesson plan based on your file.",
           lessonPlan: dummyLessonPlan,
+          addMessage: addMessage,
+          setIsReplying: setIsReplying,
         });
         setIsReplying(false);
       }, 1500);
@@ -128,15 +140,7 @@ export default function ChatLayout() {
             content: "I'm sorry, I couldn't generate an image for that.",
           });
         }
-      } else if (content.toLowerCase().includes('lesson plan for chapter')) {
-        addMessage({
-          sender: 'ai',
-          type: 'chapter-plan',
-          content: `Here is a detailed lesson plan for Chapter 7: Getting to Know Plants.`,
-          chapterPlan: dummyLessonPlan.terms[1].months[0].chapters[0]
-        });
-      }
-      else if (content.toLowerCase().includes('lesson plan')) {
+      } else if (content.toLowerCase().includes('lesson plan')) {
         addMessage({
           sender: 'ai',
           type: 'lesson-plan',
