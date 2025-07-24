@@ -56,11 +56,11 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
   if (!slides || slides.length === 0) {
     return null; // Don't render anything if there are no slides
   }
-
-  const currentSlide = slides?.[currentSlideIndex];
+  
+  const currentSlide = slides[currentSlideIndex];
   
   if (!currentSlide) {
-    return null; // Don't render anything if the current slide is not found
+    return null;
   }
 
   return (
@@ -94,7 +94,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
            <DialogHeader className="p-4 bg-purple-600 text-white flex-row items-center justify-between rounded-t-lg">
             <DialogTitle>{currentSlide.title}</DialogTitle>
              <DialogClose asChild>
-                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 hover:text-white">
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 hover:text-white rounded-full">
                     <X className="h-5 w-5" />
                 </Button>
              </DialogClose>
@@ -113,7 +113,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
                     />
                     <Button
                         variant="ghost" size="icon"
-                        className="absolute top-2 right-2 bg-black/50 text-white hover:bg-black/80"
+                        className="absolute top-2 right-2 bg-black/50 text-white hover:bg-black/80 rounded-full"
                         onClick={() => setIsFullScreen(prev => !prev)}
                     >
                        {isFullScreen ? <Minimize size={20} /> : <Expand size={20} />}
@@ -138,7 +138,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
           
            <div className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm border-t border-gray-200 rounded-b-lg">
                 <Button onClick={handlePrev} disabled={currentSlideIndex === 0} variant="outline" className="gap-2">
-                    <ChevronLeft /> Prev
+                    <ChevronLeft className="text-gray-600" /> Prev
                 </Button>
                 <span className="text-sm font-medium text-gray-600">
                     {currentSlideIndex + 1} / {slides.length}
