@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from '../ui/badge';
-import { BookOpen, Target, Lightbulb, Activity, CheckSquare, Clock, Users, Brain, Rocket, ListChecks, ArrowRight, BookCopy, Zap, GitBranch, Milestone } from 'lucide-react';
+import { BookOpen, Target, Lightbulb, Activity, CheckSquare, Clock, Users, Brain, Rocket, ListChecks, ArrowRight, BookCopy, Zap, GitBranch, Milestone, Book } from 'lucide-react';
 
 interface ChapterPlannerResponseProps {
     chapter: Chapter;
@@ -70,8 +70,19 @@ export default function ChapterPlannerResponse({ chapter }: ChapterPlannerRespon
                     </div>
                     <span>{chapter.chapterTitle}</span>
                 </CardTitle>
-                 <CardDescription className="text-purple-700 text-base mt-1">
-                    {chapter.overview.class} • {chapter.overview.subject} • {chapter.overview.timeAllotment}
+                 <CardDescription className="text-purple-700 text-base mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <span className="flex items-center gap-1.5">
+                        <Users className="h-4 w-4" />
+                        <span>{chapter.overview.class}</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                        <Book className="h-4 w-4" />
+                        <span>{chapter.overview.subject}</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                        <Clock className="h-4 w-4" />
+                        <span>{chapter.overview.timeAllotment}</span>
+                    </span>
                  </CardDescription>
             </CardHeader>
             <CardContent className="p-0 bg-gray-50/50">
