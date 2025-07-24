@@ -1,10 +1,16 @@
 
 import type { StudyBuddyPair } from "./study-buddy-data";
-import type { LessonPlan } from "./lesson-plan-data";
+import type { LessonPlan, Chapter } from "./lesson-plan-data";
 
 export type Sender = 'user' | 'ai';
 
-export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file' | 'study-buddy' | 'lesson-plan';
+export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file' | 'study-buddy' | 'lesson-plan' | 'chapter-plan';
+
+export interface Slide {
+    title: string;
+    image: string;
+    points: string[];
+}
 
 export interface Message {
   id: string;
@@ -21,6 +27,10 @@ export interface Message {
   }
   studyBuddyPairs?: StudyBuddyPair[];
   lessonPlan?: LessonPlan;
+  chapterPlan?: Chapter;
+  slides?: Slide[];
+  addMessage?: (message: Omit<Message, 'id' | 'timestamp'> & { chapter?: Chapter }) => Message;
+  setIsReplying?: (isReplying: boolean) => void;
 }
 
 export type Selection = {
@@ -32,6 +42,13 @@ export type Selection = {
   content: string; // data URI
 };
 
+const dummySlides: Slide[] = [
+    { title: 'Market Analysis', image: 'https://placehold.co/800x600.png', points: ['Market size growing at 15% annually', 'Key demographics shifting toward digital solutions', 'Competitive landscape analysis completed', 'Identified market gaps and opportunities', 'Strategic positioning for maximum impact'] },
+    { title: 'Product Strategy', image: 'https://placehold.co/800x600.png', points: ['Develop core features for MVP', 'Prioritize user experience and intuitive design', 'Implement scalable architecture', 'Integrate with existing platforms', 'Launch beta testing phase'] },
+    { title: 'Financial Projections', image: 'https://placehold.co/800x600.png', points: ['Projected revenue growth of 25% YoY', 'Secure seed funding for initial development', 'Allocate budget for marketing and sales', 'Monitor burn rate and optimize spending', 'Achieve profitability within 3 years'] },
+    { title: 'Marketing Plan', image: 'https://placehold.co/800x600.png', points: ['Target audience: small to medium businesses', 'Utilize content marketing and SEO', 'Launch social media campaigns', 'Engage with industry influencers', 'Track metrics and ROI'] },
+    { title: 'Team Introduction', image: 'https://placehold.co/800x600.png', points: ['Experienced leadership team', 'Skilled developers and designers', 'Dedicated marketing and sales professionals', 'Strong advisory board', 'Fostering a culture of innovation'] },
+];
 
 export const initialMessages: Message[] = [
   {
@@ -70,8 +87,13 @@ export const initialMessages: Message[] = [
     id: '5',
     sender: 'ai',
     type: 'ppt',
-    content: 'https://sample-videos.com/ppt/Sample-PPT-File-5-slides.pptx', // Dummy PPTX file
-    originalContent: 'Here is the presentation file you requested.',
+    content: 'Here is the presentation file you requested.',
+    slides: dummySlides,
+    fileInfo: {
+        name: 'Presentation.pptx',
+        url: '#', // a dummy url
+        type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    },
     timestamp: new Date().toISOString(),
   },
   {

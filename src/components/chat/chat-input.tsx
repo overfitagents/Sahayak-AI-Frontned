@@ -5,9 +5,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Mic, Paperclip, Send, X } from 'lucide-react';
 import { cn, getFileIcon } from '@/lib/utils';
+import { Chapter } from '@/lib/lesson-plan-data';
 
 interface ChatInputProps {
-  onSend: (message: string, file?: File) => void;
+  onSend: (message: string, file?: File, chapter?: Chapter) => void;
   disabled: boolean;
 }
 
