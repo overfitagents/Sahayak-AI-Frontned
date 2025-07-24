@@ -21,6 +21,8 @@ export interface Message {
   }
   studyBuddyPairs?: StudyBuddyPair[];
   lessonPlan?: LessonPlan;
+  addMessage?: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
+  setIsReplying?: (isReplying: boolean) => void;
 }
 
 export type Selection = {

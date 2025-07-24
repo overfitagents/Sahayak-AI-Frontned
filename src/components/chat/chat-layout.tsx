@@ -134,6 +134,8 @@ export default function ChatLayout() {
           type: 'lesson-plan',
           content: "Here is the generated lesson plan.",
           lessonPlan: dummyLessonPlan,
+          addMessage: addMessage,
+          setIsReplying: setIsReplying,
         });
       }
       else {
