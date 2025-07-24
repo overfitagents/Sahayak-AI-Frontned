@@ -89,6 +89,11 @@ export const initialMessages: Message[] = [
     type: 'ppt',
     content: 'Here is the presentation file you requested.',
     slides: dummySlides,
+    fileInfo: {
+        name: 'Presentation.pptx',
+        url: '#', // a dummy url
+        type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    },
     timestamp: new Date().toISOString(),
   },
   {
