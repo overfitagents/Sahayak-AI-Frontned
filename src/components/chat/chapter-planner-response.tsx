@@ -15,7 +15,7 @@ interface ChapterPlannerResponseProps {
 
 const InfoCard = ({ label, value, icon }: { label: string, value: React.ReactNode, icon?: React.ReactNode }) => (
     <div>
-        <p className="text-sm font-semibold text-gray-500 mb-1 flex items-center gap-2">
+        <p className="text-sm font-semibold text-purple-700 mb-1 flex items-center gap-2">
             {icon}
             <span>{label}</span>
         </p>
@@ -103,13 +103,13 @@ export default function ChapterPlannerResponse({ chapter }: ChapterPlannerRespon
                                     <CardTitle className="flex items-center gap-3 text-xl text-gray-800"><Milestone/> Chapter Overview</CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
-                                    <InfoCard label="Chapter Title" value={chapter.overview.chapter} icon={<Tag size={16} className="text-gray-500" />} />
+                                    <InfoCard label="Chapter Title" value={chapter.overview.chapter} icon={<Tag size={16} className="text-purple-700" />} />
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <InfoCard label="Class" value={chapter.overview.class} icon={<Users size={16} className="text-gray-500" />} />
-                                        <InfoCard label="Subject" value={chapter.overview.subject} icon={<Book size={16} className="text-gray-500" />} />
-                                        <InfoCard label="Time Allotment" value={chapter.overview.timeAllotment} icon={<Clock size={16} className="text-gray-500" />} />
+                                        <InfoCard label="Class" value={chapter.overview.class} icon={<Users size={16} className="text-purple-700" />} />
+                                        <InfoCard label="Subject" value={chapter.overview.subject} icon={<Book size={16} className="text-purple-700" />} />
+                                        <InfoCard label="Time Allotment" value={chapter.overview.timeAllotment} icon={<Clock size={16} className="text-purple-700" />} />
                                     </div>
-                                    <InfoCard label="Learning Goals" value={chapter.overview.learningGoals} icon={<Goal size={16} className="text-gray-500" />} />
+                                    <InfoCard label="Learning Goals" value={chapter.overview.learningGoals} icon={<Goal size={16} className="text-purple-700" />} />
                                 </CardContent>
                             </Card>
                         </TabsContent>
