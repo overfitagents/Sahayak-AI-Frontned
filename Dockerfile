@@ -14,7 +14,7 @@ RUN apk update
 RUN apk add --no-cache gettext
 RUN apk add --no-cache git
 
-USER node
+# USER node
 
 RUN npm install --pure-lockfile 
 
