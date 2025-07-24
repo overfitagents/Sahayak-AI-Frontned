@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight, Download, Eye, X, Expand, Minimize } from 'lucide-react';
 import Image from 'next/image';
@@ -52,11 +53,11 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentSlideIndex, isOpen]);
 
-  const currentSlide = slides?.[currentSlideIndex];
-
   if (!slides || slides.length === 0) {
     return null; // Don't render anything if there are no slides
   }
+
+  const currentSlide = slides?.[currentSlideIndex];
   
   if (!currentSlide) {
     return null; // Don't render anything if the current slide is not found
@@ -92,9 +93,11 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
         <DialogContent className="max-w-5xl h-[90vh] flex flex-col bg-purple-50 p-0 border-none">
            <DialogHeader className="p-4 bg-purple-600 text-white flex-row items-center justify-between rounded-t-lg">
             <DialogTitle>{currentSlide.title}</DialogTitle>
-             <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 hover:text-white" onClick={() => setIsOpen(false)}>
-                <X className="h-5 w-5" />
-             </Button>
+             <DialogClose asChild>
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 hover:text-white">
+                    <X className="h-5 w-5" />
+                </Button>
+             </DialogClose>
           </DialogHeader>
 
            <div className="flex-1 bg-purple-50 p-6 flex items-center justify-center overflow-hidden">
