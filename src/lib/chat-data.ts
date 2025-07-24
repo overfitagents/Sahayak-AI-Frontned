@@ -1,10 +1,10 @@
 
 import type { StudyBuddyPair } from "./study-buddy-data";
-import type { LessonPlan } from "./lesson-plan-data";
+import type { LessonPlan, Chapter } from "./lesson-plan-data";
 
 export type Sender = 'user' | 'ai';
 
-export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file' | 'study-buddy' | 'lesson-plan';
+export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file' | 'study-buddy' | 'lesson-plan' | 'chapter-plan';
 
 export interface Message {
   id: string;
@@ -21,6 +21,7 @@ export interface Message {
   }
   studyBuddyPairs?: StudyBuddyPair[];
   lessonPlan?: LessonPlan;
+  chapterPlan?: Chapter;
   addMessage?: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
   setIsReplying?: (isReplying: boolean) => void;
 }

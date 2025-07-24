@@ -8,6 +8,7 @@ import PptViewer from './ppt-viewer';
 import FileMessage from './file-message';
 import StudyBuddyResponse from './study-buddy-response';
 import LessonPlannerResponse from './lesson-planner-response';
+import ChapterPlannerResponse from './chapter-planner-response';
 import { dummyLessonPlan } from '@/lib/lesson-plan-data';
 
 interface ChatMessageProps {
@@ -92,6 +93,8 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         return <StudyBuddyResponse message={message} />;
       case 'lesson-plan':
         return <LessonPlannerResponse plan={message.lessonPlan || dummyLessonPlan} addMessage={addMessage} setIsReplying={setIsReplying} />;
+      case 'chapter-plan':
+        return <ChapterPlannerResponse chapter={message.chapterPlan!} />;
       default:
         return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
     }
@@ -100,6 +103,8 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
   const messageContainerStyle = isAi ? 
     'bg-gray-100 text-gray-800 rounded-bl-none' : 
     'bg-gradient-to-br from-blue-400 to-cyan-400 text-white rounded-br-none';
+  
+  const isPlanner = message.type === 'lesson-plan' || message.type === 'chapter-plan';
 
   return (
     <div
@@ -112,7 +117,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
       <div
         className={cn(
           'max-w-[75%] rounded-2xl shadow-lg transition-transform duration-200 hover:-translate-y-1',
-          message.type === 'lesson-plan' ? 'p-0 bg-transparent shadow-none' : `p-3 ${messageContainerStyle}`
+          isPlanner ? 'p-0 bg-transparent shadow-none' : `p-3 ${messageContainerStyle}`
         )}
       >
         {renderContent()}

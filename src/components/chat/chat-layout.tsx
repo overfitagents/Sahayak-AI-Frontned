@@ -128,7 +128,15 @@ export default function ChatLayout() {
             content: "I'm sorry, I couldn't generate an image for that.",
           });
         }
-      } else if (content.toLowerCase().includes('lesson plan')) {
+      } else if (content.toLowerCase().includes('lesson plan for chapter')) {
+        addMessage({
+          sender: 'ai',
+          type: 'chapter-plan',
+          content: `Here is a detailed lesson plan for Chapter 7: Getting to Know Plants.`,
+          chapterPlan: dummyLessonPlan.terms[1].months[0].chapters[0]
+        });
+      }
+      else if (content.toLowerCase().includes('lesson plan')) {
         addMessage({
           sender: 'ai',
           type: 'lesson-plan',
