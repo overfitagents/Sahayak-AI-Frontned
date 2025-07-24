@@ -15,7 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { predefinedActions, PredefinedAction } from '@/lib/actions';
 import { askFollowUpQuestion } from '@/ai/flows/follow-up-questions-on-text';
 import { generateImage } from '@/ai/flows/generate-image';
-import { dummyLessonPlan, type Chapter } from '@/lib/lesson-plan-data';
+import { dummyLessonPlan, dummyChapter, type Chapter } from '@/lib/lesson-plan-data';
 
 export default function ChatLayout() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -33,18 +33,8 @@ export default function ChatLayout() {
     return newMessage;
   };
 
-  const handleSendMessage = async (content: string, file?: File, chapter?: Chapter) => {
+  const handleSendMessage = async (content: string, file?: File) => {
     if (isReplying && !file) return;
-
-    if (chapter) {
-      addMessage({
-        sender: 'ai',
-        type: 'chapter-plan',
-        content: `Here is a detailed lesson plan for ${chapter.name}.`,
-        chapterPlan: chapter
-      });
-      return;
-    }
 
     if (file) {
       // Handle file message
@@ -69,8 +59,6 @@ export default function ChatLayout() {
           type: 'lesson-plan',
           content: "Here is the generated lesson plan based on your file.",
           lessonPlan: dummyLessonPlan,
-          addMessage: addMessage,
-          setIsReplying: setIsReplying,
         });
         setIsReplying(false);
       }, 1500);
@@ -146,8 +134,13 @@ export default function ChatLayout() {
           type: 'lesson-plan',
           content: "Here is the generated lesson plan.",
           lessonPlan: dummyLessonPlan,
-          addMessage: addMessage,
-          setIsReplying: setIsReplying,
+        });
+      } else if (content.toLowerCase().includes('chapter plan')) {
+         addMessage({
+          sender: 'ai',
+          type: 'chapter-plan',
+          content: `Here is a detailed lesson plan for the chapter.`,
+          chapterPlan: dummyChapter
         });
       }
       else {

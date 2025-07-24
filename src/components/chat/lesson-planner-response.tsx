@@ -2,16 +2,16 @@
 "use client";
 
 import React, { useState } from 'react';
-import { type LessonPlan, type Term, type Chapter } from '@/lib/lesson-plan-data';
+import { type LessonPlan, type Chapter } from '@/lib/lesson-plan-data';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { BookOpen, Calendar, Book, Layers3, FlaskConical, Atom, Sigma, Zap, Dna, Trash2 } from 'lucide-react';
-import type { Message, Sender } from '@/lib/chat-data';
+import type { Message } from '@/lib/chat-data';
 
 interface LessonPlannerResponseProps {
     plan: LessonPlan;
-    addMessage: (message: Omit<Message, 'id' | 'timestamp'> & { chapter?: Chapter }) => Message;
+    addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
     setIsReplying: (isReplying: boolean) => void;
 }
 
@@ -110,7 +110,7 @@ export default function LessonPlannerResponse({ plan, addMessage, setIsReplying 
                                                 </div>
                                                 <div>
                                                     <p className="font-bold text-gray-800">{chapter.name}</p>
-                                                    <p className="text-sm text-gray-500">{chapter.topics.join(', ')}</p>
+                                                    <p className="text-sm text-gray-500">{chapter.topics?.join(', ')}</p>
                                                 </div>
                                             </button>
                                         ))}
