@@ -15,21 +15,12 @@ import { cn } from '@/lib/utils';
 import type { Slide } from '@/lib/chat-data';
 
 interface PptViewerProps {
-  slides?: Slide[];
+  slides: Slide[];
   fileName?: string;
   fileUrl?: string;
 }
 
-const dummySlides: Slide[] = [
-    { title: 'Market Analysis', image: 'https://placehold.co/800x600.png', points: ['Market size growing at 15% annually', 'Key demographics shifting toward digital solutions', 'Competitive landscape analysis completed', 'Identified market gaps and opportunities', 'Strategic positioning for maximum impact'] },
-    { title: 'Product Strategy', image: 'https://placehold.co/800x600.png', points: ['Develop core features for MVP', 'Prioritize user experience and intuitive design', 'Implement scalable architecture', 'Integrate with existing platforms', 'Launch beta testing phase'] },
-    { title: 'Financial Projections', image: 'https://placehold.co/800x600.png', points: ['Projected revenue growth of 25% YoY', 'Secure seed funding for initial development', 'Allocate budget for marketing and sales', 'Monitor burn rate and optimize spending', 'Achieve profitability within 3 years'] },
-    { title: 'Marketing Plan', image: 'https://placehold.co/800x600.png', points: ['Target audience: small to medium businesses', 'Utilize content marketing and SEO', 'Launch social media campaigns', 'Engage with industry influencers', 'Track metrics and ROI'] },
-    { title: 'Team Introduction', image: 'https://placehold.co/800x600.png', points: ['Experienced leadership team', 'Skilled developers and designers', 'Dedicated marketing and sales professionals', 'Strong advisory board', 'Fostering a culture of innovation'] },
-];
-
-
-export default function PptViewer({ slides = dummySlides, fileName = "Presentation.pptx", fileUrl }: PptViewerProps) {
+export default function PptViewer({ slides, fileName = "Presentation.pptx", fileUrl }: PptViewerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -63,8 +54,12 @@ export default function PptViewer({ slides = dummySlides, fileName = "Presentati
 
   const currentSlide = slides?.[currentSlideIndex];
 
+  if (!slides || slides.length === 0) {
+    return null; // Don't render anything if there are no slides
+  }
+  
   if (!currentSlide) {
-    return null; // Don't render anything if there are no slides or the current slide is not found
+    return null; // Don't render anything if the current slide is not found
   }
 
   return (
