@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogClose,
 } from '@/components/ui/dialog';
-import { ChevronLeft, ChevronRight, Download, Eye, X, Expand, Minimize } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, Eye, X } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import type { Slide, Selection } from '@/lib/chat-data';
