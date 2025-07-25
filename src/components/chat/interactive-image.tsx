@@ -130,7 +130,7 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       setHasDrawing(false);
       setSelection(null);
-      setScale(1); // Also reset zoom
+      setScale(1);
     }
   };
 
@@ -207,7 +207,7 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
   );
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 w-full h-full flex flex-col">
       <TooltipProvider>
         <div className="flex flex-wrap gap-2 justify-between items-center p-2 border rounded-lg bg-gray-50 text-gray-700">
             <div className='flex gap-1'>
@@ -245,7 +245,7 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
         </div>
       </TooltipProvider>
 
-      <div className="relative w-full overflow-hidden border rounded-lg bg-black/10 cursor-crosshair">
+      <div className="relative flex-1 w-full border rounded-lg bg-black/10 cursor-crosshair overflow-hidden">
         <div 
             ref={containerRef} 
             className="relative w-full h-full transition-transform duration-300"
@@ -255,9 +255,9 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
               ref={imageRef}
               src={imageUrl}
               alt="Interactive content"
-              width={600}
-              height={400}
-              className="w-full h-auto"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-contain w-full h-auto"
               crossOrigin="anonymous"
               data-ai-hint="diagram chart"
             />
@@ -279,5 +279,3 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
     </div>
   );
 }
-
-    

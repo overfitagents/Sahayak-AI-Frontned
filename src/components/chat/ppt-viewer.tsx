@@ -39,7 +39,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
   const handlePrev = () => {
     if (currentSlideIndex > 0) {
       setDirection(-1);
-      setCurrentSlideIndex(prev => prev + 1);
+      setCurrentSlideIndex(prev => prev - 1);
     }
   };
 
@@ -104,7 +104,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
 
            <div className="flex-1 bg-purple-50 p-6 flex items-center justify-center overflow-hidden">
              <div className={cn("flex w-full h-full gap-8 transition-all duration-300", isFullScreen ? "items-center justify-center" : "items-start")}>
-                <div className={cn("relative transition-all duration-300 ease-in-out", isFullScreen ? 'w-full h-full' : 'w-1/2 h-full')}>
+                <div className={cn("relative transition-all duration-300 ease-in-out flex", isFullScreen ? 'w-full h-full justify-center' : 'w-1/2 h-full')}>
                     <InteractiveImage 
                         imageUrl={currentSlide.image}
                         setSelection={setSelection}
