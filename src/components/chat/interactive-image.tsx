@@ -193,10 +193,6 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
     });
   };
 
-  const resetZoom = () => {
-    setScale(1);
-  }
-
   const ToolButton = ({ selfTool, currentTool, setTool, children, tooltip }: { selfTool: Tool, currentTool: Tool, setTool: (t: Tool) => void, children: React.ReactNode, tooltip: string }) => (
     <Tooltip>
         <TooltipTrigger asChild>
@@ -230,8 +226,8 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
                     <TooltipContent><p>Zoom Out</p></TooltipContent>
                 </Tooltip>
                  <Tooltip>
-                    <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={resetZoom}><RefreshCw/></Button></TooltipTrigger>
-                    <TooltipContent><p>Reset Zoom</p></TooltipContent>
+                    <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={clearDrawing}><RefreshCw/></Button></TooltipTrigger>
+                    <TooltipContent><p>Reset Changes</p></TooltipContent>
                 </Tooltip>
                 {setIsFullScreen && (
                   <Tooltip>
