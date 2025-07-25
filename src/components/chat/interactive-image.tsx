@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Selection } from '@/lib/chat-data';
@@ -211,7 +212,6 @@ export default function InteractiveImage({ imageUrl, setSelection }: Interactive
                 <ToolButton selfTool='circle' currentTool={tool} setTool={setTool} tooltip="Circle"><Circle/></ToolButton>
                 <ToolButton selfTool='arrow' currentTool={tool} setTool={setTool} tooltip="Arrow"><ArrowRight/></ToolButton>
                 <ToolButton selfTool='text' currentTool={tool} setTool={setTool} tooltip="Text"><Type/></ToolButton>
-                <ToolButton selfTool='eraser' currentTool={tool} setTool={setTool} tooltip="Eraser"><Eraser/></ToolButton>
             </div>
              <div className="flex gap-1">
                 <Tooltip>
