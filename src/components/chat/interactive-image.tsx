@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Button } from '../ui/button';
 import { Eraser, ZoomIn, ZoomOut, Pencil, RectangleHorizontal, Circle, ArrowRight, Type, RefreshCw } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import { cn } from '@/lib/utils';
 
 interface InteractiveImageProps {
   imageUrl: string;
@@ -230,8 +231,12 @@ export default function InteractiveImage({ imageUrl, setSelection }: Interactive
                     <TooltipContent><p>Reset Zoom</p></TooltipContent>
                 </Tooltip>
                 <Tooltip>
-                    <TooltipTrigger asChild><Button variant="destructive" size="icon" onClick={clearDrawing} disabled={!hasDrawing}><Eraser /></Button></TooltipTrigger>
-                    <TooltipContent><p>Clear All</p></TooltipContent>
+                    <TooltipTrigger asChild>
+                        <Button variant={tool === 'eraser' ? 'destructive' : 'outline'} size="icon" onClick={() => setTool('eraser')}>
+                            <Eraser />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent><p>Eraser</p></TooltipContent>
                 </Tooltip>
             </div>
         </div>

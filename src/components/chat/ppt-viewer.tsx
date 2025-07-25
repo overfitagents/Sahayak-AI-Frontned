@@ -141,7 +141,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
           
            <div className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm border-t border-gray-200 rounded-b-lg">
                 <Button onClick={handlePrev} disabled={currentSlideIndex === 0} variant="outline" className="gap-2 text-gray-800">
-                    <ChevronLeft className="text-gray-600" /> Prev
+                    <ChevronLeft className="h-4 w-4 text-gray-600" /> Prev
                 </Button>
                 <span className="text-sm font-medium text-gray-600">
                     {currentSlideIndex + 1} / {slides.length}
