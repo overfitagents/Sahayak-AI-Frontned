@@ -13,6 +13,7 @@ interface LessonPlannerResponseProps {
     plan: LessonPlan;
     addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
     setIsReplying: (isReplying: boolean) => void;
+    onSend: (content: string, file?: File) => void;
 }
 
 const termIcons = [Book, Layers3, FlaskConical];
@@ -24,26 +25,11 @@ const getChapterIcon = (index: number) => {
     return <Icon className="h-6 w-6" />;
 }
 
-export default function LessonPlannerResponse({ plan, addMessage, setIsReplying }: LessonPlannerResponseProps) {
+export default function LessonPlannerResponse({ plan, addMessage, setIsReplying, onSend }: LessonPlannerResponseProps) {
     const [selectedTermIndex, setSelectedTermIndex] = useState(0);
 
     const handleChapterClick = (chapter: Chapter) => {
-        addMessage({
-            sender: 'user',
-            type: 'text',
-            content: `Tell me about ${chapter.name}`,
-        });
-        setIsReplying(true);
-        // Simulate AI response
-        setTimeout(() => {
-            addMessage({
-                sender: 'ai',
-                type: 'chapter-plan',
-                content: `Here is a detailed lesson plan for ${chapter.name}.`,
-                chapterPlan: chapter
-            });
-            setIsReplying(false);
-        }, 500);
+        onSend(`generate me lesson plan for chapter ${chapter.name} which comes in ${selectedTerm.term_name}`);
     };
 
     const selectedTerm = plan.terms[selectedTermIndex];

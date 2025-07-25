@@ -11,9 +11,10 @@ interface ChatMessagesProps {
   addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
   setIsReplying: (isReplying: boolean) => void;
   setSelection: (selection: Selection | null) => void;
+  onSend: (content: string, file?: File) => void;
 }
 
-export default function ChatMessages({ messages, isReplying, addMessage, setIsReplying, setSelection }: ChatMessagesProps) {
+export default function ChatMessages({ messages, isReplying, addMessage, setIsReplying, setSelection, onSend }: ChatMessagesProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
@@ -25,7 +26,7 @@ export default function ChatMessages({ messages, isReplying, addMessage, setIsRe
     <main ref={scrollAreaRef} className="flex-1 overflow-y-auto p-4 md:p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         {messages.map((message) => (
-          <ChatMessage key={message.id} message={message} addMessage={addMessage} setIsReplying={setIsReplying} setSelection={setSelection} />
+          <ChatMessage key={message.id} message={message} addMessage={addMessage} setIsReplying={setIsReplying} setSelection={setSelection} onSend={onSend} />
         ))}
         {isReplying && <TypingIndicator />}
         <div ref={endOfMessagesRef} />

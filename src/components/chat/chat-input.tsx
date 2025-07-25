@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, from 'react';
+import React from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Mic, Paperclip, Send, X } from 'lucide-react';

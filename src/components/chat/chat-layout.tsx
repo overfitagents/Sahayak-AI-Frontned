@@ -16,6 +16,7 @@ import { predefinedActions, PredefinedAction } from '@/lib/actions';
 import { askFollowUpQuestion } from '@/ai/flows/follow-up-questions-on-text';
 import { generateImage } from '@/ai/flows/generate-image';
 import { dummyLessonPlan, dummyChapter, type Chapter } from '@/lib/lesson-plan-data';
+import host from '../../../host';
 
 interface ChatLayoutProps {
   sessionId: string | null;
@@ -60,7 +61,8 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
     }
 
     try {
-      const response = await fetch("http://localhost:4000/api/v1/message", {
+      // http://localhost:4000
+      const response = await fetch("http://localhost:4000" + "/api/v1/message", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -213,7 +215,7 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
   return (
     <div className="flex flex-col h-screen bg-transparent">
       <ChatHeader />
-      <ChatMessages messages={messages} isReplying={isReplying} addMessage={addMessage} setIsReplying={setIsReplying} setSelection={setSelection} />
+      <ChatMessages messages={messages} isReplying={isReplying} addMessage={addMessage} setIsReplying={setIsReplying} setSelection={setSelection} onSend={handleSendMessage} />
       <ChatInput 
         onSend={handleSendMessage} 
         disabled={isReplying} 

@@ -16,6 +16,7 @@ interface ChatMessageProps {
   addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
   setIsReplying: (isReplying: boolean) => void;
   setSelection: (selection: Selection | null) => void;
+  onSend: (content: string, file?: File) => void;
 }
 
 function RobotAvatar() {
@@ -71,7 +72,7 @@ function MessageAvatar({ sender }: { sender: Sender }) {
   );
 }
 
-export default function ChatMessage({ message, addMessage, setIsReplying, setSelection }: ChatMessageProps) {
+export default function ChatMessage({ message, addMessage, setIsReplying, setSelection, onSend }: ChatMessageProps) {
   const isAi = message.sender === 'ai';
 
   const renderContent = () => {
@@ -92,7 +93,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
       case 'study_buddy':
         return <StudyBuddyResponse message={message} />;
       case 'curriculum_planner':
-        return <LessonPlannerResponse plan={message.lessonPlan || dummyLessonPlan} addMessage={addMessage} setIsReplying={setIsReplying} />;
+        return <LessonPlannerResponse plan={message.lessonPlan || dummyLessonPlan} addMessage={addMessage} setIsReplying={setIsReplying} onSend={onSend} />;
       case 'lesson_designer':
         return <ChapterPlannerResponse chapter={message.chapterPlan!} />;
       default:
