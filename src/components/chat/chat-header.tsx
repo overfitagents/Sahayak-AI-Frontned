@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from 'react';
@@ -40,9 +41,9 @@ export default function ChatHeader() {
             <ChevronDown className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className='bg-background/80 backdrop-blur-md border-white/20 text-white'>
+        <DropdownMenuContent className='bg-white text-card-foreground'>
           {languages.map((lang) => (
-            <DropdownMenuItem key={lang} onSelect={() => setSelectedLanguage(lang)} className='hover:bg-white/10'>
+            <DropdownMenuItem key={lang} onSelect={() => setSelectedLanguage(lang)} className='hover:bg-purple-600 hover:text-white focus:bg-purple-600 focus:text-white cursor-pointer'>
               {lang}
             </DropdownMenuItem>
           ))}
