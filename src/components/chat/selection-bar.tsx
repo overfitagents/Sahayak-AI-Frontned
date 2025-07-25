@@ -59,48 +59,46 @@ const actionColors = {
 
 export default function SelectionBar({ selection, onClear, onAction, actions }: SelectionBarProps) {
   return (
-    <div className="max-w-4xl mx-auto p-1 bg-transparent">
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-4">
-            <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2 text-gray-600">
-                    <ArrowLeft className="h-5 w-5" />
-                    <p className="text-sm font-semibold">Replying to</p>
-                </div>
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600" onClick={onClear}>
-                    <X className="h-5 w-5"/>
-                    <span className="sr-only">Clear selection</span>
-                </Button>
+    <div className="p-4">
+        <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2 text-gray-600">
+                <ArrowLeft className="h-5 w-5" />
+                <p className="text-sm font-semibold">Replying to</p>
             </div>
-            
-            <div className="mb-4">
-                {selection.type === 'text' ? (
-                    <TextSelectionPreview content={selection.content} />
-                ) : (
-                    <ImageSelectionPreview content={selection.content} />
-                )}
-            </div>
-
-            <ScrollArea className="w-full whitespace-nowrap">
-                <div className="flex gap-2 pb-2">
-                {actions.map((action) => {
-                    const Icon = actionIcons[action];
-                    return (
-                        <Button
-                            key={action}
-                            variant="outline"
-                            size="sm"
-                            onClick={() => onAction(action)}
-                            className={cn("h-9 border-2 font-semibold transition-all duration-200 transform hover:scale-105", actionColors[action])}
-                        >
-                            <Icon className="h-4 w-4 mr-2" />
-                            {action}
-                        </Button>
-                    )
-                })}
-                </div>
-                <ScrollBar orientation="horizontal" />
-            </ScrollArea>
+            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600" onClick={onClear}>
+                <X className="h-5 w-5"/>
+                <span className="sr-only">Clear selection</span>
+            </Button>
         </div>
+        
+        <div className="mb-4">
+            {selection.type === 'text' ? (
+                <TextSelectionPreview content={selection.content} />
+            ) : (
+                <ImageSelectionPreview content={selection.content} />
+            )}
+        </div>
+
+        <ScrollArea className="w-full whitespace-nowrap">
+            <div className="flex gap-2 pb-2">
+            {actions.map((action) => {
+                const Icon = actionIcons[action];
+                return (
+                    <Button
+                        key={action}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => onAction(action)}
+                        className={cn("h-9 border-2 font-semibold transition-all duration-200 transform hover:scale-105", actionColors[action])}
+                    >
+                        <Icon className="h-4 w-4 mr-2" />
+                        {action}
+                    </Button>
+                )
+            })}
+            </div>
+            <ScrollBar orientation="horizontal" />
+        </ScrollArea>
     </div>
   );
 }

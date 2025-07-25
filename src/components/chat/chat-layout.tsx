@@ -66,11 +66,10 @@ export default function ChatLayout() {
     }
 
     setIsReplying(true);
+    const currentSelection = selection; // Capture selection at the time of sending
+    setSelection(null); // Clear selection immediately
 
-    if (selection) {
-      const currentSelection = selection;
-      setSelection(null);
-
+    if (currentSelection) {
       addMessage({
         sender: 'user',
         type: 'text',
@@ -215,38 +214,14 @@ export default function ChatLayout() {
     <div className="flex flex-col h-screen bg-transparent">
       <ChatHeader />
       <ChatMessages messages={messages} isReplying={isReplying} addMessage={addMessage} setIsReplying={setIsReplying} setSelection={setSelection} />
-      <div className="bg-transparent">
-        {selection && (
-          <SelectionBar 
-            selection={selection} 
-            onClear={clearSelection} 
-            onAction={(action) => handleAction(action, selection)} 
-            actions={predefinedActions}
-          />
-        )}
-        {!selection && (
-          <div className="max-w-4xl mx-auto pb-3">
-              <div className="flex justify-center gap-2 flex-wrap">
-              {predefinedActions.map((action) => (
-                  <Button
-                  key={action}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleAction(action)}
-                  className="h-8 bg-white/10 border-white/20 text-white backdrop-blur-md hover:bg-white/20 hover:text-white transition-all duration-200"
-                  disabled={isReplying}
-                  >
-                  {action}
-                  </Button>
-              ))}
-              </div>
-          </div>
-        )}
-        <ChatInput 
-          onSend={handleSendMessage} 
-          disabled={isReplying} 
-        />
-      </div>
+      <ChatInput 
+        onSend={handleSendMessage} 
+        disabled={isReplying} 
+        selection={selection}
+        onClearSelection={clearSelection}
+        onAction={handleAction}
+        predefinedActions={predefinedActions}
+      />
     </div>
   );
 }
