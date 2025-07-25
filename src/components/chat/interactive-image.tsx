@@ -205,7 +205,7 @@ export default function InteractiveImage({ imageUrl, setSelection }: Interactive
   return (
     <div className="space-y-2">
       <TooltipProvider>
-        <div className="flex flex-wrap gap-2 justify-between items-center p-2 border rounded-lg bg-gray-50">
+        <div className="flex flex-wrap gap-2 justify-between items-center p-2 border rounded-lg bg-gray-50 text-gray-700">
             <div className='flex gap-1'>
                 <ToolButton selfTool='pencil' currentTool={tool} setTool={setTool} tooltip="Pencil"><Pencil/></ToolButton>
                 <ToolButton selfTool='rectangle' currentTool={tool} setTool={setTool} tooltip="Rectangle"><RectangleHorizontal/></ToolButton>
