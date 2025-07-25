@@ -1,24 +1,18 @@
-
 "use client";
 
 import { Selection } from '@/lib/chat-data';
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
-import { Eraser, ZoomIn, ZoomOut, Pencil, RectangleHorizontal, Circle, ArrowRight, Type, RefreshCw, Expand, Minimize } from 'lucide-react';
+import { Eraser, ZoomIn, ZoomOut, Maximize } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
-import { cn } from '@/lib/utils';
 
 interface InteractiveImageProps {
   imageUrl: string;
   setSelection: (selection: Selection | null) => void;
-  isFullScreen?: boolean;
-  setIsFullScreen?: (isFullScreen: boolean) => void;
 }
 
-type Tool = 'pencil' | 'rectangle' | 'circle' | 'arrow' | 'text' | 'eraser';
-
-export default function InteractiveImage({ imageUrl, setSelection, isFullScreen, setIsFullScreen }: InteractiveImageProps) {
+export default function InteractiveImage({ imageUrl, setSelection }: InteractiveImageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,100 +20,43 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasDrawing, setHasDrawing] = useState(false);
   const [scale, setScale] = useState(1);
-  const [tool, setTool] = useState<Tool>('pencil');
-  const [startPoint, setStartPoint] = useState({ x: 0, y: 0 });
   
   const getCanvasContext = () => canvasRef.current?.getContext('2d');
 
-  const startInteraction = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const ctx = getCanvasContext();
     if (!ctx) return;
-    
-    const pos = getMousePos(e);
-    setStartPoint(pos);
     setIsDrawing(true);
     setHasDrawing(true);
-
-    if (tool === 'pencil' || tool === 'eraser') {
-      ctx.beginPath();
-      ctx.moveTo(pos.x, pos.y);
-    }
-    
-    if (tool === 'text') {
-        const text = prompt('Enter text:');
-        if (text) {
-            ctx.font = `${16 / scale}px sans-serif`;
-            ctx.fillStyle = '#FF0000';
-            ctx.fillText(text, pos.x, pos.y);
-        }
-        setIsDrawing(false);
-    }
+    const pos = getMousePos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
   };
 
-  const interact = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return;
     const ctx = getCanvasContext();
     if (!ctx) return;
-    const currentPos = getMousePos(e);
-
-    ctx.lineWidth = 3 / scale;
+    const pos = getMousePos(e);
+    ctx.lineTo(pos.x, pos.y);
     ctx.strokeStyle = '#FF0000';
-
-    if (tool === 'pencil') {
-        ctx.lineTo(currentPos.x, currentPos.y);
-        ctx.stroke();
-    } else if (tool === 'eraser') {
-        ctx.clearRect(currentPos.x - 10/scale, currentPos.y - 10/scale, 20/scale, 20/scale);
-    }
+    ctx.lineWidth = 3 / scale;
+    ctx.setLineDash([6 / scale, 3 / scale]);
+    ctx.stroke();
   };
 
-  const stopInteraction = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const stopDrawing = () => {
     const ctx = getCanvasContext();
-    if (!ctx || !isDrawing) return;
-
-    const endPoint = getMousePos(e);
-
-    ctx.lineWidth = 3 / scale;
-    ctx.strokeStyle = '#FF0000';
-    
-    if (tool === 'rectangle') {
-        ctx.strokeRect(startPoint.x, startPoint.y, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
-    } else if (tool === 'circle') {
-        const radius = Math.sqrt(Math.pow(endPoint.x - startPoint.x, 2) + Math.pow(endPoint.y - startPoint.y, 2));
-        ctx.beginPath();
-        ctx.arc(startPoint.x, startPoint.y, radius, 0, 2 * Math.PI);
-        ctx.stroke();
-    } else if (tool === 'arrow') {
-        drawArrow(ctx, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
-    }
-
-    if (tool === 'pencil' || tool === 'eraser') {
-        ctx.closePath();
-    }
-    
+    if (!ctx) return;
+    ctx.closePath();
     setIsDrawing(false);
   };
-
-  const drawArrow = (ctx: CanvasRenderingContext2D, fromx: number, fromy: number, tox: number, toy: number) => {
-    const headlen = 10 / scale;
-    const dx = tox - fromx;
-    const dy = toy - fromy;
-    const angle = Math.atan2(dy, dx);
-    ctx.beginPath();
-    ctx.moveTo(fromx, fromy);
-    ctx.lineTo(tox, toy);
-    ctx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
-    ctx.moveTo(tox, toy);
-    ctx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
-    ctx.stroke();
-  }
   
   const getMousePos = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const rect = canvasRef.current!.getBoundingClientRect();
-    const canvas = canvasRef.current!;
     return {
-      x: (e.clientX - rect.left) / (rect.width / canvas.width),
-      y: (e.clientY - rect.top) / (rect.height / canvas.height)
+      x: (e.clientX - rect.left) / scale,
+      y: (e.clientY - rect.top) / scale
     };
   }
 
@@ -130,7 +67,6 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       setHasDrawing(false);
       setSelection(null);
-      setScale(1);
     }
   };
 
@@ -160,14 +96,12 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
         const container = containerRef.current;
         if(container){
             const { width } = container.getBoundingClientRect();
-            if (width === 0) return;
+            if (width === 0) return; // Skip if container has no width yet
             const aspectRatio = image.naturalWidth / image.naturalHeight;
             const height = width / aspectRatio;
 
-            canvas.width = image.naturalWidth;
-            canvas.height = image.naturalHeight;
-            canvas.style.width = `${width}px`;
-            canvas.style.height = `${height}px`;
+            canvas.width = width;
+            canvas.height = height;
         }
       };
       if (image.complete) {
@@ -191,94 +125,61 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
   const handleZoom = (direction: 'in' | 'out') => {
     setScale(prev => {
         const newScale = direction === 'in' ? prev * 1.2 : prev / 1.2;
-        return Math.max(0.5, Math.min(newScale, 5));
+        return Math.max(1, Math.min(newScale, 5));
     });
   };
 
-  const ToolButton = ({ selfTool, currentTool, setTool, children, tooltip }: { selfTool: Tool, currentTool: Tool, setTool: (t: Tool) => void, children: React.ReactNode, tooltip: string }) => (
-    <Tooltip>
-        <TooltipTrigger asChild>
-            <Button variant={currentTool === selfTool ? "secondary" : "outline"} size="icon" onClick={() => setTool(selfTool)}>
-                {children}
-            </Button>
-        </TooltipTrigger>
-        <TooltipContent><p>{tooltip}</p></TooltipContent>
-    </Tooltip>
-  );
-
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col gap-4 w-full h-full">
-      <TooltipProvider>
-        <div className="flex flex-wrap gap-2 justify-between items-center text-gray-700">
-            <div className='flex gap-1'>
-                <ToolButton selfTool='pencil' currentTool={tool} setTool={setTool} tooltip="Pencil"><Pencil/></ToolButton>
-                <ToolButton selfTool='rectangle' currentTool={tool} setTool={setTool} tooltip="Rectangle"><RectangleHorizontal/></ToolButton>
-                <ToolButton selfTool='circle' currentTool={tool} setTool={setTool} tooltip="Circle"><Circle/></ToolButton>
-                <ToolButton selfTool='arrow' currentTool={tool} setTool={setTool} tooltip="Arrow"><ArrowRight/></ToolButton>
-                <ToolButton selfTool='text' currentTool={tool} setTool={setTool} tooltip="Text"><Type/></ToolButton>
-                <ToolButton selfTool='eraser' currentTool={tool} setTool={setTool} tooltip="Eraser"><Eraser/></ToolButton>
-            </div>
-             <div className="flex gap-1">
-                <Tooltip>
-                    <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => handleZoom('in')}><ZoomIn/></Button></TooltipTrigger>
-                    <TooltipContent><p>Zoom In</p></TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                    <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => handleZoom('out')}><ZoomOut/></Button></TooltipTrigger>
-                    <TooltipContent><p>Zoom Out</p></TooltipContent>
-                </Tooltip>
-                 <Tooltip>
-                    <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={clearDrawing}><RefreshCw/></Button></TooltipTrigger>
-                    <TooltipContent><p>Reset Changes</p></TooltipContent>
-                </Tooltip>
-            </div>
-        </div>
-      </TooltipProvider>
-      <div ref={containerRef} className="relative flex-1 w-full bg-gray-100 cursor-crosshair overflow-hidden rounded-lg shadow-inner">
-        <div 
-            className="relative w-full h-full transition-transform duration-300 flex items-center justify-center"
-            style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
-        >
-          <Image
+    <div className="space-y-2">
+        <p className="text-sm font-bold text-muted-foreground">You can draw on the image to ask a question about a specific area.</p>
+        <div ref={containerRef} className="relative w-full overflow-hidden border rounded-lg bg-black/10">
+            <Image
             ref={imageRef}
             src={imageUrl}
             alt="Interactive content"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-contain"
+            width={600}
+            height={400}
+            className="transition-transform duration-300"
+            style={{ transform: `scale(${scale})`, cursor: isDrawing ? 'crosshair' : 'default', width: '100%', height: 'auto' }}
             crossOrigin="anonymous"
             data-ai-hint="diagram chart"
-          />
-          <canvas
+            />
+            <canvas
             ref={canvasRef}
             className="absolute top-0 left-0"
-            onMouseDown={startInteraction}
-            onMouseMove={interact}
-            onMouseUp={stopInteraction}
-            onMouseLeave={stopInteraction}
-          />
+            onMouseDown={startDrawing}
+            onMouseMove={draw}
+            onMouseUp={stopDrawing}
+            onMouseLeave={stopDrawing}
+            style={{ cursor: 'crosshair', transform: `scale(${scale})`, transformOrigin: 'top left' }}
+            />
         </div>
-        {setIsFullScreen && (
-          <div className="absolute top-2 right-2">
-              <TooltipProvider>
-                  <Tooltip>
-                      <TooltipTrigger asChild>
-                          <Button variant="secondary" size="icon" onClick={() => setIsFullScreen(!isFullScreen)} className="rounded-full shadow-md">
-                              {isFullScreen ? <Minimize/> : <Expand/>}
-                          </Button>
-                      </TooltipTrigger>
-                      <TooltipContent><p>{isFullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}</p></TooltipContent>
-                  </Tooltip>
-              </TooltipProvider>
-          </div>
-        )}
-      </div>
+        <div className="flex gap-2 justify-between items-center">
+            <TooltipProvider>
+                <div className="flex gap-1">
+                    <Tooltip>
+                        <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => handleZoom('in')}><ZoomIn/></Button></TooltipTrigger>
+                        <TooltipContent><p>Zoom In</p></TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => handleZoom('out')}><ZoomOut/></Button></TooltipTrigger>
+                        <TooltipContent><p>Zoom Out</p></TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => { setScale(1); }}><Maximize/></Button></TooltipTrigger>
+                        <TooltipContent><p>Reset Zoom</p></TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={clearDrawing} disabled={!hasDrawing}><Eraser /></Button></TooltipTrigger>
+                        <TooltipContent><p>Clear Drawing</p></TooltipContent>
+                    </Tooltip>
+                </div>
+            </TooltipProvider>
 
-      <div className="flex justify-end">
-          <Button onClick={handleSelectArea} disabled={!hasDrawing}>
-              Select area
-          </Button>
-      </div>
+            <Button onClick={handleSelectArea} disabled={!hasDrawing}>
+                Select area
+            </Button>
+        </div>
     </div>
   );
 }

@@ -31,10 +31,6 @@ export default function ChatHeader() {
         </div>
         <div className="flex flex-col">
           <h1 className="text-xl font-bold text-white">Sahayak AI</h1>
-          <div className='flex items-center gap-1.5'>
-            <div className='w-2 h-2 rounded-full bg-green-400 animate-pulse'></div>
-            <p className='text-xs text-green-200'>Online • Ready to help</p>
-          </div>
         </div>
       </div>
       <DropdownMenu>
