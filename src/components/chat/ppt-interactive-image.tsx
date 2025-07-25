@@ -9,7 +9,7 @@ import { Eraser, ZoomIn, ZoomOut, Pencil, RectangleHorizontal, Circle, ArrowRigh
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 import { cn } from '@/lib/utils';
 
-interface InteractiveImageProps {
+interface PptInteractiveImageProps {
   imageUrl: string;
   setSelection: (selection: Selection | null) => void;
   isFullScreen?: boolean;
@@ -18,7 +18,7 @@ interface InteractiveImageProps {
 
 type Tool = 'pencil' | 'rectangle' | 'circle' | 'arrow' | 'text' | 'eraser';
 
-export default function InteractiveImage({ imageUrl, setSelection, isFullScreen, setIsFullScreen }: InteractiveImageProps) {
+export default function PptInteractiveImage({ imageUrl, setSelection, isFullScreen, setIsFullScreen }: PptInteractiveImageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -239,16 +239,18 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
             className="relative w-full h-full transition-transform duration-300 flex items-center justify-center"
             style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
         >
-          <Image
-            ref={imageRef}
-            src={imageUrl}
-            alt="Interactive content"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-contain"
-            crossOrigin="anonymous"
-            data-ai-hint="diagram chart"
-          />
+          <div className="relative w-full h-full">
+            <Image
+                ref={imageRef}
+                src={imageUrl}
+                alt="Interactive content"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-contain"
+                crossOrigin="anonymous"
+                data-ai-hint="diagram chart"
+            />
+          </div>
           <canvas
             ref={canvasRef}
             className="absolute top-0 left-0"
