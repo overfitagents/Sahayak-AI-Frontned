@@ -76,69 +76,73 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
       }
 
       const responseData = await response.json();
-      const chatResponse = responseData.data;
+      const chatResponses = responseData.data;
 
-      let aiMessage: Omit<Message, 'id' | 'timestamp'>;
+      if (Array.isArray(chatResponses)) {
+        chatResponses.forEach(chatResponse => {
+            let aiMessage: Omit<Message, 'id' | 'timestamp'>;
 
-      switch (chatResponse.type) {
-        case 'interactive_image':
-          aiMessage = {
-            sender: 'ai',
-            type: 'image-text',
-            content: chatResponse.text,
-            imageUrl: chatResponse.image_url,
-            originalContent: chatResponse.text,
-          };
-          break;
-        case 'content_creator':
-          aiMessage = {
-            sender: 'ai',
-            type: 'ppt',
-            content: chatResponse.text,
-            slides: chatResponse.slides,
-            fileInfo: {
-                name: 'Presentation.pptx',
-                url: '#', // a dummy url
-                type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-            },
-          };
-          break;
-        case 'lesson_designer':
-           aiMessage = {
-             sender: 'ai',
-             type: 'chapter-plan',
-             content: chatResponse.text,
-             chapterPlan: chatResponse.data
-           };
-           break;
-        case 'curriculum_planner':
-          aiMessage = {
-            sender: 'ai',
-            type: 'lesson-plan',
-            content: chatResponse.text,
-            lessonPlan: chatResponse.data
-          };
-          break;
-        case 'study_buddy':
-            aiMessage = {
-                sender: 'ai',
-                type: 'study-buddy',
-                content: chatResponse.text,
-                studyBuddyPairs: chatResponse.pairs,
-            };
-            break;
-        case 'text':
-        default:
-          aiMessage = {
-            sender: 'ai',
-            type: 'text',
-            content: chatResponse.text,
-            originalContent: chatResponse.text,
-          };
-          break;
+            switch (chatResponse.type) {
+                case 'interactive_image':
+                aiMessage = {
+                    sender: 'ai',
+                    type: 'image-text',
+                    content: chatResponse.text,
+                    imageUrl: chatResponse.image_url,
+                    originalContent: chatResponse.text,
+                };
+                break;
+                case 'content_creator':
+                aiMessage = {
+                    sender: 'ai',
+                    type: 'ppt',
+                    content: chatResponse.text,
+                    slides: chatResponse.slides,
+                    fileInfo: {
+                        name: 'Presentation.pptx',
+                        url: '#', // a dummy url
+                        type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+                    },
+                };
+                break;
+                case 'lesson_designer':
+                aiMessage = {
+                    sender: 'ai',
+                    type: 'chapter-plan',
+                    content: chatResponse.text,
+                    chapterPlan: chatResponse.data
+                };
+                break;
+                case 'curriculum_planner':
+                aiMessage = {
+                    sender: 'ai',
+                    type: 'lesson-plan',
+                    content: chatResponse.text,
+                    lessonPlan: chatResponse.data
+                };
+                break;
+                case 'study_buddy':
+                    aiMessage = {
+                        sender: 'ai',
+                        type: 'study-buddy',
+                        content: chatResponse.text,
+                        studyBuddyPairs: chatResponse.pairs,
+                    };
+                    break;
+                case 'text':
+                default:
+                aiMessage = {
+                    sender: 'ai',
+                    type: 'text',
+                    content: chatResponse.text,
+                    originalContent: chatResponse.text,
+                };
+                break;
+            }
+            addMessage(aiMessage);
+        });
       }
 
-      addMessage(aiMessage);
 
     } catch (error) {
       console.error('Error sending message:', error);
