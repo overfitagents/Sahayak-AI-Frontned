@@ -17,7 +17,11 @@ import { askFollowUpQuestion } from '@/ai/flows/follow-up-questions-on-text';
 import { generateImage } from '@/ai/flows/generate-image';
 import { dummyLessonPlan, dummyChapter, type Chapter } from '@/lib/lesson-plan-data';
 
-export default function ChatLayout() {
+interface ChatLayoutProps {
+  sessionId: string | null;
+}
+
+export default function ChatLayout({ sessionId }: ChatLayoutProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [isReplying, setIsReplying] = useState(false);
   const [selection, setSelection] = useState<Selection | null>(null);
@@ -34,126 +38,66 @@ export default function ChatLayout() {
   };
 
   const handleSendMessage = async (content: string, file?: File) => {
-    if (isReplying && !file) return;
+    if (isReplying) return;
 
-    if (file) {
-      // Handle file message
-      const fileUrl = URL.createObjectURL(file); // Create a temporary URL for preview
+    // Add user message to UI
+    const userMessage = addMessage({
+      sender: 'user',
+      type: 'text',
+      content: content,
+    });
+    
+    setIsReplying(true);
+
+    if (!sessionId) {
+      console.error("Session ID is not available.");
       addMessage({
-        sender: 'user',
-        type: 'file',
-        content: content,
-        fileInfo: {
-          name: file.name,
-          url: fileUrl,
-          type: file.type,
-        }
+        sender: 'ai',
+        type: 'text',
+        content: "Sorry, I can't send a message right now. Please try again later.",
       });
-      // Dummy AI response for file upload
-      setIsReplying(true);
-
-      // Simulate processing and show lesson plan
-      setTimeout(() => {
-        addMessage({
-          sender: 'ai',
-          type: 'lesson-plan',
-          content: "Here is the generated lesson plan based on your file.",
-          lessonPlan: dummyLessonPlan,
-        });
-        setIsReplying(false);
-      }, 1500);
+      setIsReplying(false);
       return;
     }
 
-    setIsReplying(true);
-    const currentSelection = selection; // Capture selection at the time of sending
-    setSelection(null); // Clear selection immediately
-
-    if (currentSelection) {
-      addMessage({
-        sender: 'user',
-        type: 'text',
-        content: content,
+    try {
+      const response = await fetch("http://localhost:4000/api/v1/message", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId: sessionId,
+          text: content,
+        }),
       });
 
-      try {
-        const result = await askFollowUpQuestion({
-          originalText:
-            currentSelection.type === 'text' ? currentSelection.context || '' : '',
-          selectedText:
-            currentSelection.type === 'text' ? currentSelection.content : '',
-          followUpQuestion: content,
-        });
-        addMessage({
-          sender: 'ai',
-          type: 'text',
-          content: result.answer,
-          originalContent: result.answer,
-        });
-      } catch (error) {
-        console.error('Error during follow-up question:', error);
-        addMessage({
-          sender: 'ai',
-          type: 'text',
-          content: "I'm sorry, I couldn't process that follow-up.",
-        });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    } else {
-      addMessage({
-        sender: 'user',
-        type: 'text',
-        content: content,
-      });
 
-      // Simple keyword detection to trigger image generation
-      if (content.toLowerCase().includes('generate image') || content.toLowerCase().includes('what is photosynthesis')) {
+      const data = await response.json();
+      
+      // Assuming the backend responds with the AI's message
+      if (data && data.text) {
         addMessage({
           sender: 'ai',
           type: 'text',
-          content: "Here's an image explaining photosynthesis.",
-        });
-        try {
-          const result = await generateImage({ prompt: 'A simple diagram explaining photosynthesis with labels for sunlight, water, carbon dioxide, oxygen, and glucose.' });
-          addMessage({
-            sender: 'ai',
-            type: 'image',
-            content: result.imageDataUri,
-          });
-        } catch (error) {
-          console.error('Error generating image:', error);
-          addMessage({
-            sender: 'ai',
-            type: 'text',
-            content: "I'm sorry, I couldn't generate an image for that.",
-          });
-        }
-      } else if (content.toLowerCase().includes('lesson plan')) {
-        addMessage({
-          sender: 'ai',
-          type: 'lesson-plan',
-          content: "Here is the generated lesson plan.",
-          lessonPlan: dummyLessonPlan,
-        });
-      } else if (content.toLowerCase().includes('chapter plan')) {
-         addMessage({
-          sender: 'ai',
-          type: 'chapter-plan',
-          content: `Here is a detailed lesson plan for the chapter.`,
-          chapterPlan: dummyChapter
+          content: data.text,
+          originalContent: data.text,
         });
       }
-      else {
-        // Generic response for other queries
-         addMessage({
-          sender: 'ai',
-          type: 'text',
-          content: "I can help with that. What would you like to know?",
-          originalContent: "I can help with that. What would you like to know?",
-        });
-      }
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      addMessage({
+        sender: 'ai',
+        type: 'text',
+        content: "Sorry, something went wrong. I couldn't send your message.",
+      });
+    } finally {
+      setIsReplying(false);
     }
-
-    setIsReplying(false);
   };
 
   const handleAction = async (action: PredefinedAction, context?: Selection) => {

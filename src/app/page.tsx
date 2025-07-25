@@ -19,13 +19,13 @@ export default function Home() {
   useEffect(() => {
     const getSession = async () => {
       try {
-        const response = await fetch(host.hostName + "/api/v1/session");
+        const response = await fetch("https://dev-sahayak-server-543433794712.us-central1.run.app/api/v1/session");
         if (!response.ok) {
           throw new Error('Failed to fetch session');
         }
         const data = await response.json();
-        setSessionId(data.sessionId);
-        console.log('Session ID fetched:', data.sessionId);
+        setSessionId(data.data.id);
+        console.log('Session ID fetched:', data.data.id);
       } catch (error) {
         console.error('Error fetching session ID:', error);
       }
@@ -34,5 +34,5 @@ export default function Home() {
     getSession();
   }, []);
 
-  return <ChatLayout />;
+  return <ChatLayout sessionId={sessionId} />;
 }
