@@ -245,7 +245,7 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
         </div>
       </TooltipProvider>
 
-      <div ref={containerRef} className="relative flex-1 w-full border rounded-lg bg-black/10 cursor-crosshair overflow-hidden">
+      <div ref={containerRef} className="relative flex-1 w-full rounded-lg bg-gray-100 cursor-crosshair overflow-hidden shadow-inner transition-all duration-300 hover:shadow-lg hover:border-purple-300 border border-transparent hover:-translate-y-1">
         <div 
             className="relative w-full h-full transition-transform duration-300 flex items-center justify-center"
             style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
