@@ -113,7 +113,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
                         onClick={() => setIsFullScreen(prev => !prev)} 
                         variant="outline" 
                         size="icon"
-                        className="absolute top-2 right-14 z-10 bg-white/80 hover:bg-white"
+                        className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white"
                       >
                         {isFullScreen ? <Minimize className="h-5 w-5"/> : <Expand className="h-5 w-5"/>}
                         <span className="sr-only">{isFullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}</span>

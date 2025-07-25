@@ -5,7 +5,7 @@ import { Selection } from '@/lib/chat-data';
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
-import { Eraser, ZoomIn, ZoomOut, Pencil, RectangleHorizontal, Circle, ArrowRight, Type } from 'lucide-react';
+import { Eraser, ZoomIn, ZoomOut, Pencil, RectangleHorizontal, Circle, ArrowRight, Type, RefreshCw } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 interface InteractiveImageProps {
@@ -190,6 +190,10 @@ export default function InteractiveImage({ imageUrl, setSelection }: Interactive
     });
   };
 
+  const resetZoom = () => {
+    setScale(1);
+  }
+
   const ToolButton = ({ selfTool, currentTool, setTool, children, tooltip }: { selfTool: Tool, currentTool: Tool, setTool: (t: Tool) => void, children: React.ReactNode, tooltip: string }) => (
     <Tooltip>
         <TooltipTrigger asChild>
@@ -220,6 +224,10 @@ export default function InteractiveImage({ imageUrl, setSelection }: Interactive
                 <Tooltip>
                     <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => handleZoom('out')}><ZoomOut/></Button></TooltipTrigger>
                     <TooltipContent><p>Zoom Out</p></TooltipContent>
+                </Tooltip>
+                 <Tooltip>
+                    <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={resetZoom}><RefreshCw/></Button></TooltipTrigger>
+                    <TooltipContent><p>Reset Zoom</p></TooltipContent>
                 </Tooltip>
                 <Tooltip>
                     <TooltipTrigger asChild><Button variant="destructive" size="icon" onClick={clearDrawing} disabled={!hasDrawing}><Eraser /></Button></TooltipTrigger>
