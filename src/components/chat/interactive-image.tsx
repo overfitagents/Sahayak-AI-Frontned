@@ -5,18 +5,20 @@ import { Selection } from '@/lib/chat-data';
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
-import { Eraser, ZoomIn, ZoomOut, Pencil, RectangleHorizontal, Circle, ArrowRight, Type, RefreshCw } from 'lucide-react';
+import { Eraser, ZoomIn, ZoomOut, Pencil, RectangleHorizontal, Circle, ArrowRight, Type, RefreshCw, Expand, Minimize } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 import { cn } from '@/lib/utils';
 
 interface InteractiveImageProps {
   imageUrl: string;
   setSelection: (selection: Selection | null) => void;
+  isFullScreen?: boolean;
+  setIsFullScreen?: (isFullScreen: boolean) => void;
 }
 
 type Tool = 'pencil' | 'rectangle' | 'circle' | 'arrow' | 'text' | 'eraser';
 
-export default function InteractiveImage({ imageUrl, setSelection }: InteractiveImageProps) {
+export default function InteractiveImage({ imageUrl, setSelection, isFullScreen, setIsFullScreen }: InteractiveImageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -230,14 +232,16 @@ export default function InteractiveImage({ imageUrl, setSelection }: Interactive
                     <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={resetZoom}><RefreshCw/></Button></TooltipTrigger>
                     <TooltipContent><p>Reset Zoom</p></TooltipContent>
                 </Tooltip>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <Button variant={tool === 'eraser' ? 'destructive' : 'outline'} size="icon" onClick={() => setTool('eraser')}>
-                            <Eraser />
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent><p>Eraser</p></TooltipContent>
-                </Tooltip>
+                {setIsFullScreen && (
+                  <Tooltip>
+                      <TooltipTrigger asChild>
+                          <Button variant="outline" size="icon" onClick={() => setIsFullScreen(!isFullScreen)}>
+                              {isFullScreen ? <Minimize/> : <Expand/>}
+                          </Button>
+                      </TooltipTrigger>
+                      <TooltipContent><p>{isFullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}</p></TooltipContent>
+                  </Tooltip>
+                )}
             </div>
         </div>
       </TooltipProvider>

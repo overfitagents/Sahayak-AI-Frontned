@@ -39,7 +39,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
   const handlePrev = () => {
     if (currentSlideIndex > 0) {
       setDirection(-1);
-      setCurrentSlideIndex(prev => prev - 1);
+      setCurrentSlideIndex(prev => prev + 1);
     }
   };
 
@@ -108,16 +108,9 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
                     <InteractiveImage 
                         imageUrl={currentSlide.image}
                         setSelection={setSelection}
+                        isFullScreen={isFullScreen}
+                        setIsFullScreen={setIsFullScreen}
                     />
-                     <Button 
-                        onClick={() => setIsFullScreen(prev => !prev)} 
-                        variant="outline" 
-                        size="icon"
-                        className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white"
-                      >
-                        {isFullScreen ? <Minimize className="h-5 w-5"/> : <Expand className="h-5 w-5"/>}
-                        <span className="sr-only">{isFullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}</span>
-                    </Button>
                 </div>
 
                 <div className={cn(
