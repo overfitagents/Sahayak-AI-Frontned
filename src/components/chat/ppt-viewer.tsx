@@ -39,7 +39,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
   const handlePrev = () => {
     if (currentSlideIndex > 0) {
       setDirection(-1);
-      setCurrentSlideIndex(prev => prev + 1);
+      setCurrentSlideIndex(prev => prev - 1);
     }
   };
 
@@ -94,7 +94,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-5xl h-[90vh] flex flex-col bg-purple-50 p-0 border-none">
            <DialogHeader className="p-4 bg-purple-600 text-white flex-row items-center justify-between rounded-t-lg">
-            <DialogTitle>{currentSlide.title}</DialogTitle>
+            <DialogTitle>{currentSlide.heading}</DialogTitle>
              <DialogClose asChild>
                 <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 hover:text-white rounded-full">
                     <X className="h-5 w-5" />
@@ -106,7 +106,8 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
              <div className={cn("flex w-full h-full gap-8 transition-all duration-300", isFullScreen ? "items-center justify-center" : "items-start")}>
                 <div className={cn("relative transition-all duration-300 ease-in-out flex", isFullScreen ? 'w-full h-full justify-center' : 'w-1/2 h-full')}>
                     <PptInteractiveImage 
-                        imageUrl={currentSlide.image}
+                        // imageUrl={currentSlide.image.inlineData.data}
+                        imageUrl={`data:${currentSlide.image.inlineData.mimeType};base64,${currentSlide.image.inlineData.data}`}
                         setSelection={setSelection}
                         isFullScreen={isFullScreen}
                         setIsFullScreen={setIsFullScreen}
@@ -118,7 +119,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
                     isFullScreen ? 'w-0 opacity-0' : 'w-1/2 opacity-100'
                 )}>
                      <div key={currentSlideIndex} className="slide-content active">
-                        <h2 className="text-4xl font-bold text-purple-800 mb-6">{currentSlide.title}</h2>
+                        <h2 className="text-4xl font-bold text-purple-800 mb-6">{currentSlide.heading}</h2>
                         <ul className="space-y-4">
                             {currentSlide.points.map((point, i) => (
                                 <li key={i} className="flex items-start gap-3 text-lg text-gray-700">

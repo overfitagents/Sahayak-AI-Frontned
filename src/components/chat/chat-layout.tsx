@@ -94,12 +94,12 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
                     originalContent: chatResponse.text,
                 };
                 break;
-                case 'content_creator':
+                case 'presentation_generator':
                 aiMessage = {
                     sender: 'ai',
-                    type: 'content_creator',
+                    type: 'presentation_generator',
                     content: chatResponse.text,
-                    slides: chatResponse.slides,
+                    slides: chatResponse.data.slides,
                     fileInfo: {
                         name: 'Presentation.pptx',
                         url: '#', // a dummy url
