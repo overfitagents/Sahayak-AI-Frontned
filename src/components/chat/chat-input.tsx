@@ -157,24 +157,6 @@ export default function ChatInput({
                 <span className="sr-only">Send message</span>
             </Button>
         </div>
-        {!selection && (
-          <div className="max-w-4xl mx-auto pt-3">
-              <div className="flex justify-center gap-2 flex-wrap">
-              {predefinedActions.map((action) => (
-                  <Button
-                  key={action}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleSuggestionClick(action)}
-                  className="h-8 bg-white/10 border-white/20 text-white backdrop-blur-md hover:bg-white/20 hover:text-white transition-all duration-200"
-                  disabled={disabled}
-                  >
-                  {action}
-                  </Button>
-              ))}
-              </div>
-          </div>
-        )}
       </div>
   );
 }
