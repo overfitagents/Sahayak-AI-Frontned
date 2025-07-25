@@ -129,6 +129,7 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       setHasDrawing(false);
       setSelection(null);
+      setScale(1); // Also reset zoom
     }
   };
 
