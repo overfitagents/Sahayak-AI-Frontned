@@ -257,7 +257,7 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
               alt="Interactive content"
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-contain w-full h-auto"
+              className="object-contain"
               crossOrigin="anonymous"
               data-ai-hint="diagram chart"
             />
@@ -279,3 +279,5 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
     </div>
   );
 }
+
+    
