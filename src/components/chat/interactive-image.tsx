@@ -223,10 +223,6 @@ export default function InteractiveImage({ imageUrl, setSelection }: Interactive
                     <TooltipContent><p>Zoom Out</p></TooltipContent>
                 </Tooltip>
                 <Tooltip>
-                    <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => { setScale(1); }}><Maximize/></Button></TooltipTrigger>
-                    <TooltipContent><p>Reset Zoom</p></TooltipContent>
-                </Tooltip>
-                <Tooltip>
                     <TooltipTrigger asChild><Button variant="destructive" size="icon" onClick={clearDrawing} disabled={!hasDrawing}><Eraser /></Button></TooltipTrigger>
                     <TooltipContent><p>Clear All</p></TooltipContent>
                 </Tooltip>
