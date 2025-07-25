@@ -109,9 +109,21 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
                         imageUrl={currentSlide.image}
                         setSelection={setSelection}
                     />
+                     <Button 
+                        onClick={() => setIsFullScreen(prev => !prev)} 
+                        variant="outline" 
+                        size="icon"
+                        className="absolute top-2 right-14 z-10 bg-white/80 hover:bg-white"
+                      >
+                        {isFullScreen ? <Minimize className="h-5 w-5"/> : <Expand className="h-5 w-5"/>}
+                        <span className="sr-only">{isFullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}</span>
+                    </Button>
                 </div>
 
-                <div className={cn("w-1/2 h-full flex flex-col justify-center transition-all duration-300 ease-in-out", isFullScreen ? 'w-0 opacity-0' : 'w-1/2 opacity-100')}>
+                <div className={cn(
+                    "w-1/2 h-full flex flex-col justify-center transition-all duration-300 ease-in-out", 
+                    isFullScreen ? 'w-0 opacity-0' : 'w-1/2 opacity-100'
+                )}>
                      <div key={currentSlideIndex} className="slide-content active">
                         <h2 className="text-4xl font-bold text-purple-800 mb-6">{currentSlide.title}</h2>
                         <ul className="space-y-4">
