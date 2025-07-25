@@ -13,7 +13,8 @@ import {
 import { ChevronLeft, ChevronRight, Download, Eye, X, Expand, Minimize } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import type { Slide } from '@/lib/chat-data';
+import type { Slide, Selection } from '@/lib/chat-data';
+import InteractiveImage from './interactive-image';
 
 interface PptViewerProps {
   slides: Slide[];
@@ -26,6 +27,7 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [direction, setDirection] = useState(0); // 1 for next, -1 for prev
+  const [selection, setSelection] = useState<Selection | null>(null);
 
   const handleNext = () => {
     if (currentSlideIndex < slides.length - 1) {
@@ -103,21 +105,10 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
            <div className="flex-1 bg-purple-50 p-6 flex items-center justify-center overflow-hidden">
              <div className={cn("flex w-full h-full gap-8 transition-all duration-300", isFullScreen ? "items-center justify-center" : "items-start")}>
                 <div className={cn("relative transition-all duration-300 ease-in-out", isFullScreen ? 'w-full h-full' : 'w-1/2 h-full')}>
-                    <Image
-                        src={currentSlide.image}
-                        alt={currentSlide.title}
-                        layout="fill"
-                        objectFit="contain"
-                        className="rounded-lg shadow-2xl bg-white"
-                        data-ai-hint="presentation slide image"
+                    <InteractiveImage 
+                        imageUrl={currentSlide.image}
+                        setSelection={setSelection}
                     />
-                    <Button
-                        variant="ghost" size="icon"
-                        className="absolute top-2 right-2 bg-black/50 text-white hover:bg-black/80 rounded-full"
-                        onClick={() => setIsFullScreen(prev => !prev)}
-                    >
-                       {isFullScreen ? <Minimize size={20} /> : <Expand size={20} />}
-                    </Button>
                 </div>
 
                 <div className={cn("w-1/2 h-full flex flex-col justify-center transition-all duration-300 ease-in-out", isFullScreen ? 'w-0 opacity-0' : 'w-1/2 opacity-100')}>
