@@ -207,9 +207,9 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
   );
 
   return (
-    <div className="space-y-2 w-full h-full flex flex-col">
+    <div className="bg-white rounded-2xl shadow-lg p-4 flex flex-col gap-4 w-full h-full">
       <TooltipProvider>
-        <div className="flex flex-wrap gap-2 justify-between items-center p-2 border rounded-lg bg-gray-50 text-gray-700">
+        <div className="flex flex-wrap gap-2 justify-between items-center text-gray-700">
             <div className='flex gap-1'>
                 <ToolButton selfTool='pencil' currentTool={tool} setTool={setTool} tooltip="Pencil"><Pencil/></ToolButton>
                 <ToolButton selfTool='rectangle' currentTool={tool} setTool={setTool} tooltip="Rectangle"><RectangleHorizontal/></ToolButton>
@@ -231,21 +231,11 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
                     <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={clearDrawing}><RefreshCw/></Button></TooltipTrigger>
                     <TooltipContent><p>Reset Changes</p></TooltipContent>
                 </Tooltip>
-                {setIsFullScreen && (
-                  <Tooltip>
-                      <TooltipTrigger asChild>
-                          <Button variant="outline" size="icon" onClick={() => setIsFullScreen(!isFullScreen)}>
-                              {isFullScreen ? <Minimize/> : <Expand/>}
-                          </Button>
-                      </TooltipTrigger>
-                      <TooltipContent><p>{isFullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}</p></TooltipContent>
-                  </Tooltip>
-                )}
             </div>
         </div>
       </TooltipProvider>
 
-      <div ref={containerRef} className="relative flex-1 w-full rounded-lg bg-gray-100 cursor-crosshair overflow-hidden shadow-inner transition-all duration-300 hover:shadow-lg hover:border-purple-300 border border-transparent hover:-translate-y-1">
+      <div ref={containerRef} className="relative flex-1 w-full bg-gray-100 cursor-crosshair overflow-hidden rounded-lg shadow-inner">
         <div 
             className="relative w-full h-full transition-transform duration-300 flex items-center justify-center"
             style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
@@ -269,6 +259,20 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
               onMouseLeave={stopInteraction}
             />
         </div>
+        {setIsFullScreen && (
+            <div className="absolute top-2 right-2">
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant="secondary" size="icon" onClick={() => setIsFullScreen(!isFullScreen)} className="rounded-full shadow-md">
+                                {isFullScreen ? <Minimize/> : <Expand/>}
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent><p>{isFullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}</p></TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            </div>
+        )}
       </div>
       <div className="flex justify-end">
           <Button onClick={handleSelectArea} disabled={!hasDrawing}>
@@ -278,5 +282,3 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
     </div>
   );
 }
-
-    
