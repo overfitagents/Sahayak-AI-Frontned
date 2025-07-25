@@ -86,7 +86,7 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
                 case 'interactive_image':
                 aiMessage = {
                     sender: 'ai',
-                    type: 'image-text',
+                    type: 'interactive_image',
                     content: chatResponse.text,
                     imageUrl: chatResponse.image_url,
                     originalContent: chatResponse.text,
@@ -95,7 +95,7 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
                 case 'content_creator':
                 aiMessage = {
                     sender: 'ai',
-                    type: 'ppt',
+                    type: 'content_creator',
                     content: chatResponse.text,
                     slides: chatResponse.slides,
                     fileInfo: {
@@ -108,7 +108,7 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
                 case 'lesson_designer':
                 aiMessage = {
                     sender: 'ai',
-                    type: 'chapter-plan',
+                    type: 'lesson_designer',
                     content: chatResponse.text,
                     chapterPlan: chatResponse.data
                 };
@@ -116,7 +116,7 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
                 case 'curriculum_planner':
                 aiMessage = {
                     sender: 'ai',
-                    type: 'lesson-plan',
+                    type: 'curriculum_planner',
                     content: chatResponse.text,
                     lessonPlan: chatResponse.data
                 };
@@ -124,7 +124,7 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
                 case 'study_buddy':
                     aiMessage = {
                         sender: 'ai',
-                        type: 'study-buddy',
+                        type: 'study_buddy',
                         content: chatResponse.text,
                         studyBuddyPairs: chatResponse.pairs,
                     };

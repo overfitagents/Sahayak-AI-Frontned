@@ -83,17 +83,17 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
       case 'image':
         return <InteractiveImage imageUrl={message.content} setSelection={setSelection} />;
-      case 'image-text':
+      case 'interactive_image':
         return <ImageTextResponse message={message} setSelection={setSelection} />;
-      case 'ppt':
+      case 'content_creator':
         return <PptViewer slides={message.slides || []} fileUrl={message.fileInfo?.url} fileName={message.fileInfo?.name}/>;
       case 'file':
         return <FileMessage message={message} />;
-      case 'study-buddy':
+      case 'study_buddy':
         return <StudyBuddyResponse message={message} />;
-      case 'lesson-plan':
+      case 'curriculum_planner':
         return <LessonPlannerResponse plan={message.lessonPlan || dummyLessonPlan} addMessage={addMessage} setIsReplying={setIsReplying} />;
-      case 'chapter-plan':
+      case 'lesson_designer':
         return <ChapterPlannerResponse chapter={message.chapterPlan!} />;
       default:
         return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
@@ -104,7 +104,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
     'bg-gray-100 text-gray-800 rounded-bl-none' : 
     'bg-gradient-to-br from-blue-400 to-cyan-400 text-white rounded-br-none';
   
-  const isPlanner = message.type === 'lesson-plan' || message.type === 'chapter-plan' || message.type === 'ppt';
+  const isPlanner = message.type === 'curriculum_planner' || message.type === 'lesson_designer' || message.type === 'content_creator';
 
   return (
     <div

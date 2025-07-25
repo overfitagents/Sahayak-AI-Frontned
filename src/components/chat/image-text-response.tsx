@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Message, Selection } from '@/lib/chat-data';
@@ -11,7 +12,7 @@ interface ImageTextResponseProps {
 
 export default function ImageTextResponse({ message, setSelection }: ImageTextResponseProps) {
   if (!message.imageUrl) {
-    return null; // Should not happen for image-text type
+    return null; // Should not happen for interactive_image type
   }
   return (
     <div className="space-y-3">

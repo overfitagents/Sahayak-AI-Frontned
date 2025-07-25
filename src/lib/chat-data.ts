@@ -4,7 +4,7 @@ import type { LessonPlan, Chapter } from "./lesson-plan-data";
 
 export type Sender = 'user' | 'ai';
 
-export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'image-text' | 'ppt' | 'file' | 'study-buddy' | 'lesson-plan' | 'chapter-plan';
+export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'interactive_image' | 'content_creator' | 'file' | 'study_buddy' | 'curriculum_planner' | 'lesson_designer';
 
 export interface Slide {
     title: string;
@@ -16,8 +16,8 @@ export interface Message {
   id: string;
   sender: Sender;
   type: MessageType;
-  content: string; // For text, image URL, file URL, or text content in image-text
-  imageUrl?: string; // For image-text messages
+  content: string; // For text, image URL, file URL, or text content in interactive_image
+  imageUrl?: string; // For interactive_image messages
   originalContent?: string;
   timestamp: string;
   fileInfo?: {
@@ -77,7 +77,7 @@ export const initialMessages: Message[] = [
   {
     id: '4',
     sender: 'ai',
-    type: 'image-text',
+    type: 'interactive_image',
     content: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
     imageUrl: 'https://placehold.co/600x400.png',
     originalContent: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
@@ -86,7 +86,7 @@ export const initialMessages: Message[] = [
   {
     id: '5',
     sender: 'ai',
-    type: 'ppt',
+    type: 'content_creator',
     content: 'Here is the presentation file you requested.',
     slides: dummySlides,
     fileInfo: {
@@ -99,7 +99,7 @@ export const initialMessages: Message[] = [
   {
     id: '6',
     sender: 'ai',
-    type: 'study-buddy',
+    type: 'study_buddy',
     content: '🚀 Here are the study buddy pairings! I\'ve matched students based on their strengths and areas where they can help each other grow.',
     studyBuddyPairs: [
       {
