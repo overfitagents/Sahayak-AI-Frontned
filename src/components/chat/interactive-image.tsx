@@ -116,9 +116,10 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
   
   const getMousePos = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const rect = canvasRef.current!.getBoundingClientRect();
+    const canvas = canvasRef.current!;
     return {
-      x: (e.clientX - rect.left), // Divide by scale later for drawing operations
-      y: (e.clientY - rect.top)
+      x: (e.clientX - rect.left) / (rect.width / canvas.width),
+      y: (e.clientY - rect.top) / (rect.height / canvas.height)
     };
   }
 
@@ -163,8 +164,8 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
             const aspectRatio = image.naturalWidth / image.naturalHeight;
             const height = width / aspectRatio;
 
-            canvas.width = width;
-            canvas.height = height;
+            canvas.width = image.naturalWidth;
+            canvas.height = image.naturalHeight;
             canvas.style.width = `${width}px`;
             canvas.style.height = `${height}px`;
         }
@@ -244,25 +245,31 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
         </div>
       </TooltipProvider>
 
-      <div ref={containerRef} className="relative w-full overflow-hidden border rounded-lg bg-black/10" style={{ transform: `scale(${scale})`, transformOrigin: 'top left', cursor: 'crosshair' }}>
-          <Image
-            ref={imageRef}
-            src={imageUrl}
-            alt="Interactive content"
-            width={600}
-            height={400}
-            className="w-full h-auto transition-transform duration-300"
-            crossOrigin="anonymous"
-            data-ai-hint="diagram chart"
-          />
-          <canvas
-            ref={canvasRef}
-            className="absolute top-0 left-0"
-            onMouseDown={startInteraction}
-            onMouseMove={interact}
-            onMouseUp={stopInteraction}
-            onMouseLeave={stopInteraction}
-          />
+      <div className="relative w-full overflow-hidden border rounded-lg bg-black/10 cursor-crosshair">
+        <div 
+            ref={containerRef} 
+            className="relative w-full h-full transition-transform duration-300"
+            style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
+        >
+            <Image
+              ref={imageRef}
+              src={imageUrl}
+              alt="Interactive content"
+              width={600}
+              height={400}
+              className="w-full h-auto"
+              crossOrigin="anonymous"
+              data-ai-hint="diagram chart"
+            />
+            <canvas
+              ref={canvasRef}
+              className="absolute top-0 left-0"
+              onMouseDown={startInteraction}
+              onMouseMove={interact}
+              onMouseUp={stopInteraction}
+              onMouseLeave={stopInteraction}
+            />
+        </div>
       </div>
       <div className="flex justify-end">
           <Button onClick={handleSelectArea} disabled={!hasDrawing}>
@@ -272,3 +279,5 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
     </div>
   );
 }
+
+    
