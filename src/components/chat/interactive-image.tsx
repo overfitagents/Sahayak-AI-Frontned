@@ -5,9 +5,8 @@ import { Selection } from '@/lib/chat-data';
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
-import { Eraser, ZoomIn, ZoomOut, Maximize, Pencil, RectangleHorizontal, Circle, ArrowRight, Type } from 'lucide-react';
+import { Eraser, ZoomIn, ZoomOut, Pencil, RectangleHorizontal, Circle, ArrowRight, Type } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
-import { cn } from '@/lib/utils';
 
 interface InteractiveImageProps {
   imageUrl: string;
