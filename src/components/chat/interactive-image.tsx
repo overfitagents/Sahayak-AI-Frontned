@@ -278,3 +278,5 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
     </div>
   );
 }
+
+    
