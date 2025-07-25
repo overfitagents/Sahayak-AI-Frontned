@@ -234,46 +234,46 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
             </div>
         </div>
       </TooltipProvider>
-
       <div ref={containerRef} className="relative flex-1 w-full bg-gray-100 cursor-crosshair overflow-hidden rounded-lg shadow-inner">
         <div 
             className="relative w-full h-full transition-transform duration-300 flex items-center justify-center"
             style={{ transform: `scale(${scale})`, transformOrigin: 'center' }}
         >
-            <Image
-              ref={imageRef}
-              src={imageUrl}
-              alt="Interactive content"
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-contain"
-              crossOrigin="anonymous"
-              data-ai-hint="diagram chart"
-            />
-            <canvas
-              ref={canvasRef}
-              className="absolute top-0 left-0"
-              onMouseDown={startInteraction}
-              onMouseMove={interact}
-              onMouseUp={stopInteraction}
-              onMouseLeave={stopInteraction}
-            />
+          <Image
+            ref={imageRef}
+            src={imageUrl}
+            alt="Interactive content"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-contain"
+            crossOrigin="anonymous"
+            data-ai-hint="diagram chart"
+          />
+          <canvas
+            ref={canvasRef}
+            className="absolute top-0 left-0"
+            onMouseDown={startInteraction}
+            onMouseMove={interact}
+            onMouseUp={stopInteraction}
+            onMouseLeave={stopInteraction}
+          />
         </div>
         {setIsFullScreen && (
-            <div className="absolute top-2 right-2">
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button variant="secondary" size="icon" onClick={() => setIsFullScreen(!isFullScreen)} className="rounded-full shadow-md">
-                                {isFullScreen ? <Minimize/> : <Expand/>}
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent><p>{isFullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}</p></TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-            </div>
+          <div className="absolute top-2 right-2">
+              <TooltipProvider>
+                  <Tooltip>
+                      <TooltipTrigger asChild>
+                          <Button variant="secondary" size="icon" onClick={() => setIsFullScreen(!isFullScreen)} className="rounded-full shadow-md">
+                              {isFullScreen ? <Minimize/> : <Expand/>}
+                          </Button>
+                      </TooltipTrigger>
+                      <TooltipContent><p>{isFullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}</p></TooltipContent>
+                  </Tooltip>
+              </TooltipProvider>
+          </div>
         )}
       </div>
+
       <div className="flex justify-end">
           <Button onClick={handleSelectArea} disabled={!hasDrawing}>
               Select area
@@ -282,3 +282,5 @@ export default function InteractiveImage({ imageUrl, setSelection, isFullScreen,
     </div>
   );
 }
+
+    
