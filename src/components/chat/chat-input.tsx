@@ -11,6 +11,46 @@ import type { Selection } from '@/lib/chat-data';
 import type { PredefinedAction } from '@/lib/actions';
 import SelectionBar from './selection-bar';
 
+// Add type definitions for the Web Speech API
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionResultList {
+  [index: number]: SpeechRecognitionResult;
+  length: number;
+}
+
+interface SpeechRecognitionResult {
+  isFinal: boolean;
+  [index: number]: SpeechRecognitionAlternative;
+  length: number;
+}
+
+interface SpeechRecognitionAlternative {
+  transcript: string;
+  confidence: number;
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  onstart: () => void;
+  onend: () => void;
+  onerror: (event: any) => void;
+  onresult: (event: SpeechRecognitionEvent) => void;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: new () => SpeechRecognition;
+    webkitSpeechRecognition: new () => SpeechRecognition;
+  }
+}
+
 interface ChatInputProps {
   onSend: (message: string, file?: File, chapter?: Chapter) => void;
   disabled: boolean;
@@ -18,6 +58,7 @@ interface ChatInputProps {
   onClearSelection: () => void;
   onAction: (action: PredefinedAction) => void;
   predefinedActions: readonly PredefinedAction[];
+  selectedLanguage: { name: string; code: string; };
 }
 
 export default function ChatInput({ 
@@ -26,13 +67,16 @@ export default function ChatInput({
     selection, 
     onClearSelection, 
     onAction, 
-    predefinedActions 
+    predefinedActions,
+    selectedLanguage
 }: ChatInputProps) {
   const [inputValue, setInputValue] = React.useState('');
   const [isListening, setIsListening] = React.useState(false);
   const [file, setFile] = React.useState<File | null>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const recognitionRef = React.useRef<SpeechRecognition | null>(null);
+  const lastTranscriptRef = React.useRef('');
 
   const handleSend = () => {
     if (inputValue.trim() || file) {
@@ -43,8 +87,59 @@ export default function ChatInput({
   };
 
   const handleMicClick = () => {
-    setIsListening(prev => !prev);
-    // NOTE: Here you would add the actual logic for voice recognition
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      console.error("Speech recognition not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.lang = selectedLanguage.code;
+    recognition.interimResults = true;
+    recognitionRef.current = recognition;
+
+    recognition.onstart = () => {
+      setIsListening(true);
+      lastTranscriptRef.current = '';
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event: { error: any; }) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = 0; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript;
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+      
+      const newFinalTranscript = finalTranscript.substring(lastTranscriptRef.current.length).trim();
+      
+      if (newFinalTranscript) {
+        setInputValue(prev => (prev ? prev + ' ' : '') + newFinalTranscript);
+        lastTranscriptRef.current = finalTranscript;
+      }
+    };
+
+    recognition.start();
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {

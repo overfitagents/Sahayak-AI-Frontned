@@ -10,20 +10,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+interface Language {
+  name: string;
+  code: string;
+}
 
-const languages = [
-  'English',
-  'हिन्दी', // Hindi
-  'தமிழ்', // Tamil
-  'বাংলা', // Bengali
-  'मराठी', // Marathi
-  'ಕನ್ನಡ', // Kannada
-  'తెలుగు', // Telugu
-];
+interface ChatHeaderProps {
+  languages: Language[];
+  selectedLanguage: Language;
+  setSelectedLanguage: (language: Language) => void;
+}
 
-export default function ChatHeader() {
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
-
+export default function ChatHeader({ languages, selectedLanguage, setSelectedLanguage }: ChatHeaderProps) {
   return (
     <header className="flex items-center justify-between p-3 border-b bg-white/10 backdrop-blur-md shadow-lg">
       <div className="flex items-center gap-3">
@@ -37,14 +35,14 @@ export default function ChatHeader() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="flex items-center gap-1 text-white hover:bg-white/10 hover:text-white">
-            {selectedLanguage}
+            {selectedLanguage.name}
             <ChevronDown className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className='bg-white text-card-foreground'>
           {languages.map((lang) => (
-            <DropdownMenuItem key={lang} onSelect={() => setSelectedLanguage(lang)} className='hover:bg-purple-600 hover:text-white focus:bg-purple-600 focus:text-white cursor-pointer'>
-              {lang}
+            <DropdownMenuItem key={lang.code} onSelect={() => setSelectedLanguage(lang)} className='hover:bg-purple-600 hover:text-white focus:bg-purple-600 focus:text-white cursor-pointer'>
+              {lang.name}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
