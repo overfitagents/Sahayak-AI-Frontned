@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import type { Slide, Selection } from '@/lib/chat-data';
 import PptInteractiveImage from './ppt-interactive-image';
+import PptxGenJS from "pptxgenjs";
 
 interface PptViewerProps {
   slides: Slide[];
@@ -65,6 +66,57 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
     return null;
   }
 
+  const generateAndDownloadPptx = async (slides: Slide[], fileName: any = "Presentation.pptx") => {
+ const pptx = new PptxGenJS();
+
+  slides.forEach((slideData) => {
+    const slide = pptx.addSlide();
+
+    // White background
+    slide.background = { fill: "FFFFFF" };
+
+    // IMAGE (left half)
+    if (slideData.image?.inlineData?.data && slideData.image?.inlineData?.mimeType) {
+      const imageData = `data:${slideData.image.inlineData.mimeType};base64,${slideData.image.inlineData.data}`;
+      slide.addImage({
+        data: imageData,
+        x: 0.3,
+        y: 0.5,
+        w: 4.5,
+        h: 4.5,
+      });
+    }
+
+    // TITLE (top-right)
+    slide.addText(slideData.heading, {
+      x: 5.1,
+      y: 0.5,
+      w: 4,
+      h: 1,
+      fontSize: 20,
+      bold: true,
+      color: "6A1B9A", // Purple
+    });
+
+    // BULLETS (below title)
+    slide.addText(
+      slideData.points.map((pt) => `• ${pt}`).join("\n"),
+      {
+        x: 5.1,
+        y: 1.3,
+        w: 4,
+        h: 4,
+        fontSize: 14,
+        color: "333333",
+        lineSpacingMultiple: 1.3,
+      }
+    );
+  });
+
+  pptx.writeFile(fileName);
+};
+
+
   return (
     <>
       <div className="p-3 rounded-lg bg-gray-200 flex flex-col items-start gap-3 w-full max-w-sm">
@@ -82,11 +134,11 @@ export default function PptViewer({ slides, fileName = "Presentation.pptx", file
             <Eye className="mr-2" /> View
           </Button>
           {fileUrl && (
-            <a href={fileUrl} download={fileName} className="flex-1">
-              <Button className="w-full">
+            // <a href={fileUrl} download={fileName} className="flex-1">
+              <Button className="w-full" onClick={() => generateAndDownloadPptx(slides)}>
                 <Download className="mr-2" /> Download
               </Button>
-            </a>
+            // {/* </a> */}
           )}
         </div>
       </div>
