@@ -36,6 +36,7 @@ export interface Message {
   timetable?: Timetable;
   addMessage?: (message: Omit<Message, 'id' | 'timestamp'> & { chapter?: Chapter }) => Message;
   setIsReplying?: (isReplying: boolean) => void;
+  text?: string;
 }
 
 export type Selection = {

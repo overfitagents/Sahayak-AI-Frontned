@@ -93,89 +93,76 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
       const chatResponses = responseData.data;
 
       if (Array.isArray(chatResponses)) {
-        // Special handling for interactive_image which comes as two parts
-        const isInteractiveImage = 
-          chatResponses.length === 2 &&
-          chatResponses.some(r => r.type === 'interactive_image') &&
-          chatResponses.some(r => r.type === 'text');
+        chatResponses.forEach((chatResponse) => {
+          let aiMessage: Omit<Message, "id" | "timestamp">;
 
-        if (isInteractiveImage) {
-          const imagePart = chatResponses.find(r => r.type === 'interactive_image');
-          const textPart = chatResponses.find(r => r.type === 'text');
-          
-          if(imagePart && textPart) {
-            const aiMessage = {
-              sender: "ai" as const,
-              type: "interactive_image" as const,
-              content: textPart.text,
-              imageUrl: imagePart.data,
-              originalContent: textPart.text,
-            };
-            addMessage(aiMessage);
+          switch (chatResponse.type) {
+            case "presentation_generator":
+              aiMessage = {
+                sender: "ai",
+                type: "presentation_generator",
+                content: chatResponse.text,
+                slides: chatResponse.data.slides,
+                fileInfo: {
+                  name: "Presentation.pptx",
+                  url: "#", // a dummy url
+                  type: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                },
+              };
+              break;
+            case "lesson_designer":
+              aiMessage = {
+                sender: "ai",
+                type: "lesson_designer",
+                content: chatResponse.text,
+                chapterPlan: chatResponse.data,
+              };
+              break;
+            case "curriculum_planner":
+              aiMessage = {
+                sender: "ai",
+                type: "curriculum_planner",
+                content: chatResponse.text,
+                lessonPlan: chatResponse.data,
+              };
+              break;
+            case "study_buddy":
+              aiMessage = {
+                sender: "ai",
+                type: "study_buddy",
+                content: chatResponse.text,
+                studyBuddyPairs: chatResponse.pairs,
+              };
+              break;
+            case "timetable":
+              aiMessage = {
+                sender: "ai",
+                type: "timetable",
+                content: "Here is the weekly timetable:",
+                timetable: chatResponse.data || dummyTimetable,
+              };
+              break;
+            case "interactive_image":
+              aiMessage = {
+                sender: "ai",
+                type: "interactive_image",
+                content: chatResponse.text,
+                imageUrl: chatResponse.data,
+                originalContent: chatResponse.text,
+              };
+              break;
+            case "text":
+            default:
+              aiMessage = {
+                sender: "ai",
+                type: "text",
+                content: chatResponse.text,
+                originalContent: chatResponse.text,
+              };
+              break;
           }
-        } else {
-          chatResponses.forEach((chatResponse) => {
-            let aiMessage: Omit<Message, "id" | "timestamp">;
-
-            switch (chatResponse.type) {
-              case "presentation_generator":
-                aiMessage = {
-                  sender: "ai",
-                  type: "presentation_generator",
-                  content: chatResponse.text,
-                  slides: chatResponse.data.slides,
-                  fileInfo: {
-                    name: "Presentation.pptx",
-                    url: "#", // a dummy url
-                    type: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                  },
-                };
-                break;
-              case "lesson_designer":
-                aiMessage = {
-                  sender: "ai",
-                  type: "lesson_designer",
-                  content: chatResponse.text,
-                  chapterPlan: chatResponse.data,
-                };
-                break;
-              case "curriculum_planner":
-                aiMessage = {
-                  sender: "ai",
-                  type: "curriculum_planner",
-                  content: chatResponse.text,
-                  lessonPlan: chatResponse.data,
-                };
-                break;
-              case "study_buddy":
-                aiMessage = {
-                  sender: "ai",
-                  type: "study_buddy",
-                  content: chatResponse.text,
-                  studyBuddyPairs: chatResponse.pairs,
-                };
-                break;
-              case "timetable":
-                aiMessage = {
-                  sender: "ai",
-                  type: "timetable",
-                  content: "Here is the weekly timetable:",
-                  timetable: chatResponse.data || dummyTimetable,
-                };
-                break;
-              case "text":
-              default:
-                aiMessage = {
-                  sender: "ai",
-                  type: "text",
-                  content: chatResponse.text,
-                  originalContent: chatResponse.text,
-                };
-                break;
-            }
-            addMessage(aiMessage);
-          });
-        }
+          addMessage(aiMessage);
+        });
       }
     } catch (error) {
       console.error("Error sending message:", error);
