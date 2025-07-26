@@ -3,6 +3,7 @@
 import { Message, Selection } from '@/lib/chat-data';
 import { cn } from '@/lib/utils';
 import AudioPlayer from './audio-player';
+import ReactMarkdown from 'react-markdown';
 
 interface InteractiveTextProps {
   message: Message;
@@ -23,9 +24,9 @@ export default function InteractiveText({ message, setSelection }: InteractiveTe
   
   return (
     <div className="flex items-center gap-2">
-      <p onMouseUp={handleMouseUp} className={cn("leading-relaxed cursor-text", "font-semibold")}>
-        {message.content}
-      </p>
+      <div onMouseUp={handleMouseUp} className={cn("leading-relaxed cursor-text", "font-semibold")}> 
+        <ReactMarkdown>{message.content}</ReactMarkdown>
+      </div>
       <AudioPlayer text={message.content} />
     </div>
   );

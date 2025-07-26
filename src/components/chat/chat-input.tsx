@@ -100,7 +100,7 @@ export default function ChatInput({
     }
 
     const recognition = new SpeechRecognition();
-    recognition.continuous = true;
+    // recognition.continuous = true;
     recognition.lang = selectedLanguage.code;
     recognition.interimResults = true;
     recognitionRef.current = recognition;

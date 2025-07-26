@@ -1,5 +1,6 @@
 
 import { Message, Sender, Selection } from '@/lib/chat-data';
+import ReactMarkdown from 'react-markdown';
 import { cn } from '@/lib/utils';
 import InteractiveText from './interactive-text';
 import InteractiveImage from './interactive-image';
@@ -82,6 +83,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         if (isAi && message.originalContent) {
           return <InteractiveText message={message} setSelection={setSelection} />;
         }
+
         return (
           <div className="flex items-center gap-2">
             <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>
