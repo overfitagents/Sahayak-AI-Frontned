@@ -164,10 +164,12 @@ export default function PptInteractiveImage({ imageUrl, setSelection, isFullScre
             const aspectRatio = image.naturalWidth / image.naturalHeight;
             const height = width / aspectRatio;
 
-            canvas.width = image.naturalWidth;
-            canvas.height = image.naturalHeight;
-            canvas.style.width = `${width}px`;
-            canvas.style.height = `${height}px`;
+            // canvas.width = image.naturalWidth;
+            // canvas.height = image.naturalHeight;
+            // canvas.style.width = `${width}px`;
+            // canvas.style.height = `${height}px`;
+            canvas.style.width = `100%`;
+            canvas.style.height = `100%`;
         }
       };
       if (image.complete) {
@@ -250,15 +252,16 @@ export default function PptInteractiveImage({ imageUrl, setSelection, isFullScre
                 crossOrigin="anonymous"
                 data-ai-hint="diagram chart"
             />
-          </div>
-          <canvas
+            <canvas
             ref={canvasRef}
-            className="absolute top-0 left-0"
+            className="absolute top-0 left-0 width-full height-full cursor-crosshair"
             onMouseDown={startInteraction}
             onMouseMove={interact}
             onMouseUp={stopInteraction}
             onMouseLeave={stopInteraction}
           />
+          </div>
+          
         </div>
         {setIsFullScreen && (
           <div className="absolute top-2 right-2">
