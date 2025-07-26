@@ -1,10 +1,11 @@
+
 "use client";
 
 import { Selection } from '@/lib/chat-data';
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
-import { Eraser, ZoomIn, ZoomOut, Maximize } from 'lucide-react';
+import { Eraser, ZoomIn, ZoomOut, RefreshCw } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 interface InteractiveImageProps {
@@ -166,8 +167,8 @@ export default function InteractiveImage({ imageUrl, setSelection }: Interactive
                         <TooltipContent><p>Zoom Out</p></TooltipContent>
                     </Tooltip>
                     <Tooltip>
-                        <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => { setScale(1); }}><Maximize/></Button></TooltipTrigger>
-                        <TooltipContent><p>Reset Zoom</p></TooltipContent>
+                        <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={() => { setScale(1); }}><RefreshCw/></Button></TooltipTrigger>
+                        <TooltipContent><p>Reset</p></TooltipContent>
                     </Tooltip>
                     <Tooltip>
                         <TooltipTrigger asChild><Button variant="outline" size="icon" onClick={clearDrawing} disabled={!hasDrawing}><Eraser /></Button></TooltipTrigger>
