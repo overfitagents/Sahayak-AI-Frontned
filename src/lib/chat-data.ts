@@ -56,60 +56,13 @@ export const initialMessages: Message[] = [
     originalContent: "Hello! I'm Sahayak, your smart assistant. How can I help you today?",
     timestamp: new Date(Date.now() - 4 * 60 * 1000).toISOString(),
   },
-  // {
-  //   id: '2',
-  //   sender: 'user',
-  //   type: 'text',
-  //   content: 'what is photosynthesis?',
-  //   timestamp: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
-  // },
-  //   {
-  //   id: '3',
-  //   sender: 'ai',
-  //   type: 'text',
-  //   content: 'Photosynthesis is the process by which plants convert light energy into chemical energy. Plants use sunlight, carbon dioxide, and water to produce glucose and oxygen. This fundamental biological process powers most life on Earth!',
-  //   originalContent: 'Photosynthesis is the process by which plants convert light energy into chemical energy. Plants use sunlight, carbon dioxide, and water to produce glucose and oxygen. This fundamental biological process powers most life on Earth!',
-  //   timestamp: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
-  // },
-  // {
-  //   id: '4',
-  //   sender: 'ai',
-  //   type: 'interactive_image',
-  //   content: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
-  //   imageUrl: 'https://placehold.co/600x400.png',
-  //   originalContent: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
-  //   timestamp: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
-  // },
-  // {
-  //   id: '5',
-  //   sender: 'ai',
-  //   type: 'presentation_generator',
-  //   content: 'Here is the presentation file you requested.',
-  //   slides: [],
-  //   fileInfo: {
-  //       name: 'Presentation.pptx',
-  //       url: '#', // a dummy url
-  //       type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-  //   },
-  //   timestamp: new Date().toISOString(),
-  // },
-  // {
-  //   id: '6',
-  //   sender: 'ai',
-  //   type: 'study_buddy',
-  //   content: '🚀 Here are the study buddy pairings! I\'ve matched students based on their strengths and areas where they can help each other grow.',
-  //   studyBuddyPairs: [
-  //     {
-  //       student1: { name: 'Alice', avatar: 'https://placehold.co/100x100.png', strengths: ['📐 Math'], weaknesses: ['📖 History'] },
-  //       student2: { name: 'Bob', avatar: 'https://placehold.co/100x100.png', strengths: ['📖 History'], weaknesses: ['📐 Math'] },
-  //       reason: '🤝 Alice can help Bob with Math, and Bob can help Alice with History, creating a mutually beneficial partnership.',
-  //     },
-  //     {
-  //       student1: { name: 'Charlie', avatar: 'https://placehold.co/100x100.png', strengths: ['🧪 Science'], weaknesses: ['🎨 Art'] },
-  //       student2: { name: 'Diana', avatar: 'https://placehold.co/100x100.png', strengths: ['🎨 Art'], weaknesses: ['🧪 Science'] },
-  //       reason: '🤝 Charlie excels in scientific concepts, while Diana has a creative flair. They can learn a lot from each other.',
-  //     },
-  //   ],
-  //   timestamp: new Date().toISOString(),
-  // }
+  {
+    id: '4',
+    sender: 'ai',
+    type: 'interactive_image',
+    content: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
+    imageUrl: 'https://placehold.co/600x400.png',
+    originalContent: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
+    timestamp: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
+  },
 ];
