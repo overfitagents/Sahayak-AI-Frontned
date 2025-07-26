@@ -74,7 +74,7 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
 
     try {
       // http://localhost:4000
-      const response = await fetch(host.hostName + "/api/v1/message", {
+      const response = await fetch("https://dev-sahayak-server-543433794712.us-central1.run.app" + "/api/v1/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
