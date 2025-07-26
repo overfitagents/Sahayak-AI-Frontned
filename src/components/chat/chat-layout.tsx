@@ -81,7 +81,8 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
       }
 
       if (fileData) {
-        requestBody.fileData = fileData;
+        // Strip the data URI prefix before sending
+        requestBody.fileData = fileData.split(',')[1];
       }
 
       const response = await fetch("https://dev-sahayak-server-543433794712.us-central1.run.app" + "/api/v1/message", {
