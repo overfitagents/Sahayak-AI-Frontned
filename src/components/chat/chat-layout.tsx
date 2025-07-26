@@ -1,3 +1,4 @@
+
 "use client";
 
 import type { Message, Selection } from "@/lib/chat-data";
@@ -15,6 +16,7 @@ import { predefinedActions, PredefinedAction } from "@/lib/actions";
 import { askFollowUpQuestion } from "@/ai/flows/follow-up-questions-on-text";
 import { generateImage } from "@/ai/flows/generate-image";
 import { dummyLessonPlan, dummyChapter, type Chapter } from "@/lib/lesson-plan-data";
+import { dummyTimetable } from "@/lib/timetable-data";
 import host from "../../../host";
 
 interface ChatLayoutProps {
@@ -72,7 +74,7 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
 
     try {
       // http://localhost:4000
-      const response = await fetch("https://dev-sahayak-server-543433794712.us-central1.run.app" + "/api/v1/message", {
+      const response = await fetch(host.hostName + "/api/v1/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -139,6 +141,14 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
                 type: "study_buddy",
                 content: chatResponse.text,
                 studyBuddyPairs: chatResponse.pairs,
+              };
+              break;
+            case "timetable":
+              aiMessage = {
+                sender: "ai",
+                type: "timetable",
+                content: "Here is the weekly timetable:",
+                timetable: chatResponse.data || dummyTimetable,
               };
               break;
             case "text":

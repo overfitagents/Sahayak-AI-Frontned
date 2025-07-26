@@ -12,6 +12,8 @@ import LessonPlannerResponse from './lesson-planner-response';
 import ChapterPlannerResponse from './chapter-planner-response';
 import { dummyLessonPlan } from '@/lib/lesson-plan-data';
 import AudioPlayer from './audio-player';
+import TimetableResponse from './timetable-response';
+import { dummyTimetable } from '@/lib/timetable-data';
 
 interface ChatMessageProps {
   message: Message;
@@ -104,6 +106,8 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         return <LessonPlannerResponse plan={message.lessonPlan || dummyLessonPlan} addMessage={addMessage} setIsReplying={setIsReplying} onSend={onSend} />;
       case 'lesson_designer':
         return <ChapterPlannerResponse chapter={message.chapterPlan!} />;
+      case 'timetable':
+        return <TimetableResponse timetable={message.timetable || dummyTimetable} />;
       default:
         return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
     }
@@ -113,7 +117,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
     'bg-gray-100 text-gray-800 rounded-bl-none' : 
     'bg-gradient-to-br from-blue-400 to-cyan-400 text-white rounded-br-none';
   
-  const isPlanner = message.type === 'curriculum_planner' || message.type === 'lesson_designer' || message.type === 'presentation_generator';
+  const isPlanner = message.type === 'curriculum_planner' || message.type === 'lesson_designer' || message.type === 'presentation_generator' || message.type === 'timetable';
 
   return (
     <div

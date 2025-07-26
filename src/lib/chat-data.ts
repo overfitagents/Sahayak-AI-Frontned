@@ -1,10 +1,11 @@
 
 import type { StudyBuddyPair } from "./study-buddy-data";
 import type { LessonPlan, Chapter } from "./lesson-plan-data";
+import type { Timetable } from "./timetable-data";
 
 export type Sender = 'user' | 'ai';
 
-export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'interactive_image' | 'presentation_generator' | 'file' | 'study_buddy' | 'curriculum_planner' | 'lesson_designer';
+export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'interactive_image' | 'presentation_generator' | 'file' | 'study_buddy' | 'curriculum_planner' | 'lesson_designer' | 'timetable';
 
 export interface Slide {
     heading: string;
@@ -32,6 +33,7 @@ export interface Message {
   lessonPlan?: LessonPlan;
   chapterPlan?: Chapter;
   slides?: Slide[];
+  timetable?: Timetable;
   addMessage?: (message: Omit<Message, 'id' | 'timestamp'> & { chapter?: Chapter }) => Message;
   setIsReplying?: (isReplying: boolean) => void;
 }
