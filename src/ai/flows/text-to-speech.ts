@@ -8,6 +8,7 @@
  */
 
 import { ai } from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import { z } from 'genkit';
 import wav from 'wav';
 
@@ -20,7 +21,7 @@ const ConvertTextToSpeechOutputSchema = z.object({
   audioDataUri: z
     .string()
     .describe(
-      "The generated audio as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:audio/wav;base64,<encoded_data>'."
+      "The generated audio as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:audio/wav;base64,<encoded_data>'"
     ),
 });
 export type ConvertTextToSpeechOutput = z.infer<typeof ConvertTextToSpeechOutputSchema>;
@@ -64,7 +65,7 @@ const convertTextToSpeechFlow = ai.defineFlow(
   },
   async ({ text }) => {
     const { media } = await ai.generate({
-      model: 'googleai/gemini-2.5-flash-preview-tts',
+      model: googleAI.model('gemini-2.5-flash-preview-tts'),
       config: {
         responseModalities: ['AUDIO'],
         speechConfig: {
