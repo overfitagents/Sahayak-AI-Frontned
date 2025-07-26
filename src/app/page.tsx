@@ -19,7 +19,7 @@ export default function Home() {
   useEffect(() => {
     const getSession = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/session");
+        const response = await fetch("https://dev-sahayak-server-543433794712.us-central1.run.app/api/v1/session");
         if (!response.ok) {
           throw new Error('Failed to fetch session');
         }

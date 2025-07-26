@@ -37,6 +37,7 @@ export interface Message {
   addMessage?: (message: Omit<Message, 'id' | 'timestamp'> & { chapter?: Chapter }) => Message;
   setIsReplying?: (isReplying: boolean) => void;
   text?: string;
+  fileData?: string;
 }
 
 export type Selection = {
@@ -57,13 +58,13 @@ export const initialMessages: Message[] = [
     originalContent: "Hello! I'm Sahayak, your smart assistant. How can I help you today?",
     timestamp: new Date(Date.now() - 4 * 60 * 1000).toISOString(),
   },
-  {
-    id: '4',
-    sender: 'ai',
-    type: 'interactive_image',
-    content: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
-    imageUrl: 'https://placehold.co/600x400.png',
-    originalContent: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
-    timestamp: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
-  },
+  // {
+  //   id: '4',
+  //   sender: 'ai',
+  //   type: 'interactive_image',
+  //   content: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
+  //   imageUrl: 'https://placehold.co/600x400.png',
+  //   originalContent: 'Here is a diagram explaining photosynthesis. You can draw on it if you have any specific questions!',
+  //   timestamp: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
+  // },
 ];

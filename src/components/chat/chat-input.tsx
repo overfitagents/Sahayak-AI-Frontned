@@ -52,7 +52,7 @@ declare global {
 }
 
 interface ChatInputProps {
-  onSend: (message: string, file?: File, chapter?: Chapter) => void;
+  onSend: (message: string, fileData?: string) => void;
   disabled: boolean;
   selection: Selection | null;
   onClearSelection: () => void;
@@ -72,17 +72,17 @@ export default function ChatInput({
 }: ChatInputProps) {
   const [inputValue, setInputValue] = React.useState('');
   const [isListening, setIsListening] = React.useState(false);
-  const [file, setFile] = React.useState<File | null>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const recognitionRef = React.useRef<SpeechRecognition | null>(null);
   const lastTranscriptRef = React.useRef('');
 
   const handleSend = () => {
-    if (inputValue.trim() || file) {
-      onSend(inputValue.trim(), file ?? undefined);
+    if (inputValue.trim() || (selection?.type === 'image')) {
+      const fileData = selection?.type === 'image' ? selection.content : undefined;
+      onSend(inputValue.trim(), fileData);
       setInputValue('');
-      setFile(null);
+      onClearSelection();
     }
   };
 
@@ -100,7 +100,6 @@ export default function ChatInput({
     }
 
     const recognition = new SpeechRecognition();
-    // recognition.continuous = true;
     recognition.lang = selectedLanguage.code;
     recognition.interimResults = true;
     recognitionRef.current = recognition;
@@ -149,13 +148,6 @@ export default function ChatInput({
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-    }
-  };
-
   React.useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -164,14 +156,13 @@ export default function ChatInput({
       textarea.style.height = `${scrollHeight}px`;
     }
   }, [inputValue]);
-
-  const FileIcon = file ? getFileIcon(file.type) : null;
   
-  const handleSuggestionClick = (action: PredefinedAction) => {
+  const handleActionClick = (action: PredefinedAction) => {
     if (selection) {
-      onAction(action);
-    } else {
       setInputValue(action);
+      textareaRef.current?.focus();
+    } else {
+      onAction(action);
     }
   }
 
@@ -187,25 +178,12 @@ export default function ChatInput({
                         <SelectionBar 
                             selection={selection} 
                             onClear={onClearSelection} 
-                            onAction={onAction} 
+                            onAction={handleActionClick} 
                             actions={predefinedActions}
                         />
                     </div>
                 )}
-                {file && (
-                <div className="p-2.5 m-2.5 mb-0 border rounded-lg bg-gray-100/80">
-                    <div className="flex items-center gap-3">
-                    {FileIcon && <FileIcon className="h-6 w-6 text-gray-600" />}
-                    <div className="flex-1 text-sm text-gray-700 font-medium truncate">
-                        {file.name}
-                    </div>
-                    <Button type="button" variant="ghost" size="icon" className="h-7 w-7 rounded-full" onClick={() => setFile(null)}>
-                        <X className="h-4 w-4" />
-                        <span className="sr-only">Remove file</span>
-                    </Button>
-                    </div>
-                </div>
-                )}
+                
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
@@ -217,7 +195,7 @@ export default function ChatInput({
                         <Paperclip />
                         <span className="sr-only">Attach file</span>
                     </Button>
-                    <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
+                    <input type="file" ref={fileInputRef} className="hidden" />
                     <Textarea
                         ref={textareaRef}
                         value={inputValue}
@@ -247,7 +225,7 @@ export default function ChatInput({
                     </Button>
                 </form>
             </div>
-             <Button type="submit" onClick={handleSend} size="icon" className="shrink-0 h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 text-white shadow-lg hover:-translate-y-0.5 transition-transform" disabled={(!inputValue.trim() && !file) || disabled}>
+             <Button type="submit" onClick={handleSend} size="icon" className="shrink-0 h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 text-white shadow-lg hover:-translate-y-0.5 transition-transform" disabled={!inputValue.trim() || disabled}>
                 <Send />
                 <span className="sr-only">Send message</span>
             </Button>

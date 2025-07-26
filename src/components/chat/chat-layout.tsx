@@ -50,16 +50,18 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
     return newMessage;
   };
 
-  const handleSendMessage = async (content: string, file?: File) => {
+  const handleSendMessage = async (content: string, fileData?: string) => {
     if (isReplying) return;
 
     const userMessage = addMessage({
       sender: "user",
       type: "text",
       content: content,
+      fileData: fileData,
     });
 
     setIsReplying(true);
+    setSelection(null);
 
     if (!sessionId) {
       console.error("Session ID is not available.");
@@ -73,16 +75,21 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
     }
 
     try {
-      // http://localhost:4000
+      const requestBody: {sessionId: string; text: string; fileData?: string} = {
+        sessionId: sessionId,
+        text: content,
+      }
+
+      if (fileData) {
+        requestBody.fileData = fileData;
+      }
+
       const response = await fetch("https://dev-sahayak-server-543433794712.us-central1.run.app" + "/api/v1/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          sessionId: sessionId,
-          text: content,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
@@ -179,49 +186,9 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
   const handleAction = async (action: PredefinedAction, context?: Selection) => {
     const currentSelection = context || selection;
     if (!currentSelection) {
-      // Handle case where suggestion chip is clicked without a selection
       addMessage({ sender: "user", type: "text", content: action });
       addMessage({ sender: "ai", type: "text", content: `You clicked on "${action}". How can I help you with that?` });
       return;
-    }
-
-    setIsReplying(true);
-    setSelection(null);
-
-    addMessage({
-      sender: "user",
-      type: "text",
-      content: `${action} the selected ${currentSelection.type}.`,
-    });
-
-    try {
-      const result = await askPredefinedQuestion({
-        action,
-        selectedText: currentSelection.type === "text" ? currentSelection.content : undefined,
-        contextText: currentSelection.type === "text" ? currentSelection.context : undefined,
-        imageDataUri: currentSelection.type === "image" ? currentSelection.content : undefined,
-      });
-
-      addMessage({
-        sender: "ai",
-        type: "text",
-        content: result.answer,
-        originalContent: result.answer,
-      });
-    } catch (error) {
-      console.error(`Error during action "${action}":`, error);
-      toast({
-        title: "Error",
-        description: `Could not perform the action "${action}". Please try again.`,
-        variant: "destructive",
-      });
-      addMessage({
-        sender: "ai",
-        type: "text",
-        content: "I'm sorry, I couldn't process that request.",
-      });
-    } finally {
-      setIsReplying(false);
     }
   };
 
