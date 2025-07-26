@@ -10,6 +10,7 @@ import StudyBuddyResponse from './study-buddy-response';
 import LessonPlannerResponse from './lesson-planner-response';
 import ChapterPlannerResponse from './chapter-planner-response';
 import { dummyLessonPlan } from '@/lib/lesson-plan-data';
+import AudioPlayer from './audio-player';
 
 interface ChatMessageProps {
   message: Message;
@@ -81,7 +82,12 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         if (isAi && message.originalContent) {
           return <InteractiveText message={message} setSelection={setSelection} />;
         }
-        return <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>;
+        return (
+          <div className="flex items-center gap-2">
+            <p className={cn("leading-relaxed", !isAi && "font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]")}>{message.content}</p>
+            <AudioPlayer text={message.content} isUserMessage={!isAi} />
+          </div>
+        );
       case 'image':
         return <InteractiveImage imageUrl={message.content} setSelection={setSelection} />;
       case 'interactive_image':

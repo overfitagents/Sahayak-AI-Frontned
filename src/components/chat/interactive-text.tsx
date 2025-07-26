@@ -2,6 +2,7 @@
 
 import { Message, Selection } from '@/lib/chat-data';
 import { cn } from '@/lib/utils';
+import AudioPlayer from './audio-player';
 
 interface InteractiveTextProps {
   message: Message;
@@ -21,8 +22,11 @@ export default function InteractiveText({ message, setSelection }: InteractiveTe
   };
   
   return (
-    <p onMouseUp={handleMouseUp} className={cn("leading-relaxed cursor-text", "font-semibold")}>
-      {message.content}
-    </p>
+    <div className="flex items-center gap-2">
+      <p onMouseUp={handleMouseUp} className={cn("leading-relaxed cursor-text", "font-semibold")}>
+        {message.content}
+      </p>
+      <AudioPlayer text={message.content} />
+    </div>
   );
 }
