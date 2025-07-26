@@ -25,7 +25,7 @@ export default function ChatMessages({ messages, isReplying, addMessage, setIsRe
   return (
     <main ref={scrollAreaRef} className="flex-1 overflow-y-auto p-4 md:p-6">
       <div className="max-w-4xl mx-auto space-y-6">
-        {messages?.map((message) => (
+        {messages.map((message) => (
           <ChatMessage key={message.id} message={message} addMessage={addMessage} setIsReplying={setIsReplying} setSelection={setSelection} onSend={onSend} />
         ))}
         {isReplying && <TypingIndicator />}

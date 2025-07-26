@@ -32,7 +32,7 @@ const languages = [
 ];
 
 export default function ChatLayout({ sessionId }: ChatLayoutProps) {
-  const [messages, setMessages] = useState<any>();
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isReplying, setIsReplying] = useState(false);
   const [selection, setSelection] = useState<Selection | null>(null);
   const { toast } = useToast();
@@ -44,7 +44,7 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
       id: uuidv4(),
       timestamp: new Date().toISOString(),
     };
-    setMessages((prev: any) => [...prev, newMessage]);
+    setMessages((prev) => [...prev, newMessage]);
     return newMessage;
   };
 
