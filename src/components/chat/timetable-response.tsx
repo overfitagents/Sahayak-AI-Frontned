@@ -10,7 +10,7 @@ import { Calendar, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface TimetableResponseProps {
-  timetable: Timetable;
+  timetable: any;
 }
 
 const subjectColors: { [key: string]: string } = {
@@ -21,16 +21,26 @@ const subjectColors: { [key: string]: string } = {
   default: 'bg-gray-100 text-gray-800 border-gray-200',
 };
 
-const getSubjectColor = (subject: string) => {
+const getSubjectColor = (subject: any) => {
   return subjectColors[subject] || subjectColors.default;
 };
 
 export default function TimetableResponse({ timetable }: TimetableResponseProps) {
-  const [selectedClass, setSelectedClass] = useState(timetable.classes[0] || 'Class 6');
+  console.log("Timetable data:", timetable);
+ const [selectedClass, setSelectedClass] = useState(
+  timetable ? Object.keys(timetable)[0] : 'class_6'
+);
 
-  const totalClasses = timetable.schedule.reduce((acc, curr) => {
-    return acc + Object.values(curr.subjects).filter(s => s.subject !== '').length;
-  }, 0);
+const totalClasses: number = timetable && timetable[selectedClass]
+  ? Object.values(timetable[selectedClass] as Record<string, { subject: string; time: string }[]>).reduce(
+      (acc, day) => acc + (Array.isArray(day) ? day.length : 0),
+      0
+    )
+  : 0;
+
+
+
+
 
   return (
     <Card className="w-full max-w-4xl mx-auto bg-white text-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200/80">
@@ -49,44 +59,64 @@ export default function TimetableResponse({ timetable }: TimetableResponseProps)
             <SelectValue placeholder="Select Class" />
           </SelectTrigger>
           <SelectContent>
-            {timetable.classes.map(c => (
-              <SelectItem key={c} value={c}>{c}</SelectItem>
-            ))}
+            {Object.keys(timetable || {}).map(c => (
+  <SelectItem key={c} value={c}>{c.replace('class_', 'Class ')}</SelectItem>
+))}
+
           </SelectContent>
         </Select>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-purple-600 text-white">
-              <tr>
-                <th className="p-4 font-semibold w-1/6"><Clock className="inline-block mr-2 h-5 w-5" />Time</th>
-                {timetable.days.map(day => (
-                  <th key={day} className="p-4 font-semibold">{day}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {timetable.schedule.map(timeSlot => (
-                <tr key={timeSlot.time} className="hover:bg-gray-50 transition-colors">
-                  <td className="p-4 font-medium text-gray-600">{timeSlot.time}</td>
-                  {timetable.days.map(day => (
-                    <td key={day} className="p-4">
-                      {timeSlot.subjects[day]?.subject ? (
-                        <Badge variant="outline" className={cn("text-base font-semibold border-2 shadow-sm", getSubjectColor(timeSlot.subjects[day].subject))}>
-                          {timeSlot.subjects[day].subject}
-                        </Badge>
-                      ) : (
-                        <span className="text-gray-400">-</span>
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </CardContent>
+  <div className="overflow-x-auto">
+    <table className="w-full text-left">
+      <thead className="bg-purple-600 text-white">
+        <tr>
+          <th className="p-4 font-semibold w-1/6">
+            <Clock className="inline-block mr-2 h-5 w-5" />
+            Time
+          </th>
+          {Object.keys(timetable[selectedClass]).map(day => (
+            <th key={day} className="p-4 font-semibold">{day}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-gray-200">
+        {(() => {
+          // Extract all time slots across all days to build unique sorted time slots
+          const allSlots = Object.values(timetable[selectedClass] || {}).flat();
+          const uniqueTimes = Array.from(new Set(allSlots.map((slot: any) => slot.time))).sort();
+
+          return uniqueTimes.map(time => (
+            <tr key={time} className="hover:bg-gray-50 transition-colors">
+              <td className="p-4 font-medium text-gray-600">{time}</td>
+              {Object.keys(timetable[selectedClass]).map(day => {
+                const slot = (timetable[selectedClass][day] || []).find((s: any) => s.time === time);
+                return (
+                  <td key={day} className="p-4">
+                    {slot && slot.subject ? (
+                      <Badge
+                        variant="outline"
+                        className={cn(
+                          "text-base font-semibold border-2 shadow-sm",
+                          getSubjectColor(slot.subject)
+                        )}
+                      >
+                        {slot.subject}
+                      </Badge>
+                    ) : (
+                      <span className="text-gray-400">-</span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ));
+        })()}
+      </tbody>
+    </table>
+  </div>
+</CardContent>
+
       <CardFooter className="p-6 bg-gray-50/50 border-t border-gray-200 flex justify-between items-center">
         <div className="flex items-center gap-4 flex-wrap">
           <span className="font-semibold text-gray-600">Subjects:</span>
