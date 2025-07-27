@@ -67,35 +67,10 @@ Frontend UI is prototyped with Firebase AI Studio
 ## Deployed Link
 
 You can try out a live version of the Sahayak AI Assistant here:
-[**[Placeholder for Deployed App Link]**](https://your-app-url.com)
+[**[Sahayak AI]**](https://sahayak-frontend-543433794712.us-central1.run.app)
 
 We have published from firebase AI Studio 
 Check out <link> 
-
-## Website Screenshots
-
-![Screenshot 1: Chat Interface](https://placehold.co/800x450.png?text=Chat+Interface)
-*Caption: Interactive chat interface where teachers communicate with the AI using Gemini 2.5 Flash.*
-
-![Screenshot 2: Curriculum Planner](https://placehold.co/800x450.png?text=Curriculum+Planner)
-*Caption: AI-generated yearly curriculum aligned with the teacher’s timetable, powered by Gemini 2.5 Pro.*
-
-![Screenshot 3: Chapter Planner](https://placehold.co/800x450.png?text=Chapter+Planner)
-*Caption: Smart chapter-wise planning tailored to the teacher’s schedule using Gemini 2.5 Pro.*
-
-![Screenshot 4: Presentation Slides](https://placehold.co/800x450.png?text=Chapter+Planner)
-*Caption:  Interactive presentation slides for classroom teaching, created by the AI agent.*
-
-![Screenshot 5: Study Buddy Groups](https://placehold.co/800x450.png?text=Chapter+Planner)
-*Caption: AI-formed student groups based on test scores for collaborative learning and peer support.*
-
-## Demo Video
-
-Watch a full demo of the Sahayak AI Assistant in action:
-
-[**[Placeholder for Demo Video Link]**](https://your-video-link.com)
-
-[![Demo Video Thumbnail](https://placehold.co/800x450.png?text=Watch+the+Demo)](https://your-video-link.com)
 
 ## Conclusion
 
