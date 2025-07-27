@@ -1,13 +1,13 @@
-
 "use client";
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import type { Chapter, LessonBreakdown, DifferentiationSupport, Section } from '@/lib/lesson-plan-data';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from '../ui/badge';
 import { BookOpen, Target, Lightbulb, Activity, CheckSquare, Clock, Users, Brain, Rocket, ListChecks, ArrowRight, BookCopy, Zap, GitBranch, Milestone, Book, Tag, Goal } from 'lucide-react';
+import { Button } from '../ui/button';
 
 interface ChapterPlannerResponseProps {
     chapter: Chapter;
@@ -63,6 +63,230 @@ const SectionDisplay = ({ section }: { section: Section }) => (
 
 export default function ChapterPlannerResponse({ chapter }: ChapterPlannerResponseProps) {
     const [activeTab, setActiveTab] = useState("overview");
+    const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+    const handleDownload = async () => {
+        setIsGeneratingPDF(true);
+        
+        try {
+            // Create PDF content in a new window
+            const printWindow = window.open('', '_blank');
+            if (!printWindow) {
+                alert('Please allow popups to download PDF');
+                return;
+            }
+
+            const learningGoalsArray = chapter.overview.learningGoals.split(/\d+\.\s?/).filter(Boolean);
+
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${chapter.chapterTitle} - Lesson Plan</title>
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            line-height: 1.5; 
+                            color: #333; 
+                            padding: 15px;
+                            background: white;
+                            margin: 0;
+                        }
+                        .header { 
+                            text-align: center; 
+                            margin-bottom: 20px; 
+                            border-bottom: 2px solid #8B5CF6; 
+                            padding-bottom: 15px; 
+                        }
+                        .header h1 { 
+                            color: #8B5CF6; 
+                            margin-bottom: 8px; 
+                            font-size: 26px; 
+                        }
+                        .header-info { 
+                            display: flex; 
+                            justify-content: center; 
+                            gap: 20px; 
+                            flex-wrap: wrap; 
+                        }
+                        .section { margin-bottom: 20px; }
+                        .section h2 { 
+                            color: #8B5CF6; 
+                            border-bottom: 1px solid #E5E7EB; 
+                            padding-bottom: 3px; 
+                            margin-bottom: 12px; 
+                        }
+                        .period { 
+                            margin-bottom: 20px; 
+                            border: 1px solid #E5E7EB; 
+                            border-radius: 8px; 
+                            padding: 15px; 
+                        }
+                        .period h3 { 
+                            color: #374151; 
+                            margin-bottom: 10px; 
+                        }
+                        .period-time { 
+                            color: #6B7280; 
+                            font-weight: normal; 
+                        }
+                        .lesson-section { 
+                            margin-bottom: 15px; 
+                            padding: 10px; 
+                            background-color: #F9FAFB; 
+                            border-radius: 6px; 
+                        }
+                        .lesson-section h4 { 
+                            color: #374151; 
+                            margin-bottom: 8px; 
+                        }
+                        .section-time { 
+                            color: #6B7280; 
+                            font-size: 14px; 
+                        }
+                        .content-block { margin-bottom: 10px; }
+                        .content-block strong { color: #6B7280; }
+                        ul { margin: 5px 0 0 20px; }
+                        li { margin-bottom: 3px; }
+                        .wrap-up { 
+                            background-color: #EDE9FE; 
+                            padding: 10px; 
+                            border-radius: 6px; 
+                            margin-top: 10px; 
+                        }
+                        .wrap-up strong { color: #8B5CF6; }
+                        .diff-grid { 
+                            display: grid; 
+                            grid-template-columns: 1fr 1fr; 
+                            gap: 15px; 
+                            margin-top: 15px; 
+                        }
+                        .diff-struggling { 
+                            border: 1px solid #FCA5A5; 
+                            border-radius: 8px; 
+                            padding: 15px; 
+                            background-color: #FEF2F2; 
+                        }
+                        .diff-struggling h3 { color: #DC2626; margin-bottom: 10px; }
+                        .diff-advanced { 
+                            border: 1px solid #86EFAC; 
+                            border-radius: 8px; 
+                            padding: 15px; 
+                            background-color: #F0FDF4; 
+                        }
+                        .diff-advanced h3 { color: #16A34A; margin-bottom: 10px; }
+                        @media print {
+                            body { margin: 0; padding: 10px; }
+                            .diff-grid { 
+                                display: block; 
+                            }
+                            .diff-struggling, .diff-advanced { 
+                                margin-bottom: 15px; 
+                                break-inside: avoid;
+                            }
+                            .period { break-inside: avoid; }
+                            .header { margin-bottom: 15px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>${chapter.chapterTitle}</h1>
+                        <div class="header-info">
+                            <span><strong>Class:</strong> ${chapter.overview.class}</span>
+                            <span><strong>Subject:</strong> ${chapter.overview.subject}</span>
+                            <span><strong>Time:</strong> ${chapter.overview.timeAllotment}</span>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Learning Goals</h2>
+                        <ul>
+                            ${learningGoalsArray.map(goal => `<li>${goal.trim()}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="section">
+                        <h2>Lesson Breakdown</h2>
+                        ${chapter.lessonBreakdown.map(period => `
+                            <div class="period">
+                                <h3>${period.periodName} <span class="period-time">(${period.periodTime})</span></h3>
+                                ${period.sections.map(section => `
+                                    <div class="lesson-section">
+                                        <h4>${section.title} <span class="section-time">(${section.time})</span></h4>
+                                        ${section.points.length > 0 ? `
+                                            <div class="content-block">
+                                                <strong>Key Points:</strong>
+                                                <ul>
+                                                    ${section.points.map(point => `<li>${point}</li>`).join('')}
+                                                </ul>
+                                            </div>
+                                        ` : ''}
+                                        ${section.activities.length > 0 ? `
+                                            <div class="content-block">
+                                                <strong>Activities:</strong>
+                                                <ul>
+                                                    ${section.activities.map(activity => `<li>${activity}</li>`).join('')}
+                                                </ul>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                `).join('')}
+                                ${period.wrapUpHomework ? `
+                                    <div class="wrap-up">
+                                        <p><strong>Recap:</strong> ${period.wrapUpHomework.recap}</p>
+                                        <p><strong>Homework:</strong> ${period.wrapUpHomework.homework}</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="section">
+                        <h2>Differentiation Support</h2>
+                        <div class="diff-grid">
+                            <div class="diff-struggling">
+                                <h3>Struggling Learners</h3>
+                                <ul>
+                                    ${chapter.differentiationSupport.strugglingLearners.map(item => `<li>${item}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div class="diff-advanced">
+                                <h3>Advanced Learners</h3>
+                                <ul>
+                                    ${chapter.differentiationSupport.advancedLearners.map(item => `<li>${item}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Extensions & Project Ideas</h2>
+                        <ul>
+                            ${chapter.possibleExtensionsProjectIdeas.map(idea => `<li>${idea}</li>`).join('')}
+                        </ul>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
+            
+            // Wait for content to load
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
+
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Error generating PDF. Please try again.');
+        } finally {
+            setIsGeneratingPDF(false);
+        }
+    };
 
     return (
         <Card className="w-full max-w-4xl mx-auto bg-white text-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-200/80">
@@ -87,6 +311,13 @@ export default function ChapterPlannerResponse({ chapter }: ChapterPlannerRespon
                         <span>{chapter.overview.timeAllotment}</span>
                     </span>
                  </CardDescription>
+                 <Button
+                    onClick={handleDownload}
+                    disabled={isGeneratingPDF}
+                    className="ml-auto mr-4 mt-2 bg-indigo-600 hover:bg-indigo-700 text-white disabled:opacity-50"
+                    >
+                    {isGeneratingPDF ? 'Opening Print Dialog...' : 'Print/Save as PDF'}
+                    </Button>
             </CardHeader>
             <CardContent className="p-0 bg-gray-50/50">
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -94,7 +325,7 @@ export default function ChapterPlannerResponse({ chapter }: ChapterPlannerRespon
                         <TabsTrigger value="overview" className="gap-2 text-gray-600 data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=active]:shadow-md"><BookCopy/> Overview</TabsTrigger>
                         <TabsTrigger value="periods" className="gap-2 text-gray-600 data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=active]:shadow-md"><Clock/> Lesson Periods</TabsTrigger>
                         <TabsTrigger value="differentiation" className="gap-2 text-gray-600 data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=active]:shadow-md"><Users/> Differentiation</TabsTrigger>
-                        <TabsTrigger value="extensions" className="gap-2 text-gray-600 data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=active]:shadow-md"><Rocket/> Extensions</TabsTrigger>
+                        <TabsTrigger value="extensions" className="gap-2 text-gray-600 data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=color=purple-700 data-[state=active]:shadow-md"><Rocket/> Extensions</TabsTrigger>
                     </TabsList>
                     <div className="p-6">
                         <TabsContent value="overview">
