@@ -20,7 +20,7 @@ interface ChatMessageProps {
   addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
   setIsReplying: (isReplying: boolean) => void;
   setSelection: (selection: Selection | null) => void;
-  onSend: (content: string, file?: File) => void;
+  onSend: (content: string, fileData?: string) => void;
 }
 
 function RobotAvatar() {

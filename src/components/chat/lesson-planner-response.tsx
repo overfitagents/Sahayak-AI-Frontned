@@ -13,7 +13,7 @@ interface LessonPlannerResponseProps {
     plan: LessonPlan;
     addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => Message;
     setIsReplying: (isReplying: boolean) => void;
-    onSend: (content: string, file?: File) => void;
+    onSend: (content: string, fileData?: string) => void;
 }
 
 const termIcons = [Book, Layers3, FlaskConical];
