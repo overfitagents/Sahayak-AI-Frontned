@@ -5,7 +5,7 @@ import type { Timetable } from "./timetable-data";
 
 export type Sender = 'user' | 'ai';
 
-export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'interactive_image' | 'presentation_generator' | 'file' | 'study_buddy' | 'curriculum_planner' | 'lesson_designer' | 'timetable';
+export type MessageType = 'text' | 'image' | 'pdf' | 'video' | 'audio' | 'gif' | 'interactive_image' | 'presentation_generator' | 'file' | 'student_performance_analyzer' | 'curriculum_planner' | 'lesson_designer' | 'timetable';
 
 export interface Slide {
     heading: string;

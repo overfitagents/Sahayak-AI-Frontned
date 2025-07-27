@@ -1,13 +1,13 @@
 export interface StudentProfile {
     name: string;
-    avatar: string; // URL to an avatar image
+    avatar?: string; // URL to an avatar image, now optional
     strengths: string[];
-    weaknesses: string[];
+    needs_help: string[];
   }
   
   export interface StudyBuddyPair {
-    student1: StudentProfile;
-    student2: StudentProfile;
-    reason: string;
+    name: string;
+    members: StudentProfile[];
+    pairing_logic: string;
   }
   

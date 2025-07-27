@@ -134,12 +134,12 @@ export default function ChatLayout({ sessionId }: ChatLayoutProps) {
                 lessonPlan: chatResponse.data,
               };
               break;
-            case "study_buddy":
+            case "student_performance_analyzer":
               aiMessage = {
                 sender: "ai",
-                type: "study_buddy",
-                content: chatResponse.text,
-                studyBuddyPairs: chatResponse.pairs,
+                type: "student_performance_analyzer",
+                content: chatResponse.data.text || "Here are the suggested study teams:",
+                studyBuddyPairs: chatResponse.data.teams,
               };
               break;
             case "timetable":

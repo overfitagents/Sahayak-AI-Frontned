@@ -100,7 +100,7 @@ export default function ChatMessage({ message, addMessage, setIsReplying, setSel
         return <PptViewer slides={message.slides || []} fileUrl={message.fileInfo?.url} fileName={message.fileInfo?.name}/>;
       case 'file':
         return <FileMessage message={message} />;
-      case 'study_buddy':
+      case 'student_performance_analyzer':
         return <StudyBuddyResponse message={message} />;
       case 'curriculum_planner':
         return <LessonPlannerResponse plan={message.lessonPlan || dummyLessonPlan} addMessage={addMessage} setIsReplying={setIsReplying} onSend={onSend} />;

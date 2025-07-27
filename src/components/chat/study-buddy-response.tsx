@@ -1,3 +1,4 @@
+
 "use client";
 
 import type { Message } from '@/lib/chat-data';
@@ -22,7 +23,7 @@ function StudentCard({ student }: { student: StudentProfile }) {
         <Card className="flex-1 rounded-2xl bg-gray-100 shadow-lg transform transition-transform hover:scale-105 duration-300">
             <CardHeader className='items-center text-center p-4'>
                 <Avatar className="w-20 h-20 mb-2 border-4 border-gray-200/80 shadow-md">
-                    <AvatarImage src={student.avatar} alt={student.name} data-ai-hint="person student" />
+                    {student.avatar && <AvatarImage src={student.avatar} alt={student.name} data-ai-hint="person student" />}
                     <AvatarFallback className="text-xl font-bold bg-gray-200 text-gray-600">{getInitials(student.name)}</AvatarFallback>
                 </Avatar>
                 <CardTitle className='text-xl text-gray-800'>{student.name}</CardTitle>
@@ -36,11 +37,11 @@ function StudentCard({ student }: { student: StudentProfile }) {
                         </div>
                     </div>
                 )}
-                {student.weaknesses.length > 0 && (
+                {student.needs_help.length > 0 && (
                     <div className='mt-4'>
                         <h4 className="font-semibold text-sm text-red-600 mb-1.5">🆘 Needs Help</h4>
                         <div className="flex flex-wrap gap-2 justify-center cursor-default">
-                            {student.weaknesses.map(skill => <Badge key={skill} variant="secondary" className='text-base border-2 shadow-sm bg-red-100 text-red-800 border-red-300/50 hover:bg-red-200/80 transform hover:scale-105 transition-all duration-200'>{skill}</Badge>)}
+                            {student.needs_help.map(skill => <Badge key={skill} variant="secondary" className='text-base border-2 shadow-sm bg-red-100 text-red-800 border-red-300/50 hover:bg-red-200/80 transform hover:scale-105 transition-all duration-200'>{skill}</Badge>)}
                         </div>
                     </div>
                 )}
@@ -64,22 +65,22 @@ export default function StudyBuddyResponse({ message }: StudyBuddyResponseProps)
             <CardHeader className="bg-black/10 p-4">
               <CardTitle className="flex items-center gap-3 text-2xl font-bold text-white/90">
                 <Users className="text-purple-300 h-7 w-7" />
-                <span>Study Team {index + 1}</span>
+                <span>{pair.name}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4 md:p-6">
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 relative">
-                    <StudentCard student={pair.student1} />
+                    <StudentCard student={pair.members[0]} />
                     <div className="flex items-center justify-center my-2 sm:my-0 text-4xl transition-transform duration-300 hover:scale-125 cursor-default">
                     🤝
                     </div>
-                    <StudentCard student={pair.student2} />
+                    <StudentCard student={pair.members[1]} />
                 </div>
             </CardContent>
             <CardFooter className="bg-black/10 p-4">
                  <div className="flex items-start gap-3 text-white/80">
                     <Lightbulb className="h-6 w-6 mt-0.5 shrink-0 text-yellow-400" />
-                    <p className="text-sm"><span className="font-bold text-white/90">Pairing Logic:</span> {pair.reason}</p>
+                    <p className="text-sm"><span className="font-bold text-white/90">Pairing Logic:</span> {pair.pairing_logic}</p>
                  </div>
             </CardFooter>
           </Card>
