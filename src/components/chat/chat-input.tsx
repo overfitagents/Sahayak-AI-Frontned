@@ -225,7 +225,7 @@ export default function ChatInput({
                     </Button>
                 </form>
             </div>
-             <Button type="submit" onClick={handleSend} size="icon" className="shrink-0 h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 text-white shadow-lg hover:-translate-y-0.5 transition-transform" disabled={!inputValue.trim() || disabled}>
+             <Button type="submit" onClick={handleSend} size="icon" className="shrink-0 h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 text-white shadow-lg hover:-translate-y-0.5 transition-transform" disabled={!inputValue.trim() && !selection || disabled}>
                 <Send />
                 <span className="sr-only">Send message</span>
             </Button>
